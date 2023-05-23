@@ -1,22 +1,8 @@
 # Work Log
 
-## GROUP MEMBER 1
+## Taamim Naamid
 
-### date x
+### 5/22/23
 
-info
-
-### date y
-
-info
-
-
-## GROUP MEMBER 2
-
-### date x
-
-info
-
-### date y
-
-info
+CW - Worked on implementing the Pokemon class and started the Pokedex
+HW - Added functionality to the Pokedex, a text file with sample Pokemon, and added leveling for Pokemon
