@@ -26,12 +26,26 @@ public class Pokemon {
   }
   public int changeHP(int changeVal) {
     int initial = currentHP;
-    // im going to assume we have a baseStats[] for maxHP
-    maxHP = baseStats[0];
+    int maxHP = Pokedex.getBaseStats(dexNumber)[0];
     currentHP+=changeVal;
     currentHP = Math.min(maxHP,currentHP);
     currentHP = Math.max(0,currentHP);
     return initial;
+  }
+  public void addExp(int additionalExp) {
+    exp+=additionalExp;
+    while (levelUp());
+  }
+  public boolean levelUp() {
+    int expCurve = Pokedex.getExpCurve(dexNumber);
+    int n = level+1;
+    int expReq = 4*(int)Math.pow(n,3)/5*expCurve;
+    if (expReq<=exp) {
+      exp-=expReq;
+      level++;
+      currentHP=Pokedex.getBaseStats(dexNumber)[0];
+      return true;
+    } return false;
   }
 
   //---------- STANDARD GET/SET METHODS BELOW ----------//

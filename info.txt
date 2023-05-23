@@ -1,0 +1,9 @@
+001 Bulbasaur Grass Poison 45 49 49 65 65 45 001.png 1.1 16 002
+002 Ivysaur Grass Poison 60 62 63 80 80 60 002.png 1.1 32 003
+003 Venusaur Grass Poison 80 82 83 100 100 80 003.png 1.1 -1 -1
+004 Charmander Fire Typeless 39 52 43 60 50 65 004.png 1.1 16 005
+005 Charmeleon Fire Typeless 58 64 58 80 65 80 005.png 1.1 32 006
+006 Charizard Fire Flying 78 84 78 109 85 100 006.png 1.1 -1 -1
+007 Squirtle Water Typeless 44 48 65 50 64 43 007.png 1.1 16 008
+008 Wartortle Water Typeless 59 63 80 65 80 58 008.png 1.1 32 009
+009 Blastoise Water Typeless 79 83 100 85 105 78 009.png 1.1 -1 -1
