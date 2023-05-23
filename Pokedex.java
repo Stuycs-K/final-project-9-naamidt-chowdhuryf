@@ -11,12 +11,13 @@ public class Pokedex {
   private static String[] primaryType;
   private static  String[] secondaryType;
   // we can make types ints to map onto an array later
-  // right now with strings it'd make sense for maps 
+  // right now with strings it'd make sense for maps
   private static int[][] baseStats;
   private static PImage[] sprite;
   private static int[] expCurve;
   private static int[] evolutionLvl;
   private static int[] evolution; // <-- returns dex # of evolution
+  private static HashMap<String,Move> movedex;
   private int maxDexNumber;
   public Pokedex() {
     maxDexNumber = 1010;
@@ -32,7 +33,10 @@ public class Pokedex {
     BufferedReader br = new BufferedReader(new FileReader("info.txt"));
     String line = null;
     while ((line = br.readLine())!=null) {
-      String[] data = br.readLine().split(" ");
+      String[] data = line.split(" ");
+      if (data[0].equals("Move")) {
+        break;
+      }
       int dexNumber = Integer.parseInt(data[0]);
       speciesName[dexNumber] = data[1];
       speciesToDex.put(data[1],dexNumber);
@@ -47,9 +51,13 @@ public class Pokedex {
       evolutionLvl[dexNumber] = Integer.parseInt(data[12]);
       evolution[dexNumber] = Integer.parseInt(data[13]);
     }
+    while ((line = br.readLine())!=null) {
+      String[] data = line.split(" ");
+      movedex.put(data[0],new Move(line));
+    } br.close();
   }
 
-  
+
   //---------- GET METHODS USING DEX BELOW ----------//
   public static String getName(int dex) {
     return speciesName[dex];
