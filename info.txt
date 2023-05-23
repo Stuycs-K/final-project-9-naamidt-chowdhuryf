@@ -1,3 +1,4 @@
+// dex# name type1 type2 hp atk def spatk spdef speed sprite expCurve evoLvl evo
 001 Bulbasaur Grass Poison 45 49 49 65 65 45 001.png 1.1 16 002
 002 Ivysaur Grass Poison 60 62 63 80 80 60 002.png 1.1 32 003
 003 Venusaur Grass Poison 80 82 83 100 100 80 003.png 1.1 -1 -1

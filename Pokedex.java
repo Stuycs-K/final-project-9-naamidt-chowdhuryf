@@ -31,6 +31,7 @@ public class Pokedex {
     evolution = new int[maxDexNumber];
     // im thinking of having the map for type charts here as well
     BufferedReader br = new BufferedReader(new FileReader("info.txt"));
+    br.readLine();
     String line = null;
     while ((line = br.readLine())!=null) {
       String[] data = line.split(" ");
