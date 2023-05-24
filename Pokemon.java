@@ -37,6 +37,9 @@ public class Pokemon {
     while (levelUp());
   }
   public boolean levelUp() {
+    if (level>=100) {
+      return false;
+    }
     int expCurve = Pokedex.getExpCurve(dexNumber);
     int n = level+1;
     int expReq = 4*(int)Math.pow(n,3)/5*expCurve;

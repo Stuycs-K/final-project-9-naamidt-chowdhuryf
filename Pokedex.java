@@ -18,6 +18,8 @@ public class Pokedex {
   private static int[] evolutionLvl;
   private static int[] evolution; // <-- returns dex # of evolution
   private static HashMap<String,Move> movedex;
+  private static String[] types;
+  private static HashMap<String,HashMap<String,Float>> typeChart;
   private int maxDexNumber;
   public Pokedex() {
     maxDexNumber = 1010;
@@ -56,6 +58,55 @@ public class Pokedex {
       String[] data = line.split(" ");
       movedex.put(data[0],new Move(line));
     } br.close();
+    makeTypeChart();
+  }
+  public void makeTypeChart() {
+    types = new String[]{"Typeless", "Bug", "Dark", "Dragon", "Electric", "Fairy", "Fighting", "Fire", "Flying", "Ghost", "Grass", "Ground", "Ice", "Normal", "Poison", "Psychic", "Rock", "Steel", "Water"};
+    typeChart = new HashMap<String,HashMap<String,Float>>();
+    for (int i=0;i<types.length;i++) {
+      Hashmap<String,Float> oneTypeChart = new HashMap<String,Float>();
+      for (int j=0;j<types.length;j++) {
+        oneTypeChart.put(types[j],1);
+      } typeChart.put(types[i],oneTypeChart);
+    }
+    // now we do all the actual type interactions manually i guess
+    // jk ill just do another .txt file to make it easier maybe
+    BufferedReader br = new BufferedReader(new FileReader("typeChart.txt"));
+    br.readLine();
+    String line = null;
+    while ((line = br.readLine())!=null) {
+      String[] data = line.split(" ");
+      String offensive = data[0];
+      String defensive = data[1];
+      float multiplier = Float.parseFloat(data[2]);
+      typeChart.get(offensive).replace(defensive,multiplier);
+    }
+  }
+  public int damageCalculator(Pokemon attacker, Pokemon defender, Move move) {
+    int level = attacker.getLevel();
+    int power = Move.getBasePower();
+    int attack, defense;
+    int attackerDex = attacker.getDexNumber();
+    int defenderDex = defender.getDexNumber();
+    if (move.getSplit().equals("Physical")) {
+      attack = baseStats[attackerDex][1];
+      defense = baseStats[defenderDex][2];
+    } else if (move.getSplit().equals("Special")) {
+      attack = baseStats[attackerDex][3];
+      defense = baseStats[defenderDex][4];
+    } double critMultiplier = 1;
+    if ((int)(Math.random()*16)==0) {
+      critMultiplier=1.5;
+    } double stab = 1;
+    if (primaryType[attackerDex].equals(move.getType())||secondaryType[attackerDex].equals(move.getType())) {
+      stab = 1.5;
+    } double typeAdvantage = 1;
+    typeAdvantage*=typeChart.get(move.getType()).get(primaryType[defenderDex]);
+    typeAdvantage*=typeChart.get(move.getType()).get(secondaryType[defenderDex]);
+    double roll = ((int)(Math.random()*16)+85)/100.0;
+    int damage = ((2*level/5+2)*power*attack/defense)/50+2;
+    damage=(int)(damage*critMultiplier*stab*typeAdvantage*roll);
+    return damage;
   }
 
 
