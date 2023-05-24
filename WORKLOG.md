@@ -1,22 +1,16 @@
 # Work Log
 
-## GROUP MEMBER 1
+## Taamim Naamid
 
-### date x
+### 5/22/23
 
-info
+CW - Worked on implementing the Pokemon class and started the Pokedex
+HW - Added functionality to the Pokedex, a text file with sample Pokemon, and added leveling for Pokemon
 
-### date y
+### 5/23/23
 
-info
+CW - Worked a bit on the Pokedex and fleshed out the concepts of moves and a movedex with Bell
+HW - Added the type chart in the Pokedex and a damage calculator
 
+## Fishan Chowdhury (Bell)
 
-## GROUP MEMBER 2
-
-### date x
-
-info
-
-### date y
-
-info
