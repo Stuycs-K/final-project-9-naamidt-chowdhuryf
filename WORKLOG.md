@@ -17,3 +17,4 @@ HW - Added the type chart in the Pokedex and a damage calculator
 ### 5/23/23
 
 CW - Started work on the Move class 
+HW - Finished Move class, needs testing
