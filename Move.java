@@ -7,7 +7,6 @@ public class Move{
   private static int power, accuracy, pp, maxPP;
   //private static int split;
   private static String name;
-
   public Move(String line) {
     String[] data = line.split(" ");
     name = "";
@@ -25,8 +24,5 @@ public class Move{
     accuracy = Integer.parseInt(data[3]);
     pp = Integer.parseInt(data[4]);
     maxPP = Integer.parseInt(data[4]);
-
   }
-
-
 }
