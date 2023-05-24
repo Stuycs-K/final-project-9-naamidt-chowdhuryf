@@ -14,3 +14,6 @@ HW - Added the type chart in the Pokedex and a damage calculator
 
 ## Fishan Chowdhury (Bell)
 
+### 5/23/23
+
+CW - Started work on the Move class 
