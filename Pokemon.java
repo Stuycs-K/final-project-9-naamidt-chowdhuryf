@@ -17,12 +17,31 @@ public class Pokemon {
   // private int[] baseStats;
   private Moves[] moves;
   private int dexNumber;
+  private int[] stats;
+  private int[] ivs;
+  private int[] evs;
+  private Pokedex dex;
   public Pokemon(int currentHP, int level, int exp, String nickname, int dexNumber) {
     this.currentHP = currentHP;
     this.level = level;
     this.exp = exp;
     this.nickname = nickname;
     this.dexNumber = dexNumber;
+    dex = new Pokedex();
+    ivs = new int[6];
+    for (int i=0;i<6;i++) {
+      ivs[i] = (int)(Math.random()*32);
+      evs[i] = 0;
+    } stats = new int[6];
+    int[] baseStats = dex.getBaseStats(dexNumber);
+    for (int i=0;i<stats;i++) {
+      stats[i] = calculateStats(baseStats[i],ivs[i],evs[i],level,nature)
+    }
+  }
+  public int calculateStats(int base, int iv, int ev, int level, int[] nature) {
+    int stat;
+    stat = (((2*base+iv+(ev/4))*level)/100)+level+10;
+    return stat;
   }
   public int changeHP(int changeVal) {
     int initial = currentHP;
