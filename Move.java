@@ -23,6 +23,6 @@ public class Move{
     power = Integer.parseInt(data[2]);
     accuracy = Integer.parseInt(data[3]);
     pp = Integer.parseInt(data[4]);
-    maxPP = Integer.parseInt(data[4]);
+    maxPP = pp;
   }
 }
