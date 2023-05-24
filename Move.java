@@ -21,9 +21,10 @@ public class Move{
       name += data[0];
     }
     type = data[1];
-    power = Integer.parse(data[2]);
-    accuracy = Integer.parse(data[3]);
-    pp = Integer.parse(data[4]);
+    power = Integer.parseInt(data[2]);
+    accuracy = Integer.parseInt(data[3]);
+    pp = Integer.parseInt(data[4]);
+    maxPP = Integer.parseInt(data[4]);
 
   }
 
