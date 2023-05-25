@@ -6,7 +6,7 @@ public class Move{
   private static String type;
   private static int power, accuracy, pp, maxPP;
   //private static int split;
-  private static String name;
+  private static String name, split;
 
   public Move(String line) {
     String[] data = line.split(" ");
@@ -15,7 +15,7 @@ public class Move{
       String[] moveName = data[0].split("_");
       for (String a : moveName) {
         name += a;
-        name += " "
+        name += " ";
       }
     } else {
       name += data[0];
@@ -25,5 +25,15 @@ public class Move{
     accuracy = Integer.parseInt(data[3]);
     pp = Integer.parseInt(data[4]);
     maxPP = pp;
+    split = data[5];
+  }
+  public int getBasePower() {
+    return power;
+  }
+  public String getSplit() {
+    return split;
+  }
+  public String getType() {
+    return type;
   }
 }

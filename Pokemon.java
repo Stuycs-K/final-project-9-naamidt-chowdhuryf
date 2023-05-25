@@ -15,33 +15,37 @@ public class Pokemon {
   private String nickname;
   // private String speciesName
   // private int[] baseStats;
-  private Moves[] moves;
+  private Move[] moves;
   private int dexNumber;
   private int[] stats;
   private int[] ivs;
   private int[] evs;
   private Pokedex dex;
+  private String nature;
   public Pokemon(int currentHP, int level, int exp, String nickname, int dexNumber) {
     this.currentHP = currentHP;
     this.level = level;
     this.exp = exp;
     this.nickname = nickname;
     this.dexNumber = dexNumber;
+    moves = new Move[4];
     dex = new Pokedex();
     ivs = new int[6];
+    nature = dex.randomNature();
     for (int i=0;i<6;i++) {
       ivs[i] = (int)(Math.random()*32);
       evs[i] = 0;
     } stats = new int[6];
     int[] baseStats = dex.getBaseStats(dexNumber);
-    for (int i=0;i<stats;i++) {
-      stats[i] = calculateStats(baseStats[i],ivs[i],evs[i],level,nature)
+    double[] natureBoosts = dex.getNature(nature);
+    for (int i=0;i<stats.length;i++) {
+      stats[i] = calculateStats(baseStats[i],ivs[i],evs[i],level,natureBoosts[i]);
     }
   }
-  public int calculateStats(int base, int iv, int ev, int level, int[] nature) {
+  public int calculateStats(int base, int iv, int ev, int level, double nature) {
     int stat;
     stat = (((2*base+iv+(ev/4))*level)/100)+level+10;
-    return stat;
+    return (int)(stat*nature);
   }
   public int changeHP(int changeVal) {
     int initial = currentHP;
@@ -68,6 +72,9 @@ public class Pokemon {
       currentHP=Pokedex.getBaseStats(dexNumber)[0];
       return true;
     } return false;
+  }
+  public void setMoveslot(int slot, Move move) {
+    moves[slot] = move;
   }
 
   //---------- STANDARD GET/SET METHODS BELOW ----------//
@@ -101,10 +108,10 @@ public class Pokemon {
   public void setDexNumber(int newDexNumber) {
     dexNumber = newDexNumber;
   }
-  public Moves[] getMoves() {
+  public Move[] getMoves() {
     return moves;
   }
-  public void setMoves(Moves[] newMoves) {
+  public void setMoves(Move[] newMoves) {
     moves = newMoves;
   }
 }
