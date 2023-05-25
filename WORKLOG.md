@@ -21,5 +21,10 @@ HW - Finished that up along with organization of data, couldn't do too much toda
 
 ### 5/23/23
 
-CW - Started work on the Move class 
+CW - Started work on the Move class
 HW - Finished Move class, needs testing
+
+### 5/24/23
+
+CW - Fixed a couple of repo erros and merge conflicts, and then added some more methods for moves
+HW - Started testing with new setup; internet cut out for a while so progress was limited
