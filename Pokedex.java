@@ -56,7 +56,8 @@ public class Pokedex {
     br.readLine();
     while ((line = br.readLine())!=null) {
       String[] data = line.split(" ");
-      movedex.put(data[0],new Move(line));
+      Move move = new Move(line);
+      movedex.put(move.getName(),move);
     } br.close();
     br = new BufferedReader(new FileReader("natures.txt"));
     br.readLine();
