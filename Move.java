@@ -53,4 +53,8 @@ public class Move{
     pp = num;
   }
 
+  public void setAccuracy(int num) {
+    accuracy = num;
+  }
+
 }
