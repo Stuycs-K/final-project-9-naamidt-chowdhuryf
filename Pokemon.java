@@ -22,8 +22,7 @@ public class Pokemon {
   private int[] evs;
   private Pokedex dex;
   private String nature;
-  public Pokemon(int currentHP, int level, int exp, String nickname, int dexNumber) throws Exception {
-    this.currentHP = currentHP;
+  public Pokemon(int level, String nickname, int dexNumber) throws Exception {
     this.level = level;
     this.exp = exp;
     this.nickname = nickname;
@@ -40,7 +39,8 @@ public class Pokemon {
     double[] natureBoosts = dex.getNature(nature);
     for (int i=0;i<stats.length;i++) {
       stats[i] = calculateStats(baseStats[i],ivs[i],evs[i],level,natureBoosts[i]);
-    }
+    } currentHP = stats[0];
+    exp = 0;
   }
   public int calculateStats(int base, int iv, int ev, int level, double nature) {
     int stat;

@@ -165,4 +165,7 @@ public class Pokedex {
   public static double[] getNature(String name) {
     return natures.get(name);
   }
+  public static Move getMove(String name) {
+    return movedex.get(name);
+  }
 }
