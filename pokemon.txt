@@ -8,7 +8,3 @@
 007 Squirtle Water Typeless 44 48 65 50 64 43 007.png 1.1 16 008
 008 Wartortle Water Typeless 59 63 80 65 80 58 008.png 1.1 32 009
 009 Blastoise Water Typeless 79 83 100 85 105 78 009.png 1.1 -1 -1
-Move // name type power accuracy pp
-Water_Gun Water 40 100 25
-Ember Fire 40 100 25
-Vine_Whip Grass 45 100 25

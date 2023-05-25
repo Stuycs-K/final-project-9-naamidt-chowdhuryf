@@ -13,33 +13,31 @@ public class Pokedex {
   // we can make types ints to map onto an array later
   // right now with strings it'd make sense for maps
   private static int[][] baseStats;
-  private static PImage[] sprite;
+  // private static PImage[] sprite;
   private static int[] expCurve;
   private static int[] evolutionLvl;
   private static int[] evolution; // <-- returns dex # of evolution
   private static HashMap<String,Move> movedex;
   private static String[] types;
-  private static HashMap<String,HashMap<String,Float>> typeChart;
+  private static HashMap<String,HashMap<String,Double>> typeChart;
+  private static HashMap<String,double[]> natures;
   private int maxDexNumber;
-  public Pokedex() {
+  public Pokedex() throws Exception {
     maxDexNumber = 1010;
     speciesName = new String[maxDexNumber];
     primaryType = new String[maxDexNumber];
     secondaryType = new String[maxDexNumber];
     baseStats = new int[maxDexNumber][];
-    sprite = new PImage[maxDexNumber];
+    // sprite = new PImage[maxDexNumber];
     expCurve = new int[maxDexNumber];
     evolutionLvl = new int[maxDexNumber];
     evolution = new int[maxDexNumber];
     // im thinking of having the map for type charts here as well
-    BufferedReader br = new BufferedReader(new FileReader("info.txt"));
+    BufferedReader br = new BufferedReader(new FileReader("pokemon.txt"));
     br.readLine();
     String line = null;
     while ((line = br.readLine())!=null) {
       String[] data = line.split(" ");
-      if (data[0].equals("Move")) {
-        break;
-      }
       int dexNumber = Integer.parseInt(data[0]);
       speciesName[dexNumber] = data[1];
       speciesToDex.put(data[1],dexNumber);
@@ -49,24 +47,39 @@ public class Pokedex {
       for (int i=4;i<10;i++) {
         baseStats[dexNumber][i] = Integer.parseInt(data[i]);
       }
-      sprite[dexNumber] = data[10];
+      // sprite[dexNumber] = data[10];
       expCurve[dexNumber] = Integer.parseInt(data[11]);
       evolutionLvl[dexNumber] = Integer.parseInt(data[12]);
       evolution[dexNumber] = Integer.parseInt(data[13]);
-    }
+    } br.close();
+    br = new BufferedReader(new FileReader("moves.txt"));
+    br.readLine();
     while ((line = br.readLine())!=null) {
       String[] data = line.split(" ");
       movedex.put(data[0],new Move(line));
     } br.close();
+    br = new BufferedReader(new FileReader("natures.txt"));
+    br.readLine();
+    for (int i=1;i<6;i++) {
+      String[] data = br.readLine().split(" ");
+      for (int j=1;j<6;j++) {
+        double[] nature = new double[]{1,1,1,1,1,1};
+        if (i!=j) {
+          nature[i]=1.1;
+          nature[j]=0.9;
+        } natures.put(data[j-1],nature);
+      }
+    }
+    br.close();
     makeTypeChart();
   }
-  public void makeTypeChart() {
+  public void makeTypeChart() throws Exception {
     types = new String[]{"Typeless", "Bug", "Dark", "Dragon", "Electric", "Fairy", "Fighting", "Fire", "Flying", "Ghost", "Grass", "Ground", "Ice", "Normal", "Poison", "Psychic", "Rock", "Steel", "Water"};
-    typeChart = new HashMap<String,HashMap<String,Float>>();
+    typeChart = new HashMap<String,HashMap<String,Double>>();
     for (int i=0;i<types.length;i++) {
-      Hashmap<String,Float> oneTypeChart = new HashMap<String,Float>();
+      HashMap<String,Double> oneTypeChart = new HashMap<String,Double>();
       for (int j=0;j<types.length;j++) {
-        oneTypeChart.put(types[j],1);
+        oneTypeChart.put(types[j],1.0);
       } typeChart.put(types[i],oneTypeChart);
     }
     // now we do all the actual type interactions manually i guess
@@ -78,13 +91,13 @@ public class Pokedex {
       String[] data = line.split(" ");
       String offensive = data[0];
       String defensive = data[1];
-      float multiplier = Float.parseFloat(data[2]);
+      double multiplier = Double.parseDouble(data[2]);
       typeChart.get(offensive).replace(defensive,multiplier);
     }
   }
   public int damageCalculator(Pokemon attacker, Pokemon defender, Move move) {
     int level = attacker.getLevel();
-    int power = Move.getBasePower();
+    int power = move.getBasePower();
     int attack, defense;
     int attackerDex = attacker.getDexNumber();
     int defenderDex = defender.getDexNumber();
@@ -94,7 +107,10 @@ public class Pokedex {
     } else if (move.getSplit().equals("Special")) {
       attack = baseStats[attackerDex][3];
       defense = baseStats[defenderDex][4];
-    } double critMultiplier = 1;
+    } else {
+      attack = 0;
+      defense = 1;
+    }double critMultiplier = 1;
     if ((int)(Math.random()*16)==0) {
       critMultiplier=1.5;
     } double stab = 1;
@@ -108,7 +124,15 @@ public class Pokedex {
     damage=(int)(damage*critMultiplier*stab*typeAdvantage*roll);
     return damage;
   }
-
+  public String randomNature() throws Exception {
+    int boost = (int)(Math.random()*5)+1;
+    int detriment = (int)(Math.random()*5);
+    String line = null;
+    BufferedReader br = new BufferedReader(new FileReader("natures.txt"));
+    for (int i=0;i<boost;i++) {
+      line = br.readLine();
+    } return line.split(" ")[detriment];
+  }
 
   //---------- GET METHODS USING DEX BELOW ----------//
   public static String getName(int dex) {
@@ -126,9 +150,9 @@ public class Pokedex {
   public static int[] getBaseStats(int dex) {
     return baseStats[dex];
   }
-  public static PImage getSprite(int dex) {
-    return sprite[dex];
-  }
+  // public static PImage getSprite(int dex) {
+  //   return sprite[dex];
+  // }
   public static int getExpCurve(int dex) {
     return expCurve[dex];
   }
@@ -137,5 +161,8 @@ public class Pokedex {
   }
   public static int getEvolution(int dex) {
     return evolution[dex];
+  }
+  public static double[] getNature(String name) {
+    return natures.get(name);
   }
 }
