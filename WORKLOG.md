@@ -17,6 +17,10 @@ HW - Added the type chart in the Pokedex and a damage calculator
 CW - Worked on the foundation of adding moveslots, natures, and independent stats\
 HW - Finished that up along with organization of data, couldn't do too much today since my ankle is sprained
 
+### 5/25/23
+
+CW - Worked on debugging, adjustments, and a little bit of Trainer
+
 ## Fishan Chowdhury (Bell)
 
 ### 5/23/23
