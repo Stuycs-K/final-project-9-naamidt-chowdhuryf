@@ -22,7 +22,7 @@ public class Pokemon {
   private int[] evs;
   private Pokedex dex;
   private String nature;
-  public Pokemon(int currentHP, int level, int exp, String nickname, int dexNumber) {
+  public Pokemon(int currentHP, int level, int exp, String nickname, int dexNumber) throws Exception {
     this.currentHP = currentHP;
     this.level = level;
     this.exp = exp;
