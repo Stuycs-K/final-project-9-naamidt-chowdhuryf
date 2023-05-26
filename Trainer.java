@@ -17,7 +17,14 @@ public class Trainer {
     party = new Pokemon[6];
   }
   public void setPokemon(int slot, Pokemon pokemon) {
-    if (slot>=0&&slot<=5)
-      party[slot] = pokemon;
+    party[slot] = pokemon;
+  }
+  public void swapSlot(int slot1, int slot2) {
+    Pokemon pokemon = party[slot1];
+    party[slot1] = party[slot2];
+    party[slot2] = pokemon;
+  }
+  public Pokemon getSlot(int slot) {
+    return party[slot];
   }
 }

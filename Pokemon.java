@@ -73,9 +73,6 @@ public class Pokemon {
       return true;
     } return false;
   }
-  public void setMoveSlot(int slot, Move move) {
-    moves[slot] = move;
-  }
 
   //---------- STANDARD GET/SET METHODS BELOW ----------//
   public int getCurrentHP() {
@@ -113,5 +110,14 @@ public class Pokemon {
   }
   public void setMoves(Move[] newMoves) {
     moves = newMoves;
+  }
+  public int[] getStats() {
+    return stats;
+  }
+  public Move getMoveSlot(int slot) {
+    return moves[slot];
+  }
+  public void setMoveSlot(int slot, Move move) {
+    moves[slot] = move;
   }
 }

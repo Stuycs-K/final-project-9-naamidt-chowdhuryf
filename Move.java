@@ -39,4 +39,10 @@ public class Move{
   public String getName() {
     return name;
   }
+  public int getPP() {
+    return pp;
+  }
+  public void decreasePP(int amount) {
+    pp-=amount;
+  }
 }

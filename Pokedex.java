@@ -96,7 +96,7 @@ public class Pokedex {
       typeChart.get(offensive).replace(defensive,multiplier);
     }
   }
-  public int damageCalculator(Pokemon attacker, Pokemon defender, Move move) {
+  public static int damageCalculator(Pokemon attacker, Pokemon defender, Move move) {
     int level = attacker.getLevel();
     int power = move.getBasePower();
     int attack, defense;
