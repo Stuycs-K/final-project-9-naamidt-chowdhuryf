@@ -22,8 +22,14 @@ public class Battle {
         turnOrder.add(playerAction);
         turnOrder.add(npcAction);
         Action turn;
-        Trainer trainer,otherTrainer;
         turn = turnOrder.poll();
+        perform(turn);
+        turn = turnOrder.poll();
+        perform(turn);
+        
+    }
+    public void perform(Action turn) {
+        Trainer trainer,otherTrainer;
         trainer = turn.getTrainer();
         otherTrainer = turn.getOtherTrainer();
         Pokemon attacker = trainer.getSlot(0);
@@ -31,7 +37,7 @@ public class Battle {
         otherTrainer = turn.getOtherTrainer();
         if (turn.getChoice().equals("Switch")) {
             if (trainer.getSlot(turn.getMoveChoice()).getCurrentHP()>0) {
-                trainer.swapSlot(0, moveChoice);
+                trainer.swapSlot(0, turn.getMoveChoice());
                 playerActive = player.getSlot(0);
                 npcActive = npc.getSlot(0);
             }
