@@ -3,23 +3,13 @@ import java.io.*;
 import java.lang.*;
 
 public class Move{
-  private static String type;
-  private static int power, accuracy, pp, maxPP;
-  //private static int split;
-  private static String name, split;
+  private  String type;
+  private  int power, accuracy, pp, maxPP;
+  //private  int split;
+  private  String name, split;
 
-  public Move(String line) {
-    String[] data = line.split(" ");
-    name = "";
-    if (data[0].indexOf("_") > -1) {
-      String[] moveName = data[0].split("_");
-      for (String a : moveName) {
-        name += a;
-        name += " ";
-      }
-    } else {
-      name += data[0];
-    }
+  public Move(String[] data) {
+    name = String.join(" ",data[0].split("_"));
     type = data[1];
     power = Integer.parseInt(data[2]);
     accuracy = Integer.parseInt(data[3]);
@@ -56,5 +46,7 @@ public class Move{
   public void setAccuracy(int num) {
     accuracy = num;
   }
-
+  public String toString() {
+    return name+" "+type+" "+split+" Power: "+power+" Accuracy: "+accuracy+" PP: "+pp+" MaxPP: "+maxPP;
+  }
 }

@@ -14,29 +14,33 @@ public class Pokedex {
   // right now with strings it'd make sense for maps
   private static int[][] baseStats;
   // private static PImage[] sprite;
-  private static int[] expCurve;
+  private static double[] expCurve;
   private static int[] evolutionLvl;
   private static int[] evolution; // <-- returns dex # of evolution
-  private static HashMap<String,Move> movedex;
+  public static HashMap<String,Move> movedex;
   private static String[] types;
   private static HashMap<String,HashMap<String,Double>> typeChart;
   private static HashMap<String,double[]> natures;
   private int maxDexNumber;
   public Pokedex() throws Exception {
+    speciesToDex = new HashMap<String,Integer>();
+    movedex = new HashMap<String,Move>();
+    typeChart = new HashMap<String,HashMap<String,Double>>();
+    natures = new HashMap<String,double[]>();
     maxDexNumber = 1010;
     speciesName = new String[maxDexNumber];
     primaryType = new String[maxDexNumber];
     secondaryType = new String[maxDexNumber];
     baseStats = new int[maxDexNumber][];
     // sprite = new PImage[maxDexNumber];
-    expCurve = new int[maxDexNumber];
+    expCurve = new double[maxDexNumber];
     evolutionLvl = new int[maxDexNumber];
     evolution = new int[maxDexNumber];
     // im thinking of having the map for type charts here as well
-    BufferedReader br = new BufferedReader(new FileReader("pokemon.txt"));
-    br.readLine();
+    BufferedReader PokemonBR = new BufferedReader(new FileReader("pokemon.txt"));
+    PokemonBR.readLine();
     String line = null;
-    while ((line = br.readLine())!=null) {
+    while ((line = PokemonBR.readLine())!=null) {
       String[] data = line.split(" ");
       int dexNumber = Integer.parseInt(data[0]);
       speciesName[dexNumber] = data[1];
@@ -45,23 +49,29 @@ public class Pokedex {
       secondaryType[dexNumber] = data[3];
       baseStats[dexNumber] = new int[6];
       for (int i=4;i<10;i++) {
-        baseStats[dexNumber][i] = Integer.parseInt(data[i]);
+        baseStats[dexNumber][i-4] = Integer.parseInt(data[i]);
       }
       // sprite[dexNumber] = data[10];
-      expCurve[dexNumber] = Integer.parseInt(data[11]);
+      expCurve[dexNumber] = Double.parseDouble(data[11]);
       evolutionLvl[dexNumber] = Integer.parseInt(data[12]);
       evolution[dexNumber] = Integer.parseInt(data[13]);
-    } br.close();
-    br = new BufferedReader(new FileReader("moves.txt"));
-    br.readLine();
-    while ((line = br.readLine())!=null) {
+    } PokemonBR.close();
+    BufferedReader MovesBR = new BufferedReader(new FileReader("moves.txt"));
+    MovesBR.readLine();
+    line = null;
+    while ((line = MovesBR.readLine())!=null) {
       String[] data = line.split(" ");
-      movedex.put(data[0],new Move(line));
-    } br.close();
-    br = new BufferedReader(new FileReader("natures.txt"));
-    br.readLine();
+      Move move = new Move(data);
+      // System.out.println("inp: "+Arrays.toString(data));
+      // System.out.println("move: "+move);
+      movedex.put(move.getName(),move);
+      // System.out.println(movedex);
+      // System.out.println();
+    } MovesBR.close();
+    BufferedReader NaturesBR = new BufferedReader(new FileReader("natures.txt"));
+    NaturesBR.readLine();
     for (int i=1;i<6;i++) {
-      String[] data = br.readLine().split(" ");
+      String[] data = NaturesBR.readLine().split(" ");
       for (int j=1;j<6;j++) {
         double[] nature = new double[]{1,1,1,1,1,1};
         if (i!=j) {
@@ -70,7 +80,7 @@ public class Pokedex {
         } natures.put(data[j-1],nature);
       }
     }
-    br.close();
+    NaturesBR.close();
     makeTypeChart();
   }
   public void makeTypeChart() throws Exception {
@@ -122,13 +132,14 @@ public class Pokedex {
     double roll = ((int)(Math.random()*16)+85)/100.0;
     int damage = ((2*level/5+2)*power*attack/defense)/50+2;
     damage=(int)(damage*critMultiplier*stab*typeAdvantage*roll);
-    return damage;
+    return Math.max(1,damage);
   }
   public String randomNature() throws Exception {
     int boost = (int)(Math.random()*5)+1;
     int detriment = (int)(Math.random()*5);
     String line = null;
     BufferedReader br = new BufferedReader(new FileReader("natures.txt"));
+    br.readLine();
     for (int i=0;i<boost;i++) {
       line = br.readLine();
     } return line.split(" ")[detriment];
@@ -153,7 +164,7 @@ public class Pokedex {
   // public static PImage getSprite(int dex) {
   //   return sprite[dex];
   // }
-  public static int getExpCurve(int dex) {
+  public static double getExpCurve(int dex) {
     return expCurve[dex];
   }
   public static int getEvolutionLvl(int dex) {

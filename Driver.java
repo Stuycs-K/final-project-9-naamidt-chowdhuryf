@@ -12,7 +12,12 @@ public class Driver{
     bulbasaur.setMoves(allMoves);
     squirtle.setMoves(allMoves);
     charmander.setMoves(allMoves);
-
+    System.out.println(bulbasaur);
+    System.out.println("E");
+    for (Move move : allMoves) {
+      System.out.println(move);
+    }
+    System.out.println(also.movedex);
     for (int i = 0; i < 4; i++) {
       System.out.println("BULBASAUR HITS CHARMANDER WITH " + bulbasaur.getMoves()[i].getName());
       System.out.println(also.damageCalculator(bulbasaur, charmander, bulbasaur.getMoves()[i]));
