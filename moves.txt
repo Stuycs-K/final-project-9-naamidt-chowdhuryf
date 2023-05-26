@@ -1,0 +1,5 @@
+// name type power accuracy pp
+Water_Gun Water 40 100 25 Special
+Ember Fire 40 100 25 Special
+Vine_Whip Grass 45 100 25 Physical
+Tackle Normal 40 95 25 Physical
