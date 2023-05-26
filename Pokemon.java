@@ -73,7 +73,7 @@ public class Pokemon {
       return true;
     } return false;
   }
-  public void setMoveslot(int slot, Move move) {
+  public void setMoveSlot(int slot, Move move) {
     moves[slot] = move;
   }
 

@@ -36,4 +36,7 @@ public class Move{
   public String getType() {
     return type;
   }
+  public String getName() {
+    return name;
+  }
 }

@@ -8,7 +8,7 @@ public class Trainer {
   private int[] position;
   private int badges;
   // private PImage sprite;
-  private Pokemon party;
+  private Pokemon[] party;
   // private Bag bag;
   public Trainer(String name, int[] position, int badges) {
     this.name = name;
@@ -16,5 +16,8 @@ public class Trainer {
     this.badges = badges;
     party = new Pokemon[6];
   }
-  public 
+  public void setPokemon(int slot, Pokemon pokemon) {
+    if (slot>=0&&slot<=5)
+      party[slot] = pokemon;
+  }
 }
