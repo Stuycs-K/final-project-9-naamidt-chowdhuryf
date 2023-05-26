@@ -8,9 +8,9 @@ int gridWidth;
 int gridHeight;
 int [][]mapValues;
 void setup() {
-  size(1515, 1015);
-  gridWidth = width-15;
-  gridHeight = height-15;
+  size(1500, 1000);
+  gridWidth = width;
+  gridHeight = height;
   mapValues = new int[gridWidth/SQUARE_SIZE][gridHeight/SQUARE_SIZE];
 }
 
