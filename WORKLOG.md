@@ -33,3 +33,8 @@ HW - Finished Move class, needs testing
 
 CW - Fixed a couple of repo erros and merge conflicts, and then added some more methods for moves
 HW - Started testing with new setup; internet cut out for a while so progress was limited
+
+### 5/25/23
+
+CW - Unsuccesful testing of moves, pokedex, and pokedex followed by debugging, followed by succesful tests
+HW - Untangling merge conflicts, followed by map work; added a mapmaker file but still need actual programming and scrolling function
