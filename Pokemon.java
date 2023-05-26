@@ -30,6 +30,7 @@ public class Pokemon {
     moves = new Move[4];
     dex = new Pokedex();
     ivs = new int[6];
+    evs = new int[6];
     nature = dex.randomNature();
     for (int i=0;i<6;i++) {
       ivs[i] = (int)(Math.random()*32);
@@ -63,9 +64,9 @@ public class Pokemon {
     if (level>=100) {
       return false;
     }
-    int expCurve = Pokedex.getExpCurve(dexNumber);
+    double expCurve = Pokedex.getExpCurve(dexNumber);
     int n = level+1;
-    int expReq = 4*(int)Math.pow(n,3)/5*expCurve;
+    int expReq = (int)(4*Math.pow(n,3)/5.0*expCurve);
     if (expReq<=exp) {
       exp-=expReq;
       level++;
@@ -119,5 +120,17 @@ public class Pokemon {
   }
   public void setMoveSlot(int slot, Move move) {
     moves[slot] = move;
+  }
+  public String toString() {
+    String ret = "\""+nickname+"\""+dexNumber+" "+dex.getName(dexNumber)+" "+dex.getPrimaryType(dexNumber);
+    ret += " "+dex.getSecondaryType(dexNumber)+" "+Arrays.toString(dex.getBaseStats(dexNumber))+" ";
+    ret += dex.getExpCurve(dexNumber)+" "+dex.getEvolutionLvl(dexNumber)+" "+dex.getEvolution(dexNumber);
+    ret += "\n"+"Evs: "+Arrays.toString(evs)+" Ivs: "+Arrays.toString(ivs)+" Stats: "+Arrays.toString(stats);
+    ret += "\n"+"Nature: "+nature+" "+Arrays.toString(dex.getNature(nature));
+    ret += "\nMoves:\n";
+    for (Move move : moves) {
+      ret+=move+"\n";
+    }
+    return ret;
   }
 }
