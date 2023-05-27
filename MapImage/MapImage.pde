@@ -1,6 +1,7 @@
 Map map;
 
 void setup() {
-  size(1500, 1000);
+  size(500, 500);
+  background(0);
   map = new Map("testmap.txt");
 }

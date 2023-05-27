@@ -21,27 +21,27 @@ public class Tile{
     coords[1] = y;
     pStatus = new int[]{0,0};
     if (type == WALL) {
-      sprite = loadImage("wall.png");
+      sprite = loadImage("wall.PNG");
       walkable = false;
       swimmable = false;
     }
     if (type == PATH) {
-      sprite = loadImage("path.png");
+      sprite = loadImage("path.PNG");
       walkable = true;
       swimmable = false;
     }
     if (type == GRASS) {
-      sprite = loadImage("grass.png");
+      sprite = loadImage("grass.PNG");
       walkable = false;
       swimmable = false;
     }
     if (type == EVENT) {
-      sprite = loadImage("path.png");
+      sprite = loadImage("path.PNG");
       walkable = false;
       swimmable = false;
     }
     if (type == WATER) {
-      sprite = loadImage("water.png");
+      sprite = loadImage("water.PNG");
       walkable = false;
       swimmable = true;
     }
