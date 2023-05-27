@@ -16,12 +16,6 @@ public class Battle {
         npcActive = npc.getSlot(0);
         turnOrder = new PriorityQueue<Action>(2, new Action());
     }
-    public void fight() {
-      while (true) {
-        // input player commands for this
-        turn();
-      }
-    }
     public void turn(String choice, int moveChoice) {
         Action playerAction = new Action(player, npc, playerActive, choice, moveChoice);
         Action npcAction = new Action(npc, player, npcActive,"Attack",(int)(Math.random()*4));
