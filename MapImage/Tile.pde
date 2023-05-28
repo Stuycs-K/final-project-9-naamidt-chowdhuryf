@@ -35,7 +35,7 @@ public class Tile{
     }
     if (type == GRASS) {
       sprite = loadImage("grass.PNG");
-      alsosprite = loadImage("path.PNG");
+      alsosprite = loadImage("grass.PNG");
       walkable = false;
       swimmable = false;
     }
