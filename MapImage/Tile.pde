@@ -42,7 +42,7 @@ public class Tile{
     if (type == EVENT) {
       sprite = loadImage("path.PNG");
       alsosprite = loadImage("path.PNG");
-      walkable = false;
+      walkable = true;
       swimmable = false;
     }
     if (type == WATER) {

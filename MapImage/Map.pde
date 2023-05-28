@@ -8,6 +8,7 @@ int gridWidth;
 int gridHeight;
 int [][]mapValues; 
 Tile [][]tileValues;
+int[] PCoords;
 BufferedReader reader;
 String line;
 int[] tiles;
@@ -24,8 +25,8 @@ public class Map {
       line = reader.readLine();
       int[] start = int(split(line," "));
       startCoords = new int[2];
-      startCoords[0] = start[0];
-      startCoords[1] = start[1];
+      startCoords[0] = start[1];
+      startCoords[1] = start[0];
       mapValues = new int[gridWidth/TILE_SIZE][gridHeight/TILE_SIZE];
       tileValues = new Tile[gridWidth/TILE_SIZE][gridHeight/TILE_SIZE];
       for (int a = 0; a < gridWidth/TILE_SIZE; a++) {
@@ -36,6 +37,9 @@ public class Map {
         }
       }
       grid();
+      PCoords = new int[2];
+      PCoords[0] = startCoords[0] / TILE_SIZE;
+      PCoords[1] = startCoords[1] / TILE_SIZE;
       tileValues[startCoords[0] / TILE_SIZE][startCoords[1] / TILE_SIZE].person(DOWN);
       tileValues[startCoords[0] / TILE_SIZE][startCoords[1] / TILE_SIZE].place();
       reader.close();
@@ -72,34 +76,45 @@ public class Map {
   }
   
   void move(int direction) {
-    int i = 0;
-    int t = 0;
-    for (int x = 0; x < gridWidth/TILE_SIZE; x++) {
-      for (int y = 0; y < gridHeight/TILE_SIZE; y++) {
-        if (tileValues[x][y].hasPerson()) {
-          tileValues[x][y].person(NONE);
-          if (direction == UP) {
-            i = x - 1;
-            t = y;
-          }
-          if (direction == DOWN) {
-            i = x + 1;
-            t = y;
-          }
-          if (direction == RIGHT) {
-            i = x;
-            t = y + 1;
-          }
-          if (direction == LEFT) {
-            i = x;
-            t = y - 1;
-          }
-        }
-        tileValues[x][y].place(direction);
+    boolean disable = false;
+    tileValues[PCoords[0]][PCoords[1]].person(NONE);
+    tileValues[PCoords[0]][PCoords[1]].place();
+    if (direction == UP) {
+      if (tileValues[PCoords[0] - 1][PCoords[1]].checkWalkable()) {
+        PCoords[0]--;
+      } else {
+        disable = true;
       }
     }
-    tileValues[i][t].person(direction);
-    tileValues[i][t].place();
+    if (direction == DOWN) {
+      if (tileValues[PCoords[0] + 1][PCoords[1]].checkWalkable()) {
+        PCoords[0]++;
+      } else {
+        disable = true;
+      }
+    }
+    if (direction == RIGHT) {
+      if (tileValues[PCoords[0]][PCoords[1] + 1].checkWalkable()) {
+        PCoords[1]++;
+      } else {
+        disable = true;
+      }
+    }
+    if (direction == LEFT) {
+      if (tileValues[PCoords[0]][PCoords[1] - 1].checkWalkable()) {
+        PCoords[1]--;
+      } else {
+        disable = true;
+      }
+    }
+    tileValues[PCoords[0]][PCoords[1]].person(direction);
+    tileValues[PCoords[0]][PCoords[1]].place();
+    if (!disable) {
+      for (int x = 0; x < gridWidth/TILE_SIZE; x++) {
+        for (int y = 0; y < gridHeight/TILE_SIZE; y++) {
+          tileValues[x][y].place(direction);
+        }
+      }
+    }
   }
-
 }
