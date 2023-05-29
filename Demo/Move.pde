@@ -1,14 +1,15 @@
 import java.util.*;
 import java.io.*;
 import java.lang.*;
+import java.math.*;
 
-public class Move{
+public class Move {
   private  String type;
   private  int power, accuracy, pp, maxPP;
   private  String name, split;
 
   public Move(String[] data) {
-    name = String.join(" ",data[0].split("_"));
+    name = String.join(" ", data[0].split("_"));
     type = data[1];
     power = Integer.parseInt(data[2]);
     accuracy = Integer.parseInt(data[3]);

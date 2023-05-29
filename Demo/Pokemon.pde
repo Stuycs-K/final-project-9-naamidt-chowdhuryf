@@ -19,15 +19,17 @@ public class Pokemon {
     ivs = new int[6];
     evs = new int[6];
     nature = dex.randomNature();
-    for (int i=0;i<6;i++) {
+    for (int i=0; i<6; i++) {
       ivs[i] = (int)(Math.random()*32);
       evs[i] = 0;
-    } stats = new int[6];
+    }
+    stats = new int[6];
     int[] baseStats = dex.getBaseStats(dexNumber);
     double[] natureBoosts = dex.getNature(nature);
-    for (int i=0;i<stats.length;i++) {
-      stats[i] = calculateStats(baseStats[i],ivs[i],evs[i],level,natureBoosts[i]);
-    } currentHP = stats[0];
+    for (int i=0; i<stats.length; i++) {
+      stats[i] = calculateStats(baseStats[i], ivs[i], evs[i], level, natureBoosts[i]);
+    }
+    currentHP = stats[0];
     exp = 0;
   }
   public int calculateStats(int base, int iv, int ev, int level, double nature) {
@@ -39,8 +41,8 @@ public class Pokemon {
     int initial = currentHP;
     int maxHP = dex.getBaseStats(dexNumber)[0];
     currentHP+=changeVal;
-    currentHP = Math.min(maxHP,currentHP);
-    currentHP = Math.max(0,currentHP);
+    currentHP = Math.min(maxHP, currentHP);
+    currentHP = Math.max(0, currentHP);
     return initial;
   }
   public void addExp(int additionalExp) {
@@ -53,13 +55,14 @@ public class Pokemon {
     }
     double expCurve = dex.getExpCurve(dexNumber);
     int n = level+1;
-    int expReq = (int)(4*Math.pow(n,3)/5.0*expCurve);
+    int expReq = (int)(4*Math.pow(n, 3)/5.0*expCurve);
     if (expReq<=exp) {
       exp-=expReq;
       level++;
       currentHP=dex.getBaseStats(dexNumber)[0];
       return true;
-    } return false;
+    }
+    return false;
   }
 
   //---------- STANDARD GET/SET METHODS BELOW ----------//
@@ -109,7 +112,7 @@ public class Pokemon {
     moves[slot] = move;
   }
   public String toString() {
-    String ret = "\""+nickname+"\""+dexNumber+" "+dex.getName(dexNumber)+" "+dex.getPrimaryType(dexNumber);
+    String ret = "\""+nickname+"\" "+dexNumber+" "+dex.getName(dexNumber)+" "+dex.getPrimaryType(dexNumber);
     ret += " "+dex.getSecondaryType(dexNumber)+" "+Arrays.toString(dex.getBaseStats(dexNumber))+" ";
     ret += dex.getExpCurve(dexNumber)+" "+dex.getEvolutionLvl(dexNumber)+" "+dex.getEvolution(dexNumber);
     ret += "\n"+"Evs: "+Arrays.toString(evs)+" Ivs: "+Arrays.toString(ivs)+" Stats: "+Arrays.toString(stats);
