@@ -1,35 +1,8 @@
-Map map;
-
 void setup() {
-  size(300, 600);
-  background(0);
-  map = new Map("testmap.txt");
-}
-
-void keyPressed() {
-  if (key == 'w') {
-    map.move(UP);
-  }
-  if (key == 'd') {
-    map.move(RIGHT);
-  }
-  if (key == 's') {
-    map.move(DOWN);
-  }
-  if (key == 'a') {
-    map.move(LEFT);
-  }
+  size(300,600);
+  background(255);
   UI();
-}
-
-void draw() {
-  UI();
-}
-
-void mousePressed() {
-  if (mouseX > width/2 + 10 && mouseX < width - 10 && mouseY > height/2 + height/5 + 60 && mouseY < height/2 + height/6 + height/5 + 60){
-    exit();
-  }
+  rect(width/2, 3*height/8, width/2, height/8);
 }
 
 void UI() {
@@ -52,8 +25,8 @@ void UI() {
   rect(width/2 + 10, height/2 + height/5 + 60, width/2 - 20, height/6);
   noFill();
   fill(0);
-  text("POKEMON", 45, 2*height/3 + 10); 
-  text("POKEDEX", 45, 3*height/4 + 80);
+  text("FIGHT", 55, 2*height/3 + 10); 
+  text("POKEMON", 45, 3*height/4 + 80);
   text("BAG", width/2 + 65, 2*height/3+10);
-  text("QUIT", width/2 + 60, 3*height/4 + 80);
+  text("RUN", width/2 + 60, 3*height/4 + 80);
 }
