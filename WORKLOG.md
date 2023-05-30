@@ -22,6 +22,15 @@ HW - Finished that up along with organization of data, couldn't do too much toda
 CW - Worked on debugging, adjustments, and a little bit of Trainer
 HW - Massive debugging pain, testing going well and continuing to add Trainer stuff and starting on battling
 
+
+### 5/26-29/23
+
+TBD
+
+### 5/30/23
+
+CW - Updating the csv to make it more practical and talked with Bell about the UI side of things
+
 ## Fishan Chowdhury (Bell)
 
 ### 5/23/23
