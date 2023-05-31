@@ -19,9 +19,19 @@ void keyPressed() {
   if (key == 'a') {
     map.move(LEFT);
   }
+  UI();
 }
 
 void draw() {
+ UI();
+}
+
+void mousePressed() {
+  if (mouseX > width/2 + 10 && mouseX < width - 10 && mouseY > height/2 + height/5 + 60 && mouseY < height/2 + height/6 + height/5 + 60){
+    exit();
+  }
+}
+void UI() {
   fill(0);
   rect(0, height/2, width, height/2);
   fill(255, 0, 0);
@@ -45,10 +55,4 @@ void draw() {
   text("POKEDEX", 45, 3*height/4 + 80);
   text("BAG", width/2 + 65, 2*height/3+10);
   text("QUIT", width/2 + 60, 3*height/4 + 80);
-}
-
-void mousePressed() {
-  if (mouseX > width/2 + 10 && mouseX < width - 10 && mouseY > height/2 + height/5 + 60 && mouseY < height/2 + height/6 + height/5 + 60){
-    exit();
-  }
 }
