@@ -1,40 +1,112 @@
-Pokedex also;
-Trainer player, npc;
-Battle battle;
+Map map;
+int state;
+
 void setup() {
-  also = new Pokedex();
-  player = new Trainer("Taam", new int[]{0,0}, 0);
-  npc = new Trainer("Bell", new int[]{0,0}, 0);
-  Move[] allMoves = new Move[]{also.getMove("Vine Whip"), also.getMove("Ember"), also.getMove("Water Gun"), also.getMove("Tackle")};
-  Pokemon bulbasaur = new Pokemon(5,"Bulbasaur",1);
-  Pokemon ivysaur = new Pokemon(16,"Ivysaur",2);
-  Pokemon venusaur = new Pokemon(36,"Venusaur",3);
-  Pokemon charmander = new Pokemon(5,"Charmander",4);
-  Pokemon charmeleon = new Pokemon(16,"Charmeleon",5);
-  Pokemon charizard = new Pokemon(36,"Charizard",6);
-  Pokemon[] parties = new Pokemon[]{bulbasaur,ivysaur,venusaur,charmander,charmeleon,charizard};
-  for (Pokemon pokemon : parties) {
-    pokemon.setMoves(allMoves);
-  }
-  player.setPokemon(0,bulbasaur);
-  player.setPokemon(1,ivysaur);
-  player.setPokemon(2,venusaur);
-  npc.setPokemon(0,charmander);
-  npc.setPokemon(1,charmeleon);
-  npc.setPokemon(2,charizard);
-  battle = new Battle(player, npc);
-  size(1200,900);
-  inputs = new int[]{-1,-1};
+  state = 0;
+  size(300, 600);
+  background(0);
+  map = new Map("testmap.txt");
 }
-int[] inputs;
-String[] action = new String[]{"Fight","Switch"};
-int[] moveChoice = new int[]{0,1,2,3};
-int selection = 0;
+
+void keyPressed() {
+  if (state == 0) {
+    if (key == 'w') {
+      map.move(UP);
+    }
+    if (key == 'd') {
+      map.move(RIGHT);
+    }
+    if (key == 's') {
+      map.move(DOWN);
+    }
+    if (key == 'a') {
+      map.move(LEFT);
+    }
+    if (key == 'b') {
+      state++;
+    }
+    mapUI();
+  }
+ if (state == 1) {
+   if (key == 'm') {
+     state--;
+   }
+   battleUI();
+  }
+}
+
 void draw() {
+  if (state == 0) {
+    mapUI();
+  }
+  else if (state == 1) {
+    battleUI();
+  }
+}
+
+void mousePressed() {
+  if (mouseX > width/2 + 10 && mouseX < width - 10 && mouseY > height/2 + height/5 + 60 && mouseY < height/2 + height/6 + height/5 + 60){
+    exit();
+  }
+}
+
+void mapUI() {
+  fill(0);
+  rect(0, height/2, width, height/2);
+  fill(255, 0, 0);
+  circle(width/2, 3*height/4, height/2);
+  noFill();
+  fill(255);
+  arc(width/2, 3 * height/4, 320, 320, 0, PI, OPEN);
+  noFill();
+  fill(0);
+  circle(width/2, 3*height/4, 50);
+  noFill();
+  fill(255);
+  circle(width/2, 3*height/4, 30);
+  rect(10, height/2 + 60, width/2 - 20, height/6);
+  rect(10, height/2 + height/5 + 60, width/2 - 20, height/6);
+  rect(width/2 + 10, height/2 + 60, width/2 - 20, height/6);
+  rect(width/2 + 10, height/2 + height/5 + 60, width/2 - 20, height/6);
+  noFill();
+  fill(0);
+  text("POKEMON", 45, 2*height/3 + 10); 
+  text("POKEDEX", 45, 3*height/4 + 80);
+  text("BAG", width/2 + 65, 2*height/3+10);
+  text("QUIT", width/2 + 60, 3*height/4 + 80);
+}
+
+
+void battleUI() {
   background(255);
   fill(0);
-  Pokemon playerActive = player.getSlot(0);
-  Pokemon npcActive = npc.getSlot(0);
-  text(player.getName()+" (YOU): "+playerActive.getNickname()+" "+playerActive.getCurrentHP()+"/"+playerActive.getStats()[0],100,100);
-  text(npc.getName()+" (ENEMY): "+npcActive.getNickname()+" "+npcActive.getCurrentHP()+"/"+npcActive.getStats()[0],100,120);
-} 
+  rect(0, height/2, width, height/2);
+  fill(255, 0, 0);
+  circle(width/2, 3*height/4, height/2);
+  noFill();
+  fill(255);
+  arc(width/2, 3 * height/4, 320, 320, 0, PI, OPEN);
+  noFill();
+  fill(0);
+  circle(width/2, 3*height/4, 50);
+  noFill();
+  fill(255);
+  circle(width/2, 3*height/4, 30);
+  rect(10, height/2 + 60, width/2 - 20, height/6);
+  rect(10, height/2 + height/5 + 60, width/2 - 20, height/6);
+  rect(width/2 + 10, height/2 + 60, width/2 - 20, height/6);
+  rect(width/2 + 10, height/2 + height/5 + 60, width/2 - 20, height/6);
+  noFill();
+  fill(0);
+  text("FIGHT", 55, 2*height/3 + 10); 
+  text("POKEMON", 45, 3*height/4 + 80);
+  text("BAG", width/2 + 65, 2*height/3+10);
+  text("RUN", width/2 + 65, 3*height/4 + 80);
+  noFill();
+  fill(150);
+  ellipse(75, 3*height/8 + 60, 150, 20);
+  ellipse(3*width/4, height/20 + 70, 150, 20);
+  fill(255);
+  rect(width/2, 3*height/8, width/2, height/12, 10);
+  rect(0, height/20, width/2, height/12, 10);
+}
