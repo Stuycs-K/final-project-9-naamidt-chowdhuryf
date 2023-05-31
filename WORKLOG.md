@@ -25,11 +25,12 @@ HW - Massive debugging pain, testing going well and continuing to add Trainer st
 
 ### 5/26-29/23
 
-TBD
+HW - Worked on battling, encounters, the bag, basic items (healing, not held), and some bug fixing
 
 ### 5/30/23
 
 CW - Updating the csv to make it more practical and talked with Bell about the UI side of things
+HW - Looked and after an unreasonable amount of time finally found a good csv folder that has every move and every movepool
 
 ## Fishan Chowdhury (Bell)
 
