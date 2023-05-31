@@ -2,7 +2,13 @@ void setup() {
   size(300,600);
   background(255);
   UI();
-  rect(width/2, 3*height/8, width/2, height/8);
+  fill(150);
+  ellipse(75, 3*height/8 + 60, 150, 20);
+  ellipse(3*width/4, height/20 + 70, 150, 20);
+  fill(255);
+  rect(width/2, 3*height/8, width/2, height/12, 10);
+  rect(0, height/20, width/2, height/12, 10);
+  //PROBABLY GOING TO TURN THIS INTO ITS OWN CLASS LATER FOR ALL THE IMPORTANT INFO
 }
 
 void UI() {
@@ -28,5 +34,6 @@ void UI() {
   text("FIGHT", 55, 2*height/3 + 10); 
   text("POKEMON", 45, 3*height/4 + 80);
   text("BAG", width/2 + 65, 2*height/3+10);
-  text("RUN", width/2 + 60, 3*height/4 + 80);
+  text("RUN", width/2 + 65, 3*height/4 + 80);
+  noFill();
 }
