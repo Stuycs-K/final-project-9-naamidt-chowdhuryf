@@ -31,6 +31,10 @@ void mousePressed() {
     exit();
   }
 }
+<<<<<<< HEAD
+=======
+
+>>>>>>> d9fbb6966a81a09ba894d6dca1fea494381f12a8
 void UI() {
   fill(0);
   rect(0, height/2, width, height/2);
