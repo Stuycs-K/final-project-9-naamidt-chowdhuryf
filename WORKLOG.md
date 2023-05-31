@@ -38,3 +38,14 @@ HW - Started testing with new setup; internet cut out for a while so progress wa
 
 CW - Unsuccesful testing of moves, pokedex, and pokedex followed by debugging, followed by succesful tests
 HW - Untangling merge conflicts, followed by map work; added a mapmaker file but still need actual programming and scrolling function
+
+
+### 5/26/23
+
+CW - Wasn't able to do too much, was busy being yelled at and being clarified on how to do the mapmaker properly
+HW - Made a proper mapmaker that reads files and produces maps based on the code with a UI that for now only quits
+
+### 5/30/23
+
+CW - Fixed flickering effect of map and started work on BattleUI
+HW - Continued work on BattleUI and found an updated csv with pokemon data
