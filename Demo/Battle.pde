@@ -64,7 +64,7 @@ public class Battle {
     }
     else {
       int damage = dex.damageCalculator(attacker, defender, attacker.getMoveSlot(turn.getMoveChoice()));
-      attacker.getMoveSlot(turn.getMoveChoice()).decreasePP(1);
+      attacker.getMoveSlot(turn.getMoveChoice()).changePP(1);
       otherTrainer.getSlot(0).changeHP(-1*damage);
       if (otherTrainer.getSlot(0).getCurrentHP()<=0) {
         if (otherTrainer.getSlot(1).getCurrentHP()<=0) {
