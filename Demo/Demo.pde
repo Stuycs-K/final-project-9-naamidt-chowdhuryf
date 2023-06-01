@@ -70,6 +70,7 @@ void mousePressed() {
 }
 
 void mapUI() {
+  map.replace();
   fill(0);
   rect(0, height/2, width, height/2);
   fill(255, 0, 0);

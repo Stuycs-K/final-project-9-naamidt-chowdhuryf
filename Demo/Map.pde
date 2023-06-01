@@ -75,6 +75,14 @@ public class Map {
     }
   }
   
+  void replace() {
+    for (int x = 0; x < gridWidth/TILE_SIZE; x++) {
+      for (int y = 0; y < gridHeight/TILE_SIZE; y++) {
+        tileValues[x][y].place();
+      }
+    }
+  }
+  
   void move(int direction) {
     boolean disable = false;
     tileValues[PCoords[0]][PCoords[1]].person(NONE);
