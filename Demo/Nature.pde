@@ -12,8 +12,8 @@ public class Nature {
     name = data[1];
     boosts = new double[]{-1,1,1,1,1,1,1}; // starting at index 1;
     if (!data[2].equals(data[3])) {
-      boosts[Double.parseDouble(data[2])] = 0.9;
-      boosts[Double.parseDouble(data[3])] = 1.1;
+      boosts[Integer.parseInt(data[2])] = 0.9;
+      boosts[Integer.parseInt(data[3])] = 1.1;
     }
   }
   public String getName() {

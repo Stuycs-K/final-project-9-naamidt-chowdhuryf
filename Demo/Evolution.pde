@@ -18,4 +18,7 @@ public class Evolution {
   public void setLevelReq(int level) {
     levelReq = level;
   }
+  public Integer getLevelReq() {
+    return levelReq;
+  }
 }

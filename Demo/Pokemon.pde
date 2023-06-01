@@ -4,33 +4,48 @@ import java.lang.*;
 import java.math.*;
 
 public class Pokemon {
-  private int currentHP, level, exp, dexNumber;
-  private String nickname, nature;
+  private int currentHP, level, exp, dexNumber, nature, growthRate, baseExp, captureRate, primaryType, secondaryType, evolutionLevel;
+  private PImage spriteFront, spriteBack;
+  private String nickname;
   private Move[] moves;
-  private int[] stats, evs, ivs;
+  private int[] stats, evs, ivs, expChart;
   private Pokedex dex;
   public Pokemon(int level, String nickname, int dexNumber) {
     this.level = level;
-    exp = 0;
     this.nickname = nickname;
+    System.out.println(nickname);
     this.dexNumber = dexNumber;
     moves = new Move[4];
     dex = new Pokedex();
-    ivs = new int[6];
-    evs = new int[6];
+    ivs = new int[7];
+    evs = new int[7];
+    if (dex.getEvolution(dexNumber)!=null&&dex.getEvolution(dexNumber).getLevelReq()!=null) {
+      evolutionLevel = dex.getEvolution(dexNumber).getLevelReq();
+    } else {
+      evolutionLevel = -1;
+    }
     nature = dex.randomNature();
-    for (int i=0; i<6; i++) {
+    spriteFront = loadImage(dex.getFrontSprite(dexNumber));
+    spriteBack = loadImage(dex.getBackSprite(dexNumber));
+    growthRate = dex.getGrowthRate(dexNumber);
+    expChart = dex.getExpChart(growthRate);
+    baseExp = dex.getBaseExp(dexNumber);
+    captureRate = dex.getCaptureRate(dexNumber);
+    primaryType = dex.getPrimaryType(dexNumber);
+    secondaryType = dex.getSecondaryType(dexNumber);
+    for (int i=1; i<=6; i++) {
       ivs[i] = (int)(Math.random()*32);
       evs[i] = 0;
     }
     stats = new int[6];
     int[] baseStats = dex.getBaseStats(dexNumber);
-    double[] natureBoosts = dex.getNature(nature);
-    for (int i=0; i<stats.length; i++) {
+    Nature innate = dex.getNature(nature);
+    double[] natureBoosts = innate.getBoosts();
+    for (int i=1; i<stats.length; i++) {
       stats[i] = calculateStats(baseStats[i], ivs[i], evs[i], level, natureBoosts[i]);
     }
-    currentHP = stats[0];
-    exp = 0;
+    currentHP = stats[1];
+    exp = expChart[level];
   }
   public int calculateStats(int base, int iv, int ev, int level, double nature) {
     int stat;
@@ -53,16 +68,10 @@ public class Pokemon {
     if (level>=100) {
       return false;
     }
-    double expCurve = dex.getExpCurve(dexNumber);
-    int n = level+1;
-    int expReq = (int)(4*Math.pow(n, 3)/5.0*expCurve);
-    if (expReq<=exp) {
-      exp-=expReq;
+    if (exp>=expChart[level]) {
       level++;
-      currentHP=dex.getBaseStats(dexNumber)[0];
       return true;
-    }
-    return false;
+    } return false;
   }
 
   //---------- STANDARD GET/SET METHODS BELOW ----------//
@@ -111,12 +120,36 @@ public class Pokemon {
   public void setMoveSlot(int slot, Move move) {
     moves[slot] = move;
   }
+  public PImage getFrontSprite() {
+    return spriteFront;
+  }
+  public PImage getBackSprite() {
+    return spriteBack;
+  }
+  public int getGrowthRate() {
+    return growthRate;
+  }
+  public int getCaptureRate() {
+    return captureRate;
+  }
+  public int getBaseExp() {
+    return baseExp;
+  }
+  public int getPrimaryType() {
+    return primaryType;
+  }
+  public int getSecondaryType() {
+    return secondaryType;
+  }
+  public int getEvolutionLevel() {
+    return evolutionLevel;
+  }
   public String toString() {
-    String ret = "\""+nickname+"\" "+dexNumber+" "+dex.getName(dexNumber)+" "+dex.getPrimaryType(dexNumber);
+    String ret = "\""+nickname+"\" "+dexNumber+" "+dex.getSpecies(dexNumber)+" "+dex.getPrimaryType(dexNumber);
     ret += " "+dex.getSecondaryType(dexNumber)+" "+Arrays.toString(dex.getBaseStats(dexNumber))+" ";
-    ret += dex.getExpCurve(dexNumber)+" "+dex.getEvolutionLvl(dexNumber)+" "+dex.getEvolution(dexNumber);
+    ret += dex.getGrowthRate(dexNumber)+" "+getEvolutionLevel()+" "+dex.getEvolution(dexNumber);
     ret += "\n"+"Evs: "+Arrays.toString(evs)+" Ivs: "+Arrays.toString(ivs)+" Stats: "+Arrays.toString(stats);
-    ret += "\n"+"Nature: "+nature+" "+Arrays.toString(dex.getNature(nature));
+    ret += "\n"+"Nature: "+nature+" "+Arrays.toString(dex.getNature(nature).getBoosts());
     ret += "\nMoves:\n";
     for (Move move : moves) {
       ret+=move+"\n";

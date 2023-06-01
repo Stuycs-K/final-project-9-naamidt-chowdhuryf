@@ -6,8 +6,10 @@ import java.math.*;
 public class Move {
   private int power, accuracy, pp, maxPP, id, type, priority, split;
   private String name;
+  //private Pokedex dex;
 
   public Move(String[] data) {
+    //dex = new Pokedex();
     id = Integer.parseInt(data[0]);
     name = String.join(" ", data[1].split("-"));
     type = Integer.parseInt(data[2]);
@@ -21,7 +23,7 @@ public class Move {
   public int getID() {
     return id;
   }
-  public int getPower() {
+  public int getBasePower() {
     return power;
   }
   public int getPP() {
@@ -46,7 +48,7 @@ public class Move {
   public int getSplit() {
     return split;
   }
-  public String toString() {
-    return "ID: "+id+" "+name+" "+Pokedex.typeToWord(type)+" "+"Power: "+power+" PP: "+pp+"/"+maxPP+" Accuracy: "+accuracy+"Priority: "+priority+" Split: "+Pokedex.splitToWords();
-  }
+  //public String toString() {
+  //  return "ID: "+id+" "+name+" "+dex.typeToWord(type)+" "+"Power: "+power+" PP: "+pp+"/"+maxPP+" Accuracy: "+accuracy+"Priority: "+priority+" Split: "+dex.splitToWords(split);
+  //}
 }
