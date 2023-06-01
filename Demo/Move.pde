@@ -48,7 +48,7 @@ public class Move {
   public int getSplit() {
     return split;
   }
-  //public String toString() {
-  //  return "ID: "+id+" "+name+" "+dex.typeToWord(type)+" "+"Power: "+power+" PP: "+pp+"/"+maxPP+" Accuracy: "+accuracy+"Priority: "+priority+" Split: "+dex.splitToWords(split);
-  //}
+  public String toString() {
+    return "ID: "+id+" "+name+" "+type+" "+"Power: "+power+" PP: "+pp+"/"+maxPP+" Accuracy: "+accuracy+" Priority: "+priority+" Split: "+split;
+  }
 }

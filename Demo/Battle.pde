@@ -100,6 +100,12 @@ public class Battle {
   public void setMoveChoice(int choice) {
     moveChoice = choice;
   }
+  public void rewardKill(Pokemon murderer, Pokemon victim) {
+    murderer.addEvs(victim.getEvYield());
+    int expYield = victim.getBaseExp()*victim.getLevel()/5;
+    expYield*=(int)(Math.sqrt(Math.pow((2*victim.getLevel()+10)/(victim.getLevel()+murderer.getLevel()+10),5)))+1;
+    murderer.addExp(expYield);
+  }
 }
 class Action implements Comparator<Action> {
   private int priority, moveChoice;
