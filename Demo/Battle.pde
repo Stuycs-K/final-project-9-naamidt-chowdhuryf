@@ -106,6 +106,12 @@ public class Battle {
     expYield*=(int)(Math.sqrt(Math.pow((2*victim.getLevel()+10)/(victim.getLevel()+murderer.getLevel()+10),5)))+1;
     murderer.addExp(expYield);
   }
+  public Pokemon getPlayerActive() {
+    return playerActive;
+  }
+  public Pokemon getNpcActive() {
+    return npcActive;
+  }
 }
 class Action implements Comparator<Action> {
   private int priority, moveChoice;
