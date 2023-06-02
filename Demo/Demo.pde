@@ -90,6 +90,14 @@ void buttonBR() {
   exit();
 }
 void buttonTR() {
+  if (state == 1) {
+    noFill();
+    fill(0);
+    text("POKEBALL", 45, 2*height/3 + 10); 
+    text("GREAT BALL", 45, 3*height/4 + 80);
+    text("ULTRA BALL", width/2 + 65, 2*height/3+10);
+    text("QUIT", width/2 + 60, 3*height/4 + 80);
+  }
 }
 void buttonBL() {
 }
@@ -172,6 +180,11 @@ void battleUI(Battle battle) {
   rect(0, height/20+30, width/2, height/12-25, 10); // enemy red overlay
   fill(0,255,0);
   rect(0, height/20+30, width/2 * enemy.getCurrentHP()/1.0/enemy.getStats()[1], height/12-25, 10); // enemy green overlay
+  fill(0);
+  textSize(20);
+  text(enemy.getNickname(),0+5, height/20-10);
+  text(enemy.getCurrentHP()+"/"+enemy.getStats()[1],0+5, height/20+20);
+  textSize(12);
   image(enemy.getFrontSprite(),220,70);
   image(player.getBackSprite(),80,260);
 }

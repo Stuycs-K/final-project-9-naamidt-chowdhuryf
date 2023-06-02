@@ -298,4 +298,11 @@ public class Pokedex {
   public String getBackSprite(int id) {
     return spritedexBack.get(id);
   }
+  public String getItemSprite(String name) {
+    String dir = sketchPath();
+    dir = dir.substring(0,dir.length()-4);
+    char slash = dir.charAt(dir.length()-1);
+    dir+="Demo"+slash+"data"+slash;
+    return dir+"items"+slash+name;
+  }
 }
