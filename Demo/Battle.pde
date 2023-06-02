@@ -65,13 +65,21 @@ public class Battle {
     else {
       int damage = dex.damageCalculator(attacker, defender, attacker.getMoveSlot(turn.getMoveChoice()));
       attacker.getMoveSlot(turn.getMoveChoice()).changePP(1);
-      otherTrainer.getSlot(0).changeHP(-1*damage);
+      otherTrainer.getSlot(0).changeHP(damage);
       if (otherTrainer.getSlot(0).getCurrentHP()<=0) {
-        if (otherTrainer.getSlot(1).getCurrentHP()<=0) {
-          if (otherTrainer==npc) {
-            win();
+        if (otherTrainer.getSlot(1) != null) {
+          if (otherTrainer.getSlot(1).getCurrentHP()<=0) {
+            if (otherTrainer==npc) {
+              win();
+            } else {
+              lose();
+            }
           } else {
-            lose();
+            if (otherTrainer==npc) {
+              win();
+            } else {
+              lose();
+            }
           }
         } swapDead(otherTrainer, 1);
       }
