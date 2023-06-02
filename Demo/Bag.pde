@@ -30,7 +30,7 @@ class Bag {
     } return false;
   }
   public boolean catchAttempt(Pokemon encounter, double mult) {
-    double odds = ((3*encounter.getStats()[0]-2*encounter.getCurrentHP())*4096*mult)/(3*encounter.getStats()[0]);
+    double odds = ((3*encounter.getStats()[1]-2*encounter.getCurrentHP())*4096*mult)/(3*encounter.getStats()[0]);
     double roll = Math.random()*4096;
     if (roll<odds) {
       return true;
@@ -65,11 +65,13 @@ class Bag {
     } return -1;
   }
   public double getValue(String name) {
-    double value = 1;
+    double value = 1.0;
     for (int i=0;i<pokeballNames.length;i++) {
-      if (pokeballNames[i].equals(name)) {
+      if (name.equals(pokeballNames[i])) {
         return value;
-      } value+=0.5;
+      } else { 
+        value+=0.5;
+      }
     } value = 20;
     for (int i=0;i<healingItemNames.length;i++) {
       if (healingItemNames[i].equals(name)) {

@@ -29,6 +29,16 @@ public class Trainer {
   public void setPokemon(int slot, Pokemon pokemon) {
     party[slot] = pokemon;
   }
+  
+  public int checkParty() {
+   for (int i = 0; i < party.length; i++) {
+     if (party[i] == null) {
+       return i;
+     }
+   }
+   return -1;
+  }
+  
   public void swapSlot(int slot1, int slot2) {
     Pokemon pokemon = party[slot1];
     party[slot1] = party[slot2];

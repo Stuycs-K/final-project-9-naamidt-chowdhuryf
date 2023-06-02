@@ -13,18 +13,19 @@ public class Battle {
   private int npcChoice;
   private int win;
   private boolean encounter;
-  public Battle(Trainer player, Trainer npc) {
+  public Battle(Trainer player, Trainer npc, boolean enc) {
     this.player = player;
     this.npc = npc;
     updateActive();
     turnOrder = new PriorityQueue<Action>(2, new Action());
     dex = new Pokedex();
-    encounter = false;
+    encounter = enc;
   }
   // this constructor is used for wild encounters
   public Battle(Trainer player) {
     this.player = player;
-    Pokemon random = dex.randomPokemon((int)(Math.random()*(player.getBadges()*10+10))+1);
+    dex = new Pokedex();
+    Pokemon random = dex.randomPokemon(100);
     npc = new Trainer("Wild "+random.getNickname(), new int[]{0, 0}, 0);
     npc.setPokemon(0, random);
     encounter = true;
@@ -78,7 +79,7 @@ public class Battle {
               lose();
             }
           } else {
-            //swapDead(otherTrainer, 1);
+            swapDead(otherTrainer, 1);
           }
         } else {
           if (otherTrainer==npc) {
@@ -112,9 +113,11 @@ public class Battle {
   }
   public void swapDead(Trainer trainer, int slot) {
     trainer.swapSlot(0, slot);
-    while (slot<5&&trainer.getSlot(slot+1).getCurrentHP()>0) {
-      trainer.swapSlot(slot, slot+1);
-      slot++;
+    int temp = slot;
+    while (
+      temp < 5 && trainer.getSlot(temp+1).getCurrentHP()>0) {
+      trainer.swapSlot(temp, temp+1);
+      temp++;
     }
   }
   public void setUserChoice(String choice) {

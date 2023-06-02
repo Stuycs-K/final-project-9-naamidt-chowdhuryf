@@ -16,6 +16,8 @@ int state;
 Battle battle;
 int countdown;
 Trainer player;
+Bag bag;
+Pokedex dex;
 void setup() {
   countdown = 0;
   imageMode(CENTER);
@@ -24,14 +26,14 @@ void setup() {
   background(0);
   map = new Map("testmap.txt");
   mapUI();
-  Pokedex dex = new Pokedex();
+  dex = new Pokedex();
+  bag = new Bag();
+  bag.setPokeball("Pokeball", 99);
+  bag.setPokeball("Great Ball", 99);
+  bag.setPokeball("Ultra Ball", 99);
   player = new Trainer("Me!", new int[]{0, 0}, 0);
   Pokemon random = dex.randomPokemon(100);
   player.setPokemon(0, random);
-  Trainer enemy = new Trainer("Evil!", new int[]{0, 0}, 0);
-  random = dex.randomPokemon(100);
-  enemy.setPokemon(0, random);
-  battle = new Battle(player, enemy);
 
   //String dir = sketchPath();
   //System.out.println(dir);
@@ -69,6 +71,21 @@ void keyPressed() {
       map.move(LEFT);
     }
     if (key == 'b') {
+      Trainer enemy = new Trainer("Evil!", new int[]{0, 0}, 0);
+      Pokemon random = dex.randomPokemon(100);
+      enemy.setPokemon(0, random);
+      battle = new Battle(player, enemy, true);
+      state = BATTLE;
+    }
+    if (key == 't') {
+      Trainer enemy = new Trainer("Rival!", new int[]{0,0}, 0);
+      enemy.setPokemon(0, new Pokemon(5, "Charmander", dex.getDex("Charmander")));
+      enemy.setPokemon(1, new Pokemon(5, "Bulbasaur", dex.getDex("Bulbasaur")));
+      enemy.setPokemon(2, new Pokemon(5, "Marshadow", dex.getDex("Marshadow")));
+      enemy.setPokemon(3, new Pokemon(5, "Marshadow", dex.getDex("Marshadow")));
+      enemy.setPokemon(4, new Pokemon(5, "Marshadow", dex.getDex("Marshadow")));
+      enemy.setPokemon(5, new Pokemon(5, "Marshadow", dex.getDex("Marshadow")));
+      battle = new Battle(player, enemy, false);
       state = BATTLE;
     }
     if (state == MAP) {
@@ -120,6 +137,10 @@ void buttonBack() {
   if (state == POKEMON) {
     state = MAP;
     mapUI();
+  }
+  else if (state == MOVES) {
+    state = BATTLE;
+    battleButtons();
   }
 }
 
@@ -210,7 +231,23 @@ void buttonTR() {
   } else if (state == WIN) {
     state = MAP;
     mapUI();
+  } else if (state == BAG) {
+    
+    fill(255);
+    rect(LEFT_WIDTH, TOP_HEIGHT, width - 20, height/2 - 80);
+    if (bag.use(battle.encounter(), "Ultra Ball", battle.getNpcActive())) {
+      state = WIN;
+      caughtUI();
+      fill(0);
+      text("SUCCESS!", LEFT_WIDTH, TOP_HEIGHT + 60);
+      player.setPokemon(player.checkParty(), battle.getNpcActive());
+    } else {
+      state = TEXTBOX;
+      fill(0);
+      text("FAIL!", LEFT_WIDTH, TOP_HEIGHT + 60);
+    }
   }
+      
 }
 void buttonBL() {
   if (state == MOVES) {
@@ -243,7 +280,23 @@ void buttonBL() {
   } else if (state == WIN) {
     state = MAP;
     mapUI();
+  } else if (state == BAG) {
+    boolean attempt = bag.use(battle.encounter(), "Great Ball", battle.getNpcActive());
+    fill(255);
+    rect(LEFT_WIDTH, TOP_HEIGHT, width - 20, height/2 - 80);
+    if (attempt) {
+      caughtUI();
+      state = WIN;
+      fill(0);
+      text("SUCCESS!", LEFT_WIDTH, TOP_HEIGHT + 60);
+      player.setPokemon(player.checkParty(), battle.getNpcActive());
+    } else {
+      state = TEXTBOX;
+      fill(0);
+      text("FAIL!", LEFT_WIDTH, TOP_HEIGHT + 60);
+    }
   }
+     
 }
 void buttonTL() {
   if (state == MAP) {
@@ -268,6 +321,10 @@ void buttonTL() {
       text(battle.getPlayerActive().getMoves()[3].getName().toUpperCase(), RIGHT_WIDTH + 20, BOT_HEIGHT + 50);
     }
     state = MOVES;
+    fill(51);
+    rect(width/2 - 20, height/2, 40, 20);
+    fill(255);
+    text("BACK", width/2 - 13, height/2 + 10);
   } else if (state == MOVES) {
     battle.turn("Fight", 0);
     updateHealthBar();
@@ -298,7 +355,23 @@ void buttonTL() {
   } else if (state == WIN) {
     state = MAP;
     mapUI();
+  } else if (state == BAG) {
+    boolean attempt = bag.use(battle.encounter(), "Pokeball", battle.getNpcActive());
+    fill(255);
+    rect(LEFT_WIDTH, TOP_HEIGHT, width - 20, height/2 - 80);
+    if (attempt) {
+      state = WIN;
+      caughtUI();
+      fill(0);
+      text("SUCCESS!", LEFT_WIDTH, TOP_HEIGHT + 60);
+      player.setPokemon(player.checkParty(), battle.getNpcActive());
+    } else {
+      state = TEXTBOX;
+      fill(0);
+      text("FAIL!", LEFT_WIDTH, TOP_HEIGHT + 60);
+    }
   }
+     
 }
 
 void mapUI() {
@@ -330,7 +403,7 @@ void mapUI() {
 
 
 void battleUI(Battle battle) {
-  Pokemon player = battle.getPlayerActive();
+  Pokemon fren = battle.getPlayerActive();
   Pokemon enemy = battle.getNpcActive();
   background(255);
   fill(0);
@@ -365,11 +438,11 @@ void battleUI(Battle battle) {
   fill(255, 0, 0);
   rect(width/2, 3*height/8+30, width/2, height/12-30, 10); //hp red underlay
   fill(0, 255, 0);
-  rect(width/2, 3*height/8+30, width/2 * player.getCurrentHP()/1.0/player.getStats()[1], height/12-30, 10); // hp green overlay
+  rect(width/2, 3*height/8+30, width/2 * fren.getCurrentHP()/1.0/fren.getStats()[1], height/12-30, 10); // hp green overlay
   fill(0);
   textSize(20);
-  text(player.getNickname(), width/2+5, 3*height/8-7);
-  text(player.getCurrentHP()+"/"+player.getStats()[1], width/2+5, 3*height/8+23);
+  text(fren.getNickname(), width/2+5, 3*height/8-7);
+  text(fren.getCurrentHP()+"/"+fren.getStats()[1], width/2+5, 3*height/8+23);
   textSize(12);
   fill(255);
   rect(0, height/20, width/2, height/12, 10); // enemy hp box thing
@@ -383,7 +456,7 @@ void battleUI(Battle battle) {
   text(enemy.getCurrentHP()+"/"+enemy.getStats()[1], 0+5, height/20+20);
   textSize(12);
   image(enemy.getFrontSprite(), 220, 70);
-  image(player.getBackSprite(), 80, 260);
+  image(fren.getBackSprite(), 80, 260);
 }
 
 void updateHealthBar() {
@@ -509,4 +582,33 @@ void PokeUI() {
   rect(width/2 - 20, height/2, 40, 20);
   fill(255);
   text("BACK", width/2 - 13, height/2 + 10);
+}
+
+void caughtUI() {
+  Pokemon player = battle.getPlayerActive();
+  Pokemon enemy = battle.getNpcActive();
+  background(255);
+  fill(255);
+  rect(width/2, 3*height/8, width/2, height/12, 10); // the location of the player's info box thing
+  fill(255, 0, 0);
+  rect(width/2, 3*height/8+30, width/2, height/12-30, 10); //hp red underlay
+  fill(0, 255, 0);
+  rect(width/2, 3*height/8+30, width/2 * player.getCurrentHP()/1.0/player.getStats()[1], height/12-30, 10); // hp green overlay
+  fill(0);
+  textSize(20);
+  text(player.getNickname(), width/2+5, 3*height/8-7);
+  text(player.getCurrentHP()+"/"+player.getStats()[1], width/2+5, 3*height/8+23);
+  textSize(12);
+  fill(255);
+  rect(0, height/20, width/2, height/12, 10); // enemy hp box thing
+  fill(255, 0, 0);
+  rect(0, height/20+30, width/2, height/12-25, 10); // enemy red overlay
+  fill(0, 255, 0);
+  rect(0, height/20+30, width/2 * enemy.getCurrentHP()/1.0/enemy.getStats()[1], height/12-25, 10); // enemy green overlay
+  fill(0);
+  textSize(20);
+  text(enemy.getNickname(), 0+5, height/20-10);
+  text(enemy.getCurrentHP()+"/"+enemy.getStats()[1], 0+5, height/20+20);
+  textSize(12);
+  image(player.getBackSprite(), 80, 260);
 }
