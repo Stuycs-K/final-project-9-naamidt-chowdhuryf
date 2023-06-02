@@ -128,6 +128,9 @@ public class Battle {
   public void setMoveChoice(int choice) {
     moveChoice = choice;
   }
+  public Trainer getNpc() {
+    return npc;
+  }
   public void rewardKill(Pokemon murderer, Pokemon victim) {
     murderer.addEvs(victim.getEvYield());
     int expYield = victim.getBaseExp()*victim.getLevel()/5;

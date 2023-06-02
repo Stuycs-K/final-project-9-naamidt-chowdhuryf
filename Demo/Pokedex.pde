@@ -17,43 +17,43 @@ public class Pokedex {
   
   public Pokedex() {
     try {
-      expChart = new HashMap<Integer,int[]>(); //<>// //<>// //<>//
+      expChart = new HashMap<Integer,int[]>(); //<>// //<>// //<>// //<>//
       BufferedReader expChartMaker = createReader("experience.csv");
       expChartMaker.readLine(); // ignore data descriptions
       for (int i=1;i<=6;i++) { // for each of the 6 growth curves
         int[] totalExpReq = new int[101]; // 100 levels +1 to offset index 0
         totalExpReq[0] = -1; // you shouldn't be level 0 ever
         for (int j=1;j<=100;j++) { // for each level
-          String[] data = expChartMaker.readLine().split(","); //<>// //<>// //<>//
-          totalExpReq[Integer.parseInt(data[1])] = Integer.parseInt(data[2]);  //<>// //<>// //<>//
-          // puts the val in the array position == level //<>// //<>// //<>//
-        } expChart.put(i,totalExpReq); //<>// //<>// //<>//
-      } expChartMaker.close(); //<>// //<>// //<>//
-       //<>// //<>// //<>//
-      // Move Split to Words //<>// //<>// //<>//
+          String[] data = expChartMaker.readLine().split(","); //<>// //<>// //<>// //<>//
+          totalExpReq[Integer.parseInt(data[1])] = Integer.parseInt(data[2]);  //<>// //<>// //<>// //<>//
+          // puts the val in the array position == level //<>// //<>// //<>// //<>//
+        } expChart.put(i,totalExpReq); //<>// //<>// //<>// //<>//
+      } expChartMaker.close(); //<>// //<>// //<>// //<>//
+       //<>// //<>// //<>// //<>//
+      // Move Split to Words //<>// //<>// //<>// //<>//
       splitToWords = new HashMap<Integer,String>();
-      splitToWords.put(1,"Status"); //<>// //<>// //<>//
-      splitToWords.put(2,"Physical"); //<>// //<>// //<>//
-      splitToWords.put(3,"Special"); //<>// //<>// //<>//
-      // this is all the data we need, so I just inputted it manually //<>// //<>// //<>//
-       //<>// //<>// //<>//
+      splitToWords.put(1,"Status"); //<>// //<>// //<>// //<>//
+      splitToWords.put(2,"Physical"); //<>// //<>// //<>// //<>//
+      splitToWords.put(3,"Special"); //<>// //<>// //<>// //<>//
+      // this is all the data we need, so I just inputted it manually //<>// //<>// //<>// //<>//
+       //<>// //<>// //<>// //<>//
       // Movedex Initialization
       movedex = new HashMap<Integer,Move>();
       BufferedReader movedexMaker = createReader("moves.csv");
-      movedexMaker.readLine(); // skipping input description line //<>// //<>// //<>//
-      for (int i=1;i<=902;i++) { // for every move //<>// //<>// //<>//
-        String[] data = movedexMaker.readLine().split(","); // get input; //<>// //<>// //<>//
-        Move newMove = new Move(data); // turn it into a move //<>// //<>// //<>//
-        movedex.put(newMove.getID(),newMove); // put it into the movedex //<>// //<>// //<>//
+      movedexMaker.readLine(); // skipping input description line //<>// //<>// //<>// //<>//
+      for (int i=1;i<=902;i++) { // for every move //<>// //<>// //<>// //<>//
+        String[] data = movedexMaker.readLine().split(","); // get input; //<>// //<>// //<>// //<>//
+        Move newMove = new Move(data); // turn it into a move //<>// //<>// //<>// //<>//
+        movedex.put(newMove.getID(),newMove); // put it into the movedex //<>// //<>// //<>// //<>//
       } movedexMaker.close();
-       //<>// //<>// //<>//
-      // Naturedex Initialization //<>// //<>// //<>//
+       //<>// //<>// //<>// //<>//
+      // Naturedex Initialization //<>// //<>// //<>// //<>//
       naturedex = new HashMap<Integer,Nature>();
-      BufferedReader naturedexMaker = createReader("natures.csv"); //<>// //<>// //<>//
-      naturedexMaker.readLine(); // skipping input description //<>// //<>// //<>//
-      for (int i=1;i<=25;i++) { // for every nature //<>// //<>// //<>//
+      BufferedReader naturedexMaker = createReader("natures.csv"); //<>// //<>// //<>// //<>//
+      naturedexMaker.readLine(); // skipping input description //<>// //<>// //<>// //<>//
+      for (int i=1;i<=25;i++) { // for every nature //<>// //<>// //<>// //<>//
         String[] data = naturedexMaker.readLine().split(",");
-        Nature newNature = new Nature(data); //<>// //<>// //<>//
+        Nature newNature = new Nature(data); //<>// //<>// //<>// //<>//
         naturedex.put(newNature.getID(),newNature);
       } naturedexMaker.close();
       
@@ -195,9 +195,6 @@ public class Pokedex {
   }
   
   public int damageCalculator(Pokemon attacker, Pokemon defender, Move m) {
-    System.out.println(attacker);
-    System.out.println("E");
-    System.out.println(m);
     int level = attacker.getLevel();
     int power = m.getBasePower();
     int attack, defense;
@@ -227,7 +224,7 @@ public class Pokedex {
       typeAdvantage*=typeChart.get(m.getType()).get(secondaryType.get(defenderDex));
     }
     double roll = ((int)(Math.random()*16)+85)/100.0;
-    int damage = ((2*level/5+2)*power*attack/defense)/50+2;
+    int damage = ((2*level/5+2)*power*attack/defense)/50;
     damage=(int)(damage*critMultiplier*stab*typeAdvantage*roll);
     return Math.max(1, damage);
   }

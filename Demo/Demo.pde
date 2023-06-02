@@ -73,8 +73,8 @@ void keyPressed() {
     }
     if (key == 'b') {
       Trainer enemy = new Trainer("Evil!", new int[]{0, 0}, 0);
-      Pokemon random = dex.randomPokemon(50);
-      random.addExp(300);
+      Pokemon random = dex.randomPokemon(30);
+      random.addExp(10);
       enemy.setPokemon(0, random);
       battle = new Battle(player, enemy, true);
       state = BATTLE;
@@ -413,6 +413,13 @@ void mapUI() {
 void battleUI(Battle battle) {
   Pokemon fren = battle.getPlayerActive();
   Pokemon enemy = battle.getNpcActive();
+  Trainer npc = battle.getNpc();
+  System.out.println(enemy.getCurrentHP());
+  if (enemy.getCurrentHP()==0) {
+    battle.swapDead(npc,1);
+  }
+  fren = battle.getPlayerActive();
+  enemy = battle.getNpcActive();
   background(255);
   fill(0);
   rect(0, height/2, width, height/2);
@@ -468,7 +475,6 @@ void battleUI(Battle battle) {
   rect(0, height/20+50, width/2, height/12-25, 10); // exp bar black underlay
   fill(0,0,255);
   double expPercentEnemy = -1*(enemy.getExp()-enemy.getTotalLevelExp())/(enemy.getNextLevelExp()-enemy.getTotalLevelExp()*1.0); // blue exp bar overlay
-  System.out.println(expPercentEnemy);
   rect(0, height/20+50, (int)(width/2 * expPercentEnemy)+1, height/12-25, 10); // exp bar
   fill(0);
   textSize(20);
