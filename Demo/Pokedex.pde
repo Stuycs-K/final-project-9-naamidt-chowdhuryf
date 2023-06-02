@@ -302,6 +302,12 @@ public class Pokedex {
   public String getBackSprite(int id) {
     return spritedexBack.get(id);
   }
+  public void randomizeParty(Trainer trainer) {
+    for (int i=0;i<6;i++) {
+      Pokemon randy = randomPokemon(100);
+      trainer.setPokemon(i,randy);
+    }
+  }
   public String getItemSprite(String name) {
     String dir = sketchPath();
     dir = dir.substring(0,dir.length()-4);
