@@ -79,12 +79,12 @@ void keyPressed() {
     }
     if (key == 't') {
       Trainer enemy = new Trainer("Rival!", new int[]{0,0}, 0);
-      enemy.setPokemon(0, new Pokemon(5, "Charmander", dex.getDex("Charmander")));
-      enemy.setPokemon(1, new Pokemon(5, "Bulbasaur", dex.getDex("Bulbasaur")));
-      enemy.setPokemon(2, new Pokemon(5, "Marshadow", dex.getDex("Marshadow")));
-      enemy.setPokemon(3, new Pokemon(5, "Marshadow", dex.getDex("Marshadow")));
-      enemy.setPokemon(4, new Pokemon(5, "Marshadow", dex.getDex("Marshadow")));
-      enemy.setPokemon(5, new Pokemon(5, "Marshadow", dex.getDex("Marshadow")));
+      enemy.setPokemon(0, new Pokemon(40, "Charmander", dex.getDex("Charmander")));
+      enemy.setPokemon(1, new Pokemon(40, "Bulbasaur", dex.getDex("Bulbasaur")));
+      enemy.setPokemon(2, new Pokemon(40, "Marshadow", dex.getDex("Marshadow")));
+      enemy.setPokemon(3, new Pokemon(40, "Marshadow", dex.getDex("Marshadow")));
+      enemy.setPokemon(4, new Pokemon(40, "Marshadow", dex.getDex("Marshadow")));
+      enemy.setPokemon(5, new Pokemon(40, "Marshadow", dex.getDex("Marshadow")));
       battle = new Battle(player, enemy, false);
       state = BATTLE;
     }
