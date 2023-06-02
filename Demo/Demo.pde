@@ -1,3 +1,10 @@
+static final int MAP = 0;
+static final int BATTLE = 1;
+static final int LEFT_WIDTH = 10;
+static final int RIGHT_WIDTH = 160;
+static final int TOP_HEIGHT = 360;
+static final int BOT_HEIGHT = 480;
+
 Map map;
 int state;
 Battle battle;
