@@ -235,6 +235,11 @@ public class Pokedex {
     int dexNumber = (int)(Math.random()*920)+1;
     return new Pokemon(level, dexToSpecies.get(dexNumber), dexNumber);
   }
+  public void randomizeParty(Trainer trainer) {
+    for (int i=0;i<6;i++) {
+      trainer.setPokemon(i,randomPokemon(50));
+    }
+  }
   
   
   // GET AND WHATEVER METHODS BOOO BORING

@@ -91,7 +91,10 @@ void keyPressed() {
       state = BATTLE;
     }
     if (key == 'h') {
-      player.getSlot(0).setCurrentHP(999);
+      player.getSlot(0).setCurrentHP(player.getSlot(0).getStats()[1]);
+    }
+    if (key == 'r') {
+      dex.randomizeParty(player);
     }
     if (state == MAP) {
       mapUI();
