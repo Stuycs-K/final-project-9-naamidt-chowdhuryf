@@ -10,6 +10,7 @@ public class Battle {
   private Pokedex dex;
   private String userChoice;
   private int moveChoice;
+  private int npcChoice;
   private int win;
   private boolean encounter;
   public Battle(Trainer player, Trainer npc) {
@@ -24,13 +25,14 @@ public class Battle {
   public Battle(Trainer player) {
     this.player = player;
     Pokemon random = dex.randomPokemon((int)(Math.random()*(player.getBadges()*10+10))+1);
-    npc = new Trainer("Wild "+random.getNickname(),new int[]{0,0},0);
-    npc.setPokemon(0,random);
+    npc = new Trainer("Wild "+random.getNickname(), new int[]{0, 0}, 0);
+    npc.setPokemon(0, random);
     encounter = true;
   }
   public void turn(String choice, int moveChoice) {
     Action playerAction = new Action(player, npc, playerActive, choice, moveChoice);
-    Action npcAction = new Action(npc, player, npcActive, "Attack", (int)(Math.random()*4));
+    npcChoice = (int)(Math.random() * 4);
+    Action npcAction = new Action(npc, player, npcActive, "Fight", npcChoice);
     turnOrder.add(playerAction);
     turnOrder.add(npcAction);
     Action turn;
@@ -45,47 +47,47 @@ public class Battle {
     otherTrainer = turn.getOtherTrainer();
     Pokemon attacker = trainer.getSlot(0);
     Pokemon defender = otherTrainer.getSlot(0);
-    otherTrainer = turn.getOtherTrainer();
     if (turn.getChoice().equals("Switch")) {
       trainer.swapSlot(0, turn.getMoveChoice());
       updateActive();
       return;
-    } if (!turn.getChoice().equals("Fight")) {
+    }
+    if (!turn.getChoice().equals("Fight")) {
       boolean catchAttempt = trainer.getBag().getPokeball(turn.getChoice())!=-1;
       boolean result;
       if (catchAttempt) {
-        result = trainer.getBag().use(encounter,turn.getChoice(),otherTrainer.getSlot(0));
+        result = trainer.getBag().use(encounter, turn.getChoice(), otherTrainer.getSlot(0));
         if (result) {
           trainer.setPokemon(5, otherTrainer.getSlot(0));
           win();
         }
       } else {
-        result = trainer.getBag().use(encounter,turn.getChoice(),trainer.getSlot(0));
+        result = trainer.getBag().use(encounter, turn.getChoice(), trainer.getSlot(0));
       }
-    }
-    else {
+    } else {
       int damage = dex.damageCalculator(attacker, defender, attacker.getMoveSlot(turn.getMoveChoice()));
       attacker.getMoveSlot(turn.getMoveChoice()).changePP(1);
       defender.changeHP(damage);
       if (defender.getCurrentHP()==0) {
-        win();
-        //if (otherTrainer.getSlot(1) != null) {
-        //  if (otherTrainer.getSlot(1).getCurrentHP()<=0) {
-        //    if (otherTrainer==npc) {
-        //      win();
-        //    } else {
-        //      lose();
-        //    }
-        //  } else {
-        //   //swapDead(otherTrainer, 1);
-        //  }
-        //} else {
-        //  if (otherTrainer==npc) {
-        //      win();
-        //    } else {
-        //      lose();
-        //    }
-        //  }
+        if (otherTrainer.getSlot(1) != null) {
+          if (otherTrainer.getSlot(1).getCurrentHP()==0) {
+            if (otherTrainer==npc) {
+              rewardKill(attacker, defender);
+              win();
+            } else {
+              lose();
+            }
+          } else {
+            //swapDead(otherTrainer, 1);
+          }
+        } else {
+          if (otherTrainer==npc) {
+            rewardKill(attacker, defender);
+            win();
+          } else {
+            lose();
+          }
+        }
       }
     }
   }
@@ -98,16 +100,22 @@ public class Battle {
   public int getWin() {
     return win;
   }
+  public int getNpcChoice() {
+    return npcChoice;
+  }
+  public boolean encounter() {
+    return encounter;
+  }
   public void updateActive() {
     playerActive = player.getSlot(0);
     npcActive = npc.getSlot(0);
   }
   public void swapDead(Trainer trainer, int slot) {
-    trainer.swapSlot(0,slot);
+    trainer.swapSlot(0, slot);
     while (slot<5&&trainer.getSlot(slot+1).getCurrentHP()>0) {
-      trainer.swapSlot(slot,slot+1);
+      trainer.swapSlot(slot, slot+1);
       slot++;
-    } 
+    }
   }
   public void setUserChoice(String choice) {
     userChoice = choice;
@@ -118,7 +126,7 @@ public class Battle {
   public void rewardKill(Pokemon murderer, Pokemon victim) {
     murderer.addEvs(victim.getEvYield());
     int expYield = victim.getBaseExp()*victim.getLevel()/5;
-    expYield*=(int)(Math.sqrt(Math.pow((2*victim.getLevel()+10)/(victim.getLevel()+murderer.getLevel()+10),5)))+1;
+    expYield*=(int)(Math.sqrt(Math.pow((2*victim.getLevel()+10)/(victim.getLevel()+murderer.getLevel()+10), 5)))+1;
     murderer.addExp(expYield);
   }
   public Pokemon getPlayerActive() {

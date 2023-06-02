@@ -23,6 +23,9 @@ public class Trainer {
   public Bag getBag() {
     return bag;
   }
+  public Pokemon[] getParty() {
+    return party;
+  }
   public void setPokemon(int slot, Pokemon pokemon) {
     party[slot] = pokemon;
   }
