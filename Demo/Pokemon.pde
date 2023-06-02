@@ -4,17 +4,18 @@ import java.lang.*;
 import java.math.*;
 
 public class Pokemon {
-  private int currentHP, level, exp, dexNumber, nature, growthRate, baseExp, captureRate, primaryType, secondaryType, evolutionLevel;
+  private int currentHP, level, exp, dexNumber, nature, growthRate, baseExp, captureRate, primaryType, secondaryType, evolutionLevel, availableEvs;
   private PImage spriteFront, spriteBack;
   private String nickname;
-  private Move[] moves;
-  private int[] stats, evs, ivs, expChart;
+  private Move[] moves, learnset;
+  private int[] stats, evs, ivs, expChart, baseStats, evYield;
   private Pokedex dex;
+  private int currentMove = 0;
   public Pokemon(int level, String nickname, int dexNumber) {
     this.level = level;
     this.nickname = nickname;
-    System.out.println(nickname);
     this.dexNumber = dexNumber;
+    availableEvs = 510;
     moves = new Move[4];
     dex = new Pokedex();
     ivs = new int[7];
@@ -23,8 +24,17 @@ public class Pokemon {
       evolutionLevel = dex.getEvolution(dexNumber).getLevelReq();
     } else {
       evolutionLevel = -1;
+    } learnset = dex.getLearnset(dexNumber);
+    for (int i=1;i<=level;i++) {
+      if (learnset[i]!=null) {
+        moves[currentMove] = learnset[i];
+        currentMove++;
+        currentMove%=4;
+      }
     }
     nature = dex.randomNature();
+    evYield = dex.getEvYield(dexNumber);
+    baseStats = dex.getBaseStats(dexNumber);
     spriteFront = loadImage(dex.getFrontSprite(dexNumber));
     spriteBack = loadImage(dex.getBackSprite(dexNumber));
     growthRate = dex.getGrowthRate(dexNumber);
@@ -38,12 +48,7 @@ public class Pokemon {
       evs[i] = 0;
     }
     stats = new int[6];
-    int[] baseStats = dex.getBaseStats(dexNumber);
-    Nature innate = dex.getNature(nature);
-    double[] natureBoosts = innate.getBoosts();
-    for (int i=1; i<stats.length; i++) {
-      stats[i] = calculateStats(baseStats[i], ivs[i], evs[i], level, natureBoosts[i]);
-    }
+    updateStats();
     currentHP = stats[1];
     exp = expChart[level];
   }
@@ -51,6 +56,13 @@ public class Pokemon {
     int stat;
     stat = (((2*base+iv+(ev/4))*level)/100)+level+10;
     return (int)(stat*nature);
+  }
+  public void updateStats() {
+    Nature innate = dex.getNature(nature);
+    double[] natureBoosts = innate.getBoosts();
+    for (int i=1; i<=stats.length; i++) {
+      stats[i-1] = calculateStats(baseStats[i], ivs[i], evs[i], level, natureBoosts[i]);
+    }
   }
   public int changeHP(int changeVal) {
     int initial = currentHP;
@@ -70,10 +82,41 @@ public class Pokemon {
     }
     if (exp>=expChart[level]) {
       level++;
+      if (learnset[level]!=null) {
+        moves[currentMove] = learnset[level];
+        currentMove++;
+        currentMove%=4;
+      } updateStats();
+      if (evolutionLevel!=-1&&level>=evolutionLevel) {
+        evolve();
+      }
       return true;
     } return false;
   }
-
+  public void evolve() {
+    Evolution evo = dex.getEvolution(dexNumber);
+    if (nickname.equals(dex.getSpecies(dexNumber))) {
+      dexNumber = evo.getPostEvolutionID();
+      nickname = dex.getSpecies(dexNumber);
+    } dexNumber = evo.getPostEvolutionID();
+    if (dex.getEvolution(dexNumber)!=null&&dex.getEvolution(dexNumber).getLevelReq()!=null) {
+      evolutionLevel = dex.getEvolution(dexNumber).getLevelReq();
+    } else {
+      evolutionLevel = -1;
+    } learnset = dex.getLearnset(dexNumber);
+    evYield = dex.getEvYield(dexNumber);
+    baseStats = dex.getBaseStats(dexNumber);
+    spriteFront = loadImage(dex.getFrontSprite(dexNumber));
+    spriteBack = loadImage(dex.getBackSprite(dexNumber));
+    growthRate = dex.getGrowthRate(dexNumber);
+    expChart = dex.getExpChart(growthRate);
+    baseExp = dex.getBaseExp(dexNumber);
+    captureRate = dex.getCaptureRate(dexNumber);
+    primaryType = dex.getPrimaryType(dexNumber);
+    secondaryType = dex.getSecondaryType(dexNumber);
+    updateStats();
+    currentHP = stats[1];
+  }
   //---------- STANDARD GET/SET METHODS BELOW ----------//
   public int getCurrentHP() {
     return currentHP;
@@ -85,7 +128,8 @@ public class Pokemon {
     return level;
   }
   public void setLevel(int newLevel) {
-    level = newLevel;
+    exp = expChart[newLevel];
+    addExp(0);
   }
   public int getExp() {
     return exp;
@@ -144,8 +188,18 @@ public class Pokemon {
   public int getEvolutionLevel() {
     return evolutionLevel;
   }
+  public int[] getEvYield() {
+    return evYield;
+  }
+  public void addEvs(int[] evYield) {
+    for (int i=1;i<evYield.length;i++) {
+       if (evYield[i]+evs[i]<=252&&availableEvs>=evYield[i]) {
+         evs[i]+=evYield[i];
+       }
+    } updateStats();
+  }
   public String toString() {
-    String ret = "\""+nickname+"\" "+dexNumber+" "+dex.getSpecies(dexNumber)+" "+dex.getPrimaryType(dexNumber);
+    String ret = "\""+nickname+"\" "+dexNumber+" "+dex.getSpecies(dexNumber)+" Level: "+level+" "+dex.getPrimaryType(dexNumber);
     ret += " "+dex.getSecondaryType(dexNumber)+" "+Arrays.toString(dex.getBaseStats(dexNumber))+" ";
     ret += dex.getGrowthRate(dexNumber)+" "+getEvolutionLevel()+" "+dex.getEvolution(dexNumber);
     ret += "\n"+"Evs: "+Arrays.toString(evs)+" Ivs: "+Arrays.toString(ivs)+" Stats: "+Arrays.toString(stats);

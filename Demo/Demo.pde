@@ -1,11 +1,19 @@
 Map map;
 int state;
-
+Battle battle;
 void setup() {
+  imageMode(CENTER);
   state = 0;
   size(300, 600);
   background(0);
   map = new Map("testmap.txt");
+  Pokedex dex = new Pokedex();
+  Trainer player = new Trainer("Me!",new int[]{0,0}, 0);
+  player.setPokemon(0,dex.randomPokemon(12));
+  Trainer enemy = new Trainer("Evil!",new int[]{0,0}, 0);
+  enemy.setPokemon(0,dex.randomPokemon(12));
+  battle = new Battle(player,enemy);
+  
   //String dir = sketchPath();
   //System.out.println(dir);
   //dir = dir.substring(0,dir.length()-4);
@@ -21,9 +29,9 @@ void setup() {
   //System.out.println(dir);
   //PImage marshadow = loadImage(dir);
   // tl;dr, get the filepath, go to data, then go into the folder, then take sprite
-  Pokedex dex = new Pokedex();
-  Pokemon randy = dex.randomPokemon(12);
-  image(randy.getFrontSprite(),110,110);
+  //Pokedex dex = new Pokedex();
+  //Pokemon randy = dex.randomPokemon(12);
+  //image(randy.getFrontSprite(),110,110);
   //image(marshadow,100,100);
 }
 
@@ -50,7 +58,7 @@ void keyPressed() {
    if (key == 'm') {
      state--;
    }
-   battleUI();
+   battleUI(battle);
   }
 }
 
@@ -59,14 +67,29 @@ void draw() {
     mapUI();
   }
   else if (state == 1) {
-    battleUI();
+    battleUI(battle);
   }
 }
 
 void mousePressed() {
   if (mouseX > width/2 + 10 && mouseX < width - 10 && mouseY > height/2 + height/5 + 60 && mouseY < height/2 + height/6 + height/5 + 60){
-    exit();
+    buttonBR();
+  } if (mouseX > width/2 + 10 && mouseX < width - 10 && mouseY < height/2 + 60 + height/6 && mouseY > height/2 + height/6 - 40) {
+    buttonTR();
+  } if (mouseX >  10 && mouseX < width/2 - 10 &&mouseY > height/2 + height/5 + 60 && mouseY < height/2 + height/6 + height/5 + 60) {
+    buttonBL();
+  } if (mouseX >  10 && mouseX < width/2 - 10 && mouseY < height/2 + 60 + height/6 && mouseY > height/2 + height/6 - 40) {
+    System.out.println("YES");
   }
+}
+void buttonBR() {
+  exit();
+}
+void buttonTR() {
+}
+void buttonBL() {
+}
+void buttonTL() {
 }
 
 void mapUI() {
@@ -97,7 +120,9 @@ void mapUI() {
 }
 
 
-void battleUI() {
+void battleUI(Battle battle) {
+  Pokemon player = battle.getPlayerActive();
+  Pokemon enemy = battle.getNpcActive();
   background(255);
   fill(0);
   rect(0, height/2, width, height/2);
@@ -129,7 +154,6 @@ void battleUI() {
   fill(255);
   rect(width/2, 3*height/8, width/2, height/12, 10);
   rect(0, height/20, width/2, height/12, 10);
-  Pokedex dex = new Pokedex();
-  Pokemon randy = dex.randomPokemon(12);
-  image(randy.getFrontSprite(),110,110);
+  image(enemy.getFrontSprite(),220,70);
+  image(player.getBackSprite(),80,260);
 }

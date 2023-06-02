@@ -21,4 +21,7 @@ public class Evolution {
   public Integer getLevelReq() {
     return levelReq;
   }
+  public String toString() {
+    return preEvolutionID+"--"+levelReq+"-->"+postEvolutionID;
+  }
 }
