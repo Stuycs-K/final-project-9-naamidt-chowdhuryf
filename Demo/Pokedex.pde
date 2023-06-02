@@ -217,6 +217,10 @@ public class Pokedex {
     double stab = 1;
     if (primaryType.get(attackerDex).equals(move.getType())||secondaryType.get(attackerDex).equals(move.getType())) {
       stab = 1.5;
+      // extra 1.5 from the "ability" (like torrent, blaze, overgrow, swarm)
+      if (attacker.getCurrentHP()*3<=attacker.getStats()[1]) {
+        stab*=1.5;
+      }
     }
     double typeAdvantage = 1;
     typeAdvantage*=typeChart.get(move.getType()).get(primaryType.get(defenderDex));
