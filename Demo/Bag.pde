@@ -17,7 +17,7 @@ class Bag {
     // basically, youre not using pokeballs in anything but encounters
     for (int i=0;i<pokeballNames.length;i++) {
       if (name.equals(pokeballNames[i])&&pokeballs[i]>0) {
-        if (!encounter) {
+        if (encounter) {
           pokeballs[i]--;
           return catchAttempt(target, getValue(name));
         } return false;
