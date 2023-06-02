@@ -38,7 +38,7 @@ public class Trainer {
        return i;
      }
    }
-   return -1;
+   return 5;
   }
   
   public void swapSlot(int slot1, int slot2) {

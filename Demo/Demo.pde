@@ -414,10 +414,6 @@ void battleUI(Battle battle) {
   Pokemon fren = battle.getPlayerActive();
   Pokemon enemy = battle.getNpcActive();
   Trainer npc = battle.getNpc();
-  System.out.println(enemy.getCurrentHP());
-  if (enemy.getCurrentHP()==0) {
-    battle.swapDead(npc,1);
-  }
   fren = battle.getPlayerActive();
   enemy = battle.getNpcActive();
   background(255);
