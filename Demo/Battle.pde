@@ -79,7 +79,7 @@ public class Battle {
               lose();
             }
           } else {
-            swapDead(otherTrainer, 1);
+            swapDead(otherTrainer, otherTrainer.getNum());
           }
         } else {
           if (otherTrainer==npc) {
@@ -112,12 +112,13 @@ public class Battle {
     npcActive = npc.getSlot(0);
   }
   public void swapDead(Trainer trainer, int slot) {
-    trainer.swapSlot(0, slot);
     int temp = slot;
-    while (
-      temp < 5 && trainer.getSlot(temp+1).getCurrentHP()>0) {
-      trainer.swapSlot(temp, temp+1);
-      temp++;
+    if (temp > 0 && temp < 6) {
+      if (trainer.getSlot(temp).getCurrentHP()>0) {
+        trainer.swapSlot(0, temp);
+      } else {
+        swapDead(trainer, temp - 1);
+      }
     }
     updateActive();
   }
