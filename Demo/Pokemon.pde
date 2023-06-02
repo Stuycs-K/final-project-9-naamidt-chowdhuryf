@@ -66,7 +66,7 @@ public class Pokemon {
   }
   public int changeHP(int changeVal) {
     int initial = currentHP;
-    int maxHP = dex.getBaseStats(dexNumber)[0];
+    int maxHP = dex.getBaseStats(dexNumber)[1];
     currentHP+=changeVal;
     currentHP = Math.min(maxHP, currentHP);
     currentHP = Math.max(0, currentHP);

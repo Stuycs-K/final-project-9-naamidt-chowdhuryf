@@ -9,9 +9,11 @@ void setup() {
   map = new Map("testmap.txt");
   Pokedex dex = new Pokedex();
   Trainer player = new Trainer("Me!",new int[]{0,0}, 0);
-  player.setPokemon(0,dex.randomPokemon(12));
+  Pokemon random = dex.randomPokemon(100);
+  random.changeHP(random.getStats()[1]/2);
+  player.setPokemon(0,random);
   Trainer enemy = new Trainer("Evil!",new int[]{0,0}, 0);
-  enemy.setPokemon(0,dex.randomPokemon(12));
+  enemy.setPokemon(0,dex.randomPokemon(100));
   battle = new Battle(player,enemy);
   
   //String dir = sketchPath();
@@ -79,7 +81,7 @@ void mousePressed() {
   } if (mouseX >  10 && mouseX < width/2 - 10 &&mouseY > height/2 + height/5 + 60 && mouseY < height/2 + height/6 + height/5 + 60) {
     buttonBL();
   } if (mouseX >  10 && mouseX < width/2 - 10 && mouseY < height/2 + 60 + height/6 && mouseY > height/2 + height/6 - 40) {
-    System.out.println("YES");
+    buttonTL();
   }
 }
 void buttonBR() {
@@ -123,6 +125,7 @@ void mapUI() {
 void battleUI(Battle battle) {
   Pokemon player = battle.getPlayerActive();
   Pokemon enemy = battle.getNpcActive();
+  player.changeHP(player.getStats()[1]/2);
   background(255);
   fill(0);
   rect(0, height/2, width, height/2);
@@ -152,8 +155,13 @@ void battleUI(Battle battle) {
   ellipse(75, 3*height/8 + 60, 150, 20);
   ellipse(3*width/4, height/20 + 70, 150, 20);
   fill(255);
-  rect(width/2, 3*height/8, width/2, height/12, 10);
-  rect(0, height/20, width/2, height/12, 10);
+  rect(width/2, 3*height/8, width/2, height/12, 10); // the location of the player's info box thing
+  fill(255,0,0);
+  rect(width/2, 3*height/8+30, width/2, height/12-30, 10); //hp red underlay
+  fill(0,255,0);
+  rect(width/2, 3*height/8+30, width/2 * player.getCurrentHP()/player.getStats()[1], height/12-30, 10); // hp green overlay
+  fill(255);
+  //rect(0, height/20, width/2, height/12, 10); // enemy hp box thing
   image(enemy.getFrontSprite(),220,70);
   image(player.getBackSprite(),80,260);
 }
