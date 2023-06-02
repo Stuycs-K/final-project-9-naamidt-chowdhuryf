@@ -28,9 +28,9 @@ void setup() {
   System.out.println(randy);
 } 
 void draw() {
-  //background(255);
-  //Pokedex dex = new Pokedex();
-  //Pokemon randy = dex.randomPokemon(100);
-  ////image(randy.getFrontSprite(),110,110);
-  //System.out.println(randy);
+  background(255);
+  Pokedex dex = new Pokedex();
+  Pokemon randy = dex.randomPokemon(100);
+  image(randy.getFrontSprite(),110,110);
+  System.out.println(randy);
 }

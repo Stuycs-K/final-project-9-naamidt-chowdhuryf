@@ -2,7 +2,7 @@ import java.util.*;
 import java.io.*;
 import java.lang.*;
 import java.math.*;
-
+// tl;dr you will want to change this class a lot
 public class Battle {
   private Trainer player, npc;
   private Pokemon playerActive, npcActive;
@@ -11,6 +11,7 @@ public class Battle {
   private String userChoice;
   private int moveChoice;
   private boolean encounter;
+  // this is the nromal constructor for trainer battles
   public Battle(Trainer player, Trainer npc) {
     this.player = player;
     this.npc = npc;
@@ -27,6 +28,11 @@ public class Battle {
     npc.setPokemon(0,random);
     encounter = true;
   }
+  // turn means like 1 user choice (like they select to use a move or to use an item)
+  // choice is the general thing they do (item, fight, switch)
+  // moveChoice is like the # thing they use 
+      // so like fight 3 would mean the last moveslot of a pokemon depending
+      // on how you want to interpret it
   public void turn(String choice, int moveChoice) {
     Action playerAction = new Action(player, npc, playerActive, choice, moveChoice);
     Action npcAction = new Action(npc, player, npcActive, "Attack", (int)(Math.random()*4));
@@ -38,6 +44,7 @@ public class Battle {
     turn = turnOrder.poll();
     perform(turn);
   }
+  // perform is just meant to do the turn
   public void perform(Action turn) {
     Trainer trainer, otherTrainer;
     trainer = turn.getTrainer();
@@ -77,16 +84,22 @@ public class Battle {
       }
     }
   }
+  // win shit here, you probably want to make something better
   public void win() {
     System.out.println("yay you win");
   }
+  // same idea for loss
   public void lose() {
     System.out.println("no you lose");
   }
+  // helper method to make sure everyone on the field is everyone's slot 0 in party
   public void updateActive() {
     playerActive = player.getSlot(0);
     npcActive = npc.getSlot(0);
   }
+  // use this method when the current active pokemon is dead for the trainer
+  // slot is the pokemon the slot they want to swap in
+      // this method basically puts dead pokemon at the end of the party
   public void swapDead(Trainer trainer, int slot) {
     trainer.swapSlot(0,slot);
     while (slot<5&&trainer.getSlot(slot+1).getCurrentHP()>0) {
@@ -94,12 +107,14 @@ public class Battle {
       slot++;
     } 
   }
+  // set methods
   public void setUserChoice(String choice) {
     userChoice = choice;
   }
   public void setMoveChoice(int choice) {
     moveChoice = choice;
   }
+  // give evs and exp upon killing a pokemon, so you can level up and stuff
   public void rewardKill(Pokemon murderer, Pokemon victim) {
     murderer.addEvs(victim.getEvYield());
     int expYield = victim.getBaseExp()*victim.getLevel()/5;
@@ -107,6 +122,9 @@ public class Battle {
     murderer.addExp(expYield);
   }
 }
+// helper class, primarily to implement priority for switching
+// ironically, it was not build very well for normal priority moves and
+// we will not have switching probably so... yeah
 class Action implements Comparator<Action> {
   private int priority, moveChoice;
   private Trainer trainer, otherTrainer;

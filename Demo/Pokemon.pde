@@ -11,6 +11,9 @@ public class Pokemon {
   private int[] stats, evs, ivs, expChart, baseStats, evYield;
   private Pokedex dex;
   private int currentMove = 0;
+  // contructor given level, nickname, and dexNumber
+  // nickname is automatically changed upon evolution and stuff if you just have it be the same as the pokemon's species name is
+  
   public Pokemon(int level, String nickname, int dexNumber) {
     this.level = level;
     this.nickname = nickname;
@@ -52,11 +55,13 @@ public class Pokemon {
     currentHP = stats[1];
     exp = expChart[level];
   }
+  // calculate stats helper method
   public int calculateStats(int base, int iv, int ev, int level, double nature) {
     int stat;
     stat = (((2*base+iv+(ev/4))*level)/100)+level+10;
     return (int)(stat*nature);
   }
+  // updates stats for when evs/ivs and levels happen
   public void updateStats() {
     Nature innate = dex.getNature(nature);
     double[] natureBoosts = innate.getBoosts();
@@ -64,18 +69,22 @@ public class Pokemon {
       stats[i-1] = calculateStats(baseStats[i], ivs[i], evs[i], level, natureBoosts[i]);
     }
   }
+  // changesHP of things
   public int changeHP(int changeVal) {
     int initial = currentHP;
-    int maxHP = dex.getBaseStats(dexNumber)[0];
-    currentHP+=changeVal;
+    int maxHP = stats[1];
+    currentHP-=changeVal;
     currentHP = Math.min(maxHP, currentHP);
     currentHP = Math.max(0, currentHP);
     return initial;
   }
+  // adds a certain amount of exp and levels up as much as possible
   public void addExp(int additionalExp) {
     exp+=additionalExp;
     while (levelUp());
   }
+  // levels up if it can, learns moves if it can, and evolves if it can
+  // also update stats
   public boolean levelUp() {
     if (level>=100) {
       return false;
@@ -93,6 +102,7 @@ public class Pokemon {
       return true;
     } return false;
   }
+  // restate many things
   public void evolve() {
     Evolution evo = dex.getEvolution(dexNumber);
     if (nickname.equals(dex.getSpecies(dexNumber))) {
