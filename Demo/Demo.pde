@@ -88,6 +88,9 @@ void keyPressed() {
       battle = new Battle(player, enemy, false);
       state = BATTLE;
     }
+    if (key == 'h') {
+      player.getSlot(0).setCurrentHP(999);
+    }
     if (state == MAP) {
       mapUI();
     }
@@ -210,11 +213,12 @@ void buttonTR() {
     rect(LEFT_WIDTH, TOP_HEIGHT, width - 20, height/2 - 80);
     fill(0);
     text(battle.getPlayerActive().getNickname() + " used " + battle.getPlayerActive().getMoves()[2].getName() + "!", LEFT_WIDTH, TOP_HEIGHT + 60);
+    text(battle.getNpcActive().getNickname() + " used " + battle.getNpcActive().getMoves()[battle.getNpcChoice()].getName().toUpperCase() + "!", LEFT_WIDTH, BOT_HEIGHT);
     noFill();
   } else if (state == TEXTBOX) {
     if (battle.getWin() == 0) {
       state = BATTLE;
-      battleButtons();
+      battleUI(battle);
     } else {
       state = WIN;
       fill(255);
@@ -259,11 +263,12 @@ void buttonBL() {
     rect(LEFT_WIDTH, TOP_HEIGHT, width - 20, height/2 - 80);
     fill(0);
     text(battle.getPlayerActive().getNickname() + " used " + battle.getPlayerActive().getMoves()[1].getName() + "!", LEFT_WIDTH, TOP_HEIGHT + 60);
+    text(battle.getNpcActive().getNickname() + " used " + battle.getNpcActive().getMoves()[battle.getNpcChoice()].getName().toUpperCase() + "!", LEFT_WIDTH, BOT_HEIGHT);
     noFill();
   } else if (state == TEXTBOX) {
     if (battle.getWin() == 0) {
       state = BATTLE;
-      battleButtons();
+      battleUI(battle);
     } else {
       state = WIN;
       fill(255);
@@ -334,11 +339,12 @@ void buttonTL() {
     rect(LEFT_WIDTH, TOP_HEIGHT, width - 20, height/2 - 80);
     fill(0);
     text(battle.getPlayerActive().getNickname() + " used " + battle.getPlayerActive().getMoves()[0].getName() + "!", LEFT_WIDTH, TOP_HEIGHT + 60);
+    text(battle.getNpcActive().getNickname() + " used " + battle.getNpcActive().getMoves()[battle.getNpcChoice()].getName().toUpperCase() + "!", LEFT_WIDTH, BOT_HEIGHT);
     noFill();
   } else if (state == TEXTBOX) {
     if (battle.getWin() == 0) {
       state = BATTLE;
-      battleButtons();
+      battleUI(battle);
     } else {
       state = WIN;
       fill(255);

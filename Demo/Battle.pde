@@ -119,6 +119,7 @@ public class Battle {
       trainer.swapSlot(temp, temp+1);
       temp++;
     }
+    updateActive();
   }
   public void setUserChoice(String choice) {
     userChoice = choice;
