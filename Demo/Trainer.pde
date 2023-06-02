@@ -9,6 +9,7 @@ public class Trainer {
   private int badges;
   private PImage sprite;
   private Pokemon[] party;
+  private int pokeNum;
    private Bag bag;
   public Trainer(String name, int[] position, int badges) {
     this.name = name;
@@ -28,6 +29,7 @@ public class Trainer {
   }
   public void setPokemon(int slot, Pokemon pokemon) {
     party[slot] = pokemon;
+    pokeNum++;
   }
   
   public int checkParty() {
@@ -58,5 +60,9 @@ public class Trainer {
   }
   public String getName() {
     return name;
+  }
+  
+  public int getNum() {
+    return pokeNum;
   }
 }
