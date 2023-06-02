@@ -36,6 +36,7 @@ HW - Looked and after an unreasonable amount of time finally found a good csv fo
 HW - Absolute overhaul of data, all pokemon data and moves and sprites and everything included
     (except some sprites, why is the showdown api not updated for key pokemon)
     Also worked on making things work, like adding functionality to movepool, evs are gainable, so is exp, evolutions work, etc
+    Also lots of debugging for the demo, battles still dont work :(
 
 ## Fishan Chowdhury (Bell)
 
