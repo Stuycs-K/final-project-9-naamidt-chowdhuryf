@@ -33,6 +33,9 @@ public class Battle {
   public void turn(String choice, int moveChoice) {
     Action playerAction = new Action(player, npc, playerActive, choice, moveChoice);
     npcChoice = (int)(Math.random() * 4);
+    while (npcActive.getMoveSlot(npcChoice)==null) {
+       npcChoice = (int)(Math.random() * 4);
+    }
     Action npcAction = new Action(npc, player, npcActive, "Fight", npcChoice);
     turnOrder.add(playerAction);
     turnOrder.add(npcAction);

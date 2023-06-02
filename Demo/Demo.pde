@@ -32,7 +32,8 @@ void setup() {
   bag.setPokeball("Great Ball", 99);
   bag.setPokeball("Ultra Ball", 99);
   player = new Trainer("Me!", new int[]{0, 0}, 0);
-  Pokemon random = dex.randomPokemon(100);
+  Pokemon random = dex.randomPokemon(50);
+  random.addExp(100);
   player.setPokemon(0, random);
 
   //String dir = sketchPath();
@@ -72,7 +73,8 @@ void keyPressed() {
     }
     if (key == 'b') {
       Trainer enemy = new Trainer("Evil!", new int[]{0, 0}, 0);
-      Pokemon random = dex.randomPokemon(100);
+      Pokemon random = dex.randomPokemon(50);
+      random.addExp(300);
       enemy.setPokemon(0, random);
       battle = new Battle(player, enemy, true);
       state = BATTLE;
@@ -446,9 +448,15 @@ void battleUI(Battle battle) {
   fill(0, 255, 0);
   rect(width/2, 3*height/8+30, width/2 * fren.getCurrentHP()/1.0/fren.getStats()[1], height/12-30, 10); // hp green overlay
   fill(0);
+  rect(width/2, 3*height/8+50, width/2, height/12-30, 10); // black exp br underlay
+  double expPercentPlayer = (fren.getExp()-fren.getTotalLevelExp())/(fren.getNextLevelExp()-fren.getTotalLevelExp()*1.0); // blue exp bar overlay
+  fill(0,0,255);
+  rect(width/2, 3*height/8+50, width/2+(int)(width/2 * expPercentPlayer), height/12-30, 10); // blue bar
+  fill(0);
   textSize(20);
   text(fren.getNickname(), width/2+5, 3*height/8-7);
   text(fren.getCurrentHP()+"/"+fren.getStats()[1], width/2+5, 3*height/8+23);
+  text("Level: "+fren.getLevel(),width/2+5,3*height/8-28);
   textSize(12);
   fill(255);
   rect(0, height/20, width/2, height/12, 10); // enemy hp box thing
@@ -457,9 +465,16 @@ void battleUI(Battle battle) {
   fill(0, 255, 0);
   rect(0, height/20+30, width/2 * enemy.getCurrentHP()/1.0/enemy.getStats()[1], height/12-25, 10); // enemy green overlay
   fill(0);
+  rect(0, height/20+50, width/2, height/12-25, 10); // exp bar black underlay
+  fill(0,0,255);
+  double expPercentEnemy = -1*(enemy.getExp()-enemy.getTotalLevelExp())/(enemy.getNextLevelExp()-enemy.getTotalLevelExp()*1.0); // blue exp bar overlay
+  System.out.println(expPercentEnemy);
+  rect(0, height/20+50, (int)(width/2 * expPercentEnemy)+1, height/12-25, 10); // exp bar
+  fill(0);
   textSize(20);
   text(enemy.getNickname(), 0+5, height/20-10);
   text(enemy.getCurrentHP()+"/"+enemy.getStats()[1], 0+5, height/20+20);
+  text("Level: "+enemy.getLevel(),5,height/20+95);
   textSize(12);
   image(enemy.getFrontSprite(), 220, 70);
   image(fren.getBackSprite(), 80, 260);

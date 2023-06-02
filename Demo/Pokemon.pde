@@ -192,6 +192,14 @@ public class Pokemon {
   public int[] getEvYield() {
     return evYield;
   }
+  public int getNextLevelExp() {
+    if (level==100) {
+      return expChart[level];
+    } return expChart[level+1];
+  }
+  public int getTotalLevelExp() {
+    return expChart[level];
+  }
   public void addEvs(int[] evYield) {
     for (int i=1;i<evYield.length;i++) {
        if (evYield[i]+evs[i]<=252&&availableEvs>=evYield[i]) {
