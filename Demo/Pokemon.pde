@@ -66,8 +66,8 @@ public class Pokemon {
   }
   public int changeHP(int changeVal) {
     int initial = currentHP;
-    int maxHP = dex.getBaseStats(dexNumber)[1];
-    currentHP+=changeVal;
+    int maxHP = stats[1];
+    currentHP-=changeVal;
     currentHP = Math.min(maxHP, currentHP);
     currentHP = Math.max(0, currentHP);
     return initial;
@@ -87,6 +87,7 @@ public class Pokemon {
         currentMove++;
         currentMove%=4;
       } updateStats();
+      currentHP = stats[1];
       if (evolutionLevel!=-1&&level>=evolutionLevel) {
         evolve();
       }

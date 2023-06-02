@@ -10,10 +10,13 @@ void setup() {
   Pokedex dex = new Pokedex();
   Trainer player = new Trainer("Me!",new int[]{0,0}, 0);
   Pokemon random = dex.randomPokemon(100);
+  System.out.println(random.getStats()[1]);
+  System.out.println(random.getCurrentHP());
   random.changeHP(random.getStats()[1]/2);
+  System.out.println(random.getCurrentHP());
   player.setPokemon(0,random);
   Trainer enemy = new Trainer("Evil!",new int[]{0,0}, 0);
-  enemy.setPokemon(0,dex.randomPokemon(100));
+  enemy.setPokemon(0,random);
   battle = new Battle(player,enemy);
   
   //String dir = sketchPath();
@@ -159,9 +162,13 @@ void battleUI(Battle battle) {
   fill(255,0,0);
   rect(width/2, 3*height/8+30, width/2, height/12-30, 10); //hp red underlay
   fill(0,255,0);
-  rect(width/2, 3*height/8+30, width/2 * player.getCurrentHP()/player.getStats()[1], height/12-30, 10); // hp green overlay
+  rect(width/2, 3*height/8+30, width/2 * player.getCurrentHP()/1.0/player.getStats()[1], height/12-30, 10); // hp green overlay
   fill(255);
-  //rect(0, height/20, width/2, height/12, 10); // enemy hp box thing
+  rect(0, height/20, width/2, height/12, 10); // enemy hp box thing
+  fill(255,0,0);
+  rect(0, height/20+30, width/2, height/12-25, 10); // enemy red overlay
+  fill(0,255,0);
+  rect(0, height/20+30, width/2 * enemy.getCurrentHP()/1.0/enemy.getStats()[1], height/12-25, 10); // enemy green overlay
   image(enemy.getFrontSprite(),220,70);
   image(player.getBackSprite(),80,260);
 }
