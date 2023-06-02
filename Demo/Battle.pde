@@ -10,6 +10,7 @@ public class Battle {
   private Pokedex dex;
   private String userChoice;
   private int moveChoice;
+  private int win;
   private boolean encounter;
   public Battle(Trainer player, Trainer npc) {
     this.player = player;
@@ -65,31 +66,37 @@ public class Battle {
     else {
       int damage = dex.damageCalculator(attacker, defender, attacker.getMoveSlot(turn.getMoveChoice()));
       attacker.getMoveSlot(turn.getMoveChoice()).changePP(1);
-      otherTrainer.getSlot(0).changeHP(damage);
-      if (otherTrainer.getSlot(0).getCurrentHP()<=0) {
-        if (otherTrainer.getSlot(1) != null) {
-          if (otherTrainer.getSlot(1).getCurrentHP()<=0) {
-            if (otherTrainer==npc) {
-              win();
-            } else {
-              lose();
-            }
-          } else {
-            if (otherTrainer==npc) {
-              win();
-            } else {
-              lose();
-            }
-          }
-        } swapDead(otherTrainer, 1);
+      defender.changeHP(damage);
+      if (defender.getCurrentHP()==0) {
+        win();
+        //if (otherTrainer.getSlot(1) != null) {
+        //  if (otherTrainer.getSlot(1).getCurrentHP()<=0) {
+        //    if (otherTrainer==npc) {
+        //      win();
+        //    } else {
+        //      lose();
+        //    }
+        //  } else {
+        //   //swapDead(otherTrainer, 1);
+        //  }
+        //} else {
+        //  if (otherTrainer==npc) {
+        //      win();
+        //    } else {
+        //      lose();
+        //    }
+        //  }
       }
     }
   }
   public void win() {
-    System.out.println("yay you win");
+    win = 1;
   }
   public void lose() {
-    System.out.println("no you lose");
+    win = -1;
+  }
+  public int getWin() {
+    return win;
   }
   public void updateActive() {
     playerActive = player.getSlot(0);

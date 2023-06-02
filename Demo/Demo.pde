@@ -3,6 +3,8 @@ static final int BATTLE = 1;
 static final int MOVES = 2;
 static final int BAG = 3;
 static final int TEXTBOX = 4;
+static final int WIN = 5;
+
 static final int LEFT_WIDTH = 10;
 static final int RIGHT_WIDTH = 160;
 static final int TOP_HEIGHT = 360;
@@ -75,6 +77,9 @@ void keyPressed() {
    if (key == 'm') {
      state = MAP;
    }
+   if (key == 'f') {
+     state = MOVES;
+   }
    battleUI(battle);
   }
 }
@@ -85,7 +90,7 @@ void draw() {
   }
 }
 
-void mousePressed() {
+void mouseClicked() {
   if (countdown == 0) {
     if (mouseX > width/2 + 10 && mouseX < width - 10 && mouseY > height/2 + height/5 + 60 && mouseY < height/2 + height/6 + height/5 + 60){
       buttonBR();
@@ -96,32 +101,55 @@ void mousePressed() {
     } if (mouseX >  10 && mouseX < width/2 - 10 && mouseY < height/2 + 60 + height/6 && mouseY > height/2 + height/6 - 40) {
       buttonTL();
     }
-    countdown = 60;
+    countdown = 15;
   }
 }
 void buttonBR() {
   if (state == MAP) {
     exit();
   }
-  if (state == BATTLE) {
+  else if (state == BATTLE) {
     state = MAP;
     mapUI();
   }
-  if (state == MOVES) {
+  else if (state == MOVES) {
      battle.turn("Fight", 3);
      updateHealthBar();
      state = TEXTBOX;
      noFill();
      fill(255);
-     rect(LEFT_WIDTH, TOP_HEIGHT, width - 30, height/2 - 30);
+     rect(LEFT_WIDTH, TOP_HEIGHT, width - 20, height/2 - 100);
      fill(0);
-     text(battle.getPlayerActive() + " used " + battle.getPlayerActive().getMoves()[3].getName() + "!", LEFT_WIDTH, TOP_HEIGHT); 
+     text(battle.getPlayerActive().getNickname() + " used " + battle.getPlayerActive().getMoves()[3].getName() + "!", LEFT_WIDTH, TOP_HEIGHT + 60); 
      noFill();
   }
-  if (state == BAG) {
+  else if (state == BAG) {
     state = BATTLE;
     battleButtons();
   }
+  else if (state == TEXTBOX) {
+    if (battle.getWin() == 0) {
+    state = BATTLE;
+    battleButtons();
+    } else {
+      state = WIN;
+      fill(255);
+      rect(LEFT_WIDTH, TOP_HEIGHT, width - 20, height/2 - 100);
+      fill(0);
+      if (battle.getWin() > 0) {
+        text("YOU WIN!", LEFT_WIDTH, TOP_HEIGHT + 60); 
+      }
+      if (battle.getWin() < 0) {
+        text("YOU LOSE!", LEFT_WIDTH, TOP_HEIGHT + 60);
+      }
+      noFill();
+    }
+  } 
+  else if (state == WIN) {
+    state = MAP;
+    mapUI();
+  }
+  
 }
 void buttonTR() {
   if (state == BATTLE) {
@@ -139,16 +167,38 @@ void buttonTR() {
     text("QUIT", width/2 + 60, 3*height/4 + 80);
     state = BAG;
   }
-  if (state == MOVES) {
+  else if (state == MOVES) {
      battle.turn("Fight", 2);
      updateHealthBar();
      state = TEXTBOX;
      noFill();
      fill(255);
-     rect(LEFT_WIDTH, TOP_HEIGHT, width - 30, height/2 - 30);
+     rect(LEFT_WIDTH, TOP_HEIGHT, width - 20, height/2 - 100);
      fill(0);
-     text(battle.getPlayerActive() + " used " + battle.getPlayerActive().getMoves()[2].getName() + "!", LEFT_WIDTH, TOP_HEIGHT); 
+     text(battle.getPlayerActive().getNickname() + " used " + battle.getPlayerActive().getMoves()[2].getName() + "!", LEFT_WIDTH, TOP_HEIGHT + 60); 
      noFill();
+  }
+  else if (state == TEXTBOX) {
+    if (battle.getWin() == 0) {
+    state = BATTLE;
+    battleButtons();
+    } else {
+      state = WIN;
+      fill(255);
+      rect(LEFT_WIDTH, TOP_HEIGHT, width - 20, height/2 - 100);
+      fill(0);
+      if (battle.getWin() > 0) {
+        text("YOU WIN!", LEFT_WIDTH, TOP_HEIGHT + 60); 
+      }
+      if (battle.getWin() < 0) {
+        text("YOU LOSE!", LEFT_WIDTH, TOP_HEIGHT + 60);
+      }
+      noFill();
+    }
+  } 
+  else if (state == WIN) {
+    state = MAP;
+    mapUI();
   }
 }
 void buttonBL() {
@@ -158,10 +208,32 @@ void buttonBL() {
      state = TEXTBOX;
      noFill();
      fill(255);
-     rect(LEFT_WIDTH, TOP_HEIGHT, width - 30, height/2 - 30);
+     rect(LEFT_WIDTH, TOP_HEIGHT, width - 20, height/2 - 100);
      fill(0);
-     text(battle.getPlayerActive() + " used " + battle.getPlayerActive().getMoves()[1].getName() + "!", LEFT_WIDTH, TOP_HEIGHT); 
+     text(battle.getPlayerActive().getNickname() + " used " + battle.getPlayerActive().getMoves()[1].getName() + "!", LEFT_WIDTH, TOP_HEIGHT + 60); 
      noFill();
+  }
+  else if (state == TEXTBOX) {
+    if (battle.getWin() == 0) {
+    state = BATTLE;
+    battleButtons();
+    } else {
+      state = WIN;
+      fill(255);
+      rect(LEFT_WIDTH, TOP_HEIGHT, width - 20, height/2 - 100);
+      fill(0);
+      if (battle.getWin() > 0) {
+        text("YOU WIN!", LEFT_WIDTH, TOP_HEIGHT + 60); 
+      }
+      if (battle.getWin() < 0) {
+        text("YOU LOSE!", LEFT_WIDTH, TOP_HEIGHT + 60);
+      }
+      noFill();
+    }
+  } 
+  else if (state == WIN) {
+    state = MAP;
+    mapUI();
   }
 }
 void buttonTL() {
@@ -177,24 +249,46 @@ void buttonTL() {
     if (battle.getPlayerActive().getMoves()[1] != null) {
       text(battle.getPlayerActive().getMoves()[1].getName().toUpperCase(), LEFT_WIDTH + 20, BOT_HEIGHT + 50); 
     }
-    if (battle.getPlayerActive().getMoves()[1] != null) {
+    if (battle.getPlayerActive().getMoves()[2] != null) {
       text(battle.getPlayerActive().getMoves()[2].getName().toUpperCase(), RIGHT_WIDTH + 20, TOP_HEIGHT + 50); 
     }
-    if (battle.getPlayerActive().getMoves()[1] != null) {
+    if (battle.getPlayerActive().getMoves()[3] != null) {
       text(battle.getPlayerActive().getMoves()[3].getName().toUpperCase(), RIGHT_WIDTH + 20, BOT_HEIGHT + 50); 
     }
     state = MOVES;
   }
-  if (state == MOVES) {
+   else if (state == MOVES) {
      battle.turn("Fight", 0);
      updateHealthBar();
      state = TEXTBOX;
      noFill();
      fill(255);
-     rect(LEFT_WIDTH, TOP_HEIGHT, width - 30, height/2 - 30);
+     rect(LEFT_WIDTH, TOP_HEIGHT, width - 20, height/2 - 80);
      fill(0);
-     text(battle.getPlayerActive() + " used " + battle.getPlayerActive().getMoves()[2].getName() + "!", LEFT_WIDTH, TOP_HEIGHT); 
+     text(battle.getPlayerActive().getNickname() + " used " + battle.getPlayerActive().getMoves()[0].getName() + "!", LEFT_WIDTH, TOP_HEIGHT + 60); 
      noFill();
+  }
+else if (state == TEXTBOX) {
+    if (battle.getWin() == 0) {
+    state = BATTLE;
+    battleButtons();
+    } else {
+      state = WIN;
+      fill(255);
+      rect(LEFT_WIDTH, TOP_HEIGHT, width - 20, height/2 - 100);
+      fill(0);
+      if (battle.getWin() > 0) {
+        text("YOU WIN!", LEFT_WIDTH, TOP_HEIGHT + 60); 
+      }
+      if (battle.getWin() < 0) {
+        text("YOU LOSE!", LEFT_WIDTH, TOP_HEIGHT + 60);
+      }
+      noFill();
+    }
+  } 
+  else if (state == WIN) {
+    state = MAP;
+    mapUI();
   }
 }
 
@@ -286,15 +380,34 @@ void battleUI(Battle battle) {
 void updateHealthBar() {
   Pokemon player = battle.getPlayerActive();
   Pokemon enemy = battle.getNpcActive();
+  noFill();
+  fill(150);
+  ellipse(75, 3*height/8 + 60, 150, 20);
+  ellipse(3*width/4, height/20 + 70, 150, 20);
+  fill(255);
+  rect(width/2, 3*height/8, width/2, height/12, 10); // the location of the player's info box thing
   fill(255,0,0);
   rect(width/2, 3*height/8+30, width/2, height/12-30, 10); //hp red underlay
   fill(0,255,0);
   rect(width/2, 3*height/8+30, width/2 * player.getCurrentHP()/1.0/player.getStats()[1], height/12-30, 10); // hp green overlay
+  fill(0);
+  textSize(20);
+  text(player.getNickname(),width/2+5, 3*height/8-7);
+  text(player.getCurrentHP()+"/"+player.getStats()[1],width/2+5, 3*height/8+23);
+  textSize(12);
+  fill(255);
+  rect(0, height/20, width/2, height/12, 10); // enemy hp box thing
   fill(255,0,0);
-  rect(0, height/20+30, width/2, height/12-25, 10); // enemy red underlay
+  rect(0, height/20+30, width/2, height/12-25, 10); // enemy red overlay
   fill(0,255,0);
   rect(0, height/20+30, width/2 * enemy.getCurrentHP()/1.0/enemy.getStats()[1], height/12-25, 10); // enemy green overlay
-  noFill();
+  fill(0);
+  textSize(20);
+  text(enemy.getNickname(),0+5, height/20-10);
+  text(enemy.getCurrentHP()+"/"+enemy.getStats()[1],0+5, height/20+20);
+  textSize(12);
+  image(enemy.getFrontSprite(),220,70);
+  image(player.getBackSprite(),80,260);
 }
 
 void battleButtons() {
