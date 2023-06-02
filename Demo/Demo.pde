@@ -14,6 +14,7 @@ void setup() {
   size(300, 600);
   background(0);
   map = new Map("testmap.txt");
+  mapUI();
   Pokedex dex = new Pokedex();
   Trainer player = new Trainer("Me!",new int[]{0,0}, 0);
   Pokemon random = dex.randomPokemon(100);
@@ -74,12 +75,7 @@ void keyPressed() {
 }
 
 void draw() {
-  if (state == 0) {
-    mapUI();
-  }
-  else if (state == 1) {
-    battleUI(battle);
-  }
+  
 }
 
 void mousePressed() {
@@ -94,13 +90,28 @@ void mousePressed() {
   }
 }
 void buttonBR() {
-  exit();
+  if (state == MAP) {
+    exit();
+  }
+  if (state == BATTLE) {
+    state = 0;
+  }
 }
 void buttonTR() {
 }
 void buttonBL() {
 }
 void buttonTL() {
+  if (state == BATTLE) {
+    rect(LEFT_WIDTH, TOP_HEIGHT, 130, 100);
+    rect(LEFT_WIDTH, BOT_HEIGHT, 130, 100);
+    rect(RIGHT_WIDTH, TOP_HEIGHT, 130, 100);
+    rect(RIGHT_WIDTH, BOT_HEIGHT, 130, 100);
+    text(battle.getPlayerActive().getMoves()[0].getName(), LEFT_WIDTH + 20, TOP_HEIGHT + 50); 
+    text(battle.getPlayerActive().getMoves()[1].getName(), LEFT_WIDTH + 20, BOT_HEIGHT + 50); 
+    text(battle.getPlayerActive().getMoves()[2].getName(), RIGHT_WIDTH + 20, TOP_HEIGHT + 50); 
+    text(battle.getPlayerActive().getMoves()[3].getName(), RIGHT_WIDTH + 20, BOT_HEIGHT + 50); 
+  }
 }
 
 void mapUI() {
@@ -118,10 +129,10 @@ void mapUI() {
   noFill();
   fill(255);
   circle(width/2, 3*height/4, 30);
-  rect(10, height/2 + 60, width/2 - 20, height/6);
-  rect(10, height/2 + height/5 + 60, width/2 - 20, height/6);
-  rect(width/2 + 10, height/2 + 60, width/2 - 20, height/6);
-  rect(width/2 + 10, height/2 + height/5 + 60, width/2 - 20, height/6);
+  rect(LEFT_WIDTH, TOP_HEIGHT, 130, 100);
+  rect(LEFT_WIDTH, BOT_HEIGHT, 130, 100);
+  rect(RIGHT_WIDTH, TOP_HEIGHT, 130, 100);
+  rect(RIGHT_WIDTH, BOT_HEIGHT, 130, 100);
   noFill();
   fill(0);
   text("POKEMON", 45, 2*height/3 + 10); 
@@ -148,10 +159,10 @@ void battleUI(Battle battle) {
   noFill();
   fill(255);
   circle(width/2, 3*height/4, 30);
-  rect(10, height/2 + 60, width/2 - 20, height/6);
-  rect(10, height/2 + height/5 + 60, width/2 - 20, height/6);
-  rect(width/2 + 10, height/2 + 60, width/2 - 20, height/6);
-  rect(width/2 + 10, height/2 + height/5 + 60, width/2 - 20, height/6);
+  rect(LEFT_WIDTH, TOP_HEIGHT, 130, 100);
+  rect(LEFT_WIDTH, BOT_HEIGHT, 130, 100);
+  rect(RIGHT_WIDTH, TOP_HEIGHT, 130, 100);
+  rect(RIGHT_WIDTH, BOT_HEIGHT, 130, 100);
   noFill();
   fill(0);
   text("FIGHT", 55, 2*height/3 + 10); 

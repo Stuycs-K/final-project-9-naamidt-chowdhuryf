@@ -32,6 +32,9 @@ public class Move {
   public int getMaxPP() {
     return maxPP;
   }
+  public String getName() {
+    return name;
+  }
   public void changePP(int change) {
     pp = Math.max(0,pp-change);
     pp = Math.min(pp, maxPP);
