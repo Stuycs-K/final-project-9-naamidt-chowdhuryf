@@ -268,6 +268,8 @@ void buttonBL() {
   } else if (state == BATTLE) {
     PokeUI();
     state = SPOKEMON;
+  } else if (state == MAP) {
+    link("https://www.pokemon.com/us/pokedex");
   }
 }
 void buttonTL() {
