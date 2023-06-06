@@ -111,7 +111,9 @@ public class Battle {
     } if (turn.getCategory()==2) { // using an item
       Bag bag = trainer.getBag();
       if (turn.getChoice2()==-1) { // we are targeting the enemy's active pokemon
-        bag.use(isEncounter,turn.getChoice(),otherTrainer.getSlot(0));
+        if (bag.use(isEncounter,turn.getChoice(),otherTrainer.getSlot(0))) {
+          win();
+        }
       } else { // we are using a healing item on our own party
         bag.use(isEncounter,turn.getChoice(),trainer.getSlot(turn.getChoice2()));
       }

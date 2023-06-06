@@ -12,8 +12,8 @@ class Bag {
   public Bag() {
     try {
       BufferedReader itemReader = createReader("itemInfo.txt");
-      String line = null;
-      while ((line=itemReader.readLine())!=null) {
+      String line = itemReader.readLine();
+      while (line!=null) {
         String[] data = line.split(" ");
         int id = Integer.parseInt(data[0]);
         String name = String.join(" ",data[1].split("_"));
@@ -25,6 +25,7 @@ class Bag {
         nameToId.put(name,id);
         idToValue.put(id,value);
         idIsPokeball.put(id,isPokeball);
+        line = itemReader.readLine();
       }
     } catch (Exception e) {
       System.out.println("an item oopsie occurred");
