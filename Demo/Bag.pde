@@ -51,7 +51,7 @@ class Bag {
       if (idToAmt.get(itemId)<=0 || target.getCurrentHP()==target.getStats()[1]) { // if we don't have any more of that item or the pokemon is already at max hp
         return false;
       } idToAmt.put(itemId,idToAmt.get(itemId)-1);
-      target.changeHP(-1 *(idToValue.get(itemId)));
+      target.changeHP(idToValue.get(itemId));
       return true;
     }
   }

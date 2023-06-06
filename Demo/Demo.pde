@@ -5,14 +5,20 @@ static final int BAG = 3;
 static final int TEXTBOX = 4;
 static final int WIN = 5;
 static final int POTIONS = 6;
+static final int MPOTIONS = -6;
 static final int POKEBALLS = 7;
 static final int FAINTED = 8;
+
 static final int BPOKEMON = 9;
+static final int SPOKEMON = 11;
+static final int POKEMON = -1;
+
 static final int HPot = 10;
 static final int Pot = 12;
 static final int SPot = 13;
-static final int SPOKEMON = 11;
-static final int POKEMON = -1;
+static final int MPot = -12;
+static final int MSPot = -13;
+static final int MHPot = -10;
 
 static final int LEFT_WIDTH = 10;
 static final int RIGHT_WIDTH = 160;
@@ -229,9 +235,15 @@ void buttonTR() {
   } else if (state == POTIONS) {
     PokeUI();
     state = HPot;
+  } else if (state == MPOTIONS) {
+    PokeUI();
+    state = MHPot;
   } else if (state == POKEBALLS) {
     battle.turn(2, 3);
     checkCaught();
+  } else if (state == MAP) {
+    state = MPOTIONS;
+    potionsUI();
   }
 }
 void buttonBL() {
@@ -247,6 +259,9 @@ void buttonBL() {
   } else if (state == POTIONS) {
     PokeUI();
     state = SPot;
+   } else if (state == MPOTIONS) {
+    PokeUI();
+    state = MSPot;
   } else if (state == POKEBALLS) {
     battle.turn(2, 2);
     checkCaught();
@@ -297,6 +312,9 @@ void buttonTL() {
   } else if (state == POTIONS) {
     PokeUI();
     state = Pot;
+  } else if (state == MPOTIONS) {
+    PokeUI();
+    state = MPot;
   } else if (state == POKEBALLS) {
     battle.turn(2, 1);
     checkCaught();
@@ -349,6 +367,21 @@ void button00() { //for when theres 6 buttons, top left
     text("You healed " + player.getSlot(0).getNickname() + "!", LEFT_WIDTH + 10, TOP_HEIGHT + 60);
     updateHealthBar();
   }
+  else if (state == MPot) {
+    player.getBag().use(false, 4, player.getSlot(0));
+    state = MAP;
+    mapButtons();
+  }
+  else if (state == MSPot) {
+    player.getBag().use(false, 5, player.getSlot(0));
+    state = MAP;
+    mapButtons();
+  }
+  else if (state == MHPot) {
+    player.getBag().use(false, 6, player.getSlot(0));
+    state = MAP;
+    mapButtons();
+  }
 }
 
 void button01() { //top right
@@ -386,6 +419,21 @@ void button01() { //top right
     textboxUI();
     text("You healed " + player.getSlot(0).getNickname() + "!", LEFT_WIDTH + 10, TOP_HEIGHT + 60);
   }
+  else if (state == MPot) {
+    player.getBag().use(false, 4, player.getSlot(3));
+    state = MAP;
+    mapButtons();
+  }
+  else if (state == MSPot) {
+    player.getBag().use(false, 5, player.getSlot(3));
+    state = MAP;
+    mapButtons();
+  }
+  else if (state == MHPot) {
+    player.getBag().use(false, 6, player.getSlot(3));
+    state = MAP;
+    mapButtons();
+  }
 }
 
 void button10() { //middle left
@@ -420,6 +468,21 @@ void button10() { //middle left
     textboxUI();
     text("You healed " + player.getSlot(0).getNickname() + "!", LEFT_WIDTH + 10, TOP_HEIGHT + 60);
     updateHealthBar();
+  }
+  else if (state == MPot) {
+    player.getBag().use(false, 4, player.getSlot(1));
+    state = MAP;
+    mapButtons();
+  }
+  else if (state == MSPot) {
+    player.getBag().use(false, 5, player.getSlot(1));
+    state = MAP;
+    mapButtons();
+  }
+  else if (state == MHPot) {
+    player.getBag().use(false, 6, player.getSlot(1));
+    state = MAP;
+    mapButtons();
   }
 }
 
@@ -456,6 +519,21 @@ void button11() { //middle right
     text("You healed " + player.getSlot(0).getNickname() + "!", LEFT_WIDTH + 10, TOP_HEIGHT + 60);
     updateHealthBar();
   }
+  else if (state == MPot) {
+    player.getBag().use(false, 4, player.getSlot(4));
+    state = MAP;
+    mapButtons();
+  }
+  else if (state == MSPot) {
+    player.getBag().use(false, 5, player.getSlot(4));
+    state = MAP;
+    mapButtons();
+  }
+  else if (state == MHPot) {
+    player.getBag().use(false, 6, player.getSlot(4));
+    state = MAP;
+    mapButtons();
+  }
 }
 
 void button20() { //bottom left
@@ -491,6 +569,21 @@ void button20() { //bottom left
     text("You healed " + player.getSlot(0).getNickname() + "!", LEFT_WIDTH + 10, TOP_HEIGHT + 60);
     updateHealthBar();
   }
+  else if (state == MPot) {
+    player.getBag().use(false, 4, player.getSlot(2));
+    state = MAP;
+    mapButtons();
+  }
+  else if (state == MSPot) {
+    player.getBag().use(false, 5, player.getSlot(2));
+    state = MAP;
+    mapButtons();
+  }
+  else if (state == MHPot) {
+    player.getBag().use(false, 6, player.getSlot(2));
+    state = MAP;
+    mapButtons();
+  }
 }
 
 void button21() { //bottom right
@@ -525,6 +618,21 @@ void button21() { //bottom right
     textboxUI();
     text("You healed " + player.getSlot(0).getNickname() + "!", LEFT_WIDTH + 10, TOP_HEIGHT + 60);
     updateHealthBar();
+  }
+  else if (state == MPot) {
+    player.getBag().use(false, 4, player.getSlot(5));
+    state = MAP;
+    mapButtons();
+  }
+  else if (state == MSPot) {
+    player.getBag().use(false, 5, player.getSlot(5));
+    state = MAP;
+    mapButtons();
+  }
+  else if (state == MHPot) {
+    player.getBag().use(false, 6, player.getSlot(5));
+    state = MAP;
+    mapButtons();
   }
 }
 
