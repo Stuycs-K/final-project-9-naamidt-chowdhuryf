@@ -9,6 +9,7 @@ static final int POKEBALLS = 7;
 static final int FAINTED = 8;
 static final int BPOKEMON = 9;
 static final int HPOKEMON = 10;
+static final int SPOKEMON = 11;
 static final int POKEMON = -1;
 
 static final int LEFT_WIDTH = 10;
@@ -83,7 +84,7 @@ void keyPressed() {
       Trainer enemy = new Trainer("Rival!", new int[]{0, 0}, 0);
       enemy.setPokemon(0, new Pokemon(40, "Charmander", dex.getDex("Charmander")));
       enemy.setPokemon(1, new Pokemon(40, "Bulbasaur", dex.getDex("Bulbasaur")));
-      enemy.setPokemon(2, new Pokemon(40, "Marshadow", dex.getDex("Squirtle")));
+      enemy.setPokemon(2, new Pokemon(40, "Squirtle", dex.getDex("Squirtle")));
       enemy.setPokemon(3, new Pokemon(40, "Marshadow", dex.getDex("Marshadow")));
       enemy.setPokemon(4, new Pokemon(40, "Marshadow", dex.getDex("Marshadow")));
       enemy.setPokemon(5, new Pokemon(40, "Marshadow", dex.getDex("Marshadow")));
@@ -153,16 +154,16 @@ void mouseClicked() {
         button00();
       }
       if (mouseX > LEFT_WIDTH && mouseX < LEFT_WIDTH + 130 && mouseY > 440 && mouseY < 490) {
-        button01();
-      }
-      if (mouseX > LEFT_WIDTH && mouseX < LEFT_WIDTH + 130 && mouseY > 540 && mouseY < 590) {
         button10();
       }
+      if (mouseX > LEFT_WIDTH && mouseX < LEFT_WIDTH + 130 && mouseY > 540 && mouseY < 590) {
+        button20();
+      }
       if (mouseX > RIGHT_WIDTH && mouseX < RIGHT_WIDTH + 130 && mouseY > 340 && mouseY < 390) {
-        button11();
+        button01();
       }
       if (mouseX > RIGHT_WIDTH && mouseX < RIGHT_WIDTH + 130 && mouseY > 440 && mouseY < 490) {
-        button20();
+        button11();
       }
       if (mouseX > RIGHT_WIDTH && mouseX < RIGHT_WIDTH + 130 && mouseY > 540 && mouseY < 590) {
         button21();
@@ -178,16 +179,7 @@ void buttonBack() {
   if (state == POKEMON) {
     state = MAP;
     mapUI();
-  } else if (state == MOVES) {
-    state = BATTLE;
-    battleButtons();
-  } else if (state == POTIONS) {
-    state = BATTLE;
-    battleButtons();
-  } else if (state == POKEBALLS) {
-    state = BATTLE;
-    battleButtons();
-  } else if (state == BPOKEMON) {
+  } else if (state == MOVES || state == POTIONS || state == POKEBALLS || state == BPOKEMON || state == SPOKEMON) {
     state = BATTLE;
     battleButtons();
   } else if (state == BATTLE) {
@@ -254,6 +246,9 @@ void buttonBL() {
   } else if (state == POKEBALLS) {
     battle.turn(2, 2);
     checkCaught();
+  } else if (state == BATTLE) {
+    PokeUI();
+    state = SPOKEMON;
   }
 }
 void buttonTL() {
@@ -329,21 +324,52 @@ void buttonRight() {
 
 
 void button00() { //for when theres 6 buttons, top left
+
 }
 
 void button01() { //top right
+  if (state == SPOKEMON) {
+    battle.turn(1, 3);
+    state = TEXTBOX;
+    textboxUI();
+    text("You switched in " + player.getSlot(0).getNickname() + "!", LEFT_WIDTH + 10, TOP_HEIGHT + 60);
+  }
 }
 
 void button10() { //middle left
+  if (state == SPOKEMON) {
+    battle.turn(1, 1);
+    state = TEXTBOX;
+    textboxUI();
+    text("You switched in " + player.getSlot(0).getNickname() + "!", LEFT_WIDTH + 10, TOP_HEIGHT + 60);
+  }
 }
 
 void button11() { //middle right
+  if (state == SPOKEMON) {
+    battle.turn(1, 4);
+    state = TEXTBOX;
+    textboxUI();
+    text("You switched in " + player.getSlot(0).getNickname() + "!", LEFT_WIDTH + 10, TOP_HEIGHT + 60);
+  }
 }
 
 void button20() { //bottom left
+  if (state == SPOKEMON) {
+    battle.turn(1, 2);
+    state = TEXTBOX;
+    textboxUI();
+    text("You switched in " + player.getSlot(0).getNickname() + "!", LEFT_WIDTH + 10, TOP_HEIGHT + 60);
+  }
 }
 
 void button21() { //bottom right
+  if (state == SPOKEMON) {
+    battle.turn(1, 5);
+    state = TEXTBOX;
+    textboxUI();
+    text("You switched in " + player.getSlot(0).getNickname() + "!", LEFT_WIDTH + 10, TOP_HEIGHT + 60);
+  }
 }
 
 
@@ -645,6 +671,9 @@ void checkCaught() {
     caughtUI();
     textboxUI();
     text("You succesfully caught " + battle.getNpcActive().getNickname() + "!", LEFT_WIDTH + 10, TOP_HEIGHT + 60);
+    if (player.checkParty() != 6) {
+      player.setPokemon(player.checkParty(), battle.getNpcActive());
+    }
   } else {
     state = TEXTBOX;
     textboxUI();
