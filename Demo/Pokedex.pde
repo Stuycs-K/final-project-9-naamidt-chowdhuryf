@@ -200,6 +200,9 @@ public class Pokedex {
     int attack, defense;
     int attackerDex = attacker.getDexNumber();
     int defenderDex = defender.getDexNumber();
+    if (power==0) {
+      return 0;
+    }
     if (m.getSplit()==2) {
       attack = attacker.getStats()[2];
       defense = defender.getStats()[3];
