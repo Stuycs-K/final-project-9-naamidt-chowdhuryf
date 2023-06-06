@@ -21,7 +21,6 @@ int state;
 Battle battle;
 int countdown;
 Trainer player;
-Bag bag;
 Pokedex dex;
 int buttonCount;
 void setup() {

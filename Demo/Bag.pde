@@ -13,11 +13,16 @@ class Bag {
     try {
       BufferedReader itemReader = createReader("itemInfo.txt");
       String line = itemReader.readLine();
+      idToAmt = new HashMap<Integer, Integer>();
+      idToName = new HashMap<Integer, String>();
+      nameToId = new HashMap<String, Integer>();
+      idToValue = new HashMap<Integer, Double>();
+      idIsPokeball = new HashMap<Integer, Boolean>();
       while (line!=null) {
         String[] data = line.split(" ");
         int id = Integer.parseInt(data[0]);
         String name = String.join(" ",data[1].split("_"));
-        Double value = Double.parseDouble(data[2]);
+        double value = Double.parseDouble(data[2]);
         Boolean isPokeball = Boolean.parseBoolean(data[3]);
         int amount = Integer.parseInt(data[4]);
         idToAmt.put(id,amount);
