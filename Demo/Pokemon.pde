@@ -7,7 +7,8 @@ public class Pokemon {
   private int currentHP, level, exp, dexNumber, nature, growthRate, baseExp, captureRate, primaryType, secondaryType, evolutionLevel, availableEvs;
   private PImage spriteFront, spriteBack;
   private String nickname;
-  private Move[] moves, learnset;
+  private Move[] moves;
+  private HashMap<Integer,ArrayList<Move>> learnset;
   private int[] stats, evs, ivs, expChart, baseStats, evYield;
   private Pokedex dex;
   private int currentMove = 0;
@@ -26,8 +27,11 @@ public class Pokemon {
       evolutionLevel = -1;
     } learnset = dex.getLearnset(dexNumber);
     for (int i=1;i<=level;i++) {
-      if (learnset[i]!=null) {
-        moves[currentMove] = learnset[i];
+      if (learnset.get(i)==null) {
+        continue;
+      }
+      for (int j=0;j<learnset.get(i).size();j++) {
+        moves[currentMove] = learnset.get(i).get(j);
         currentMove++;
         currentMove%=4;
       }
@@ -85,11 +89,13 @@ public class Pokemon {
     }
     if (exp>=expChart[level]) {
       level++;
-      if (learnset[level]!=null) {
-        moves[currentMove] = learnset[level];
-        currentMove++;
-        currentMove%=4;
-      } updateStats();
+      if (learnset.get(level)!=null) {
+        for (int i=0;i<learnset.get(level).size();i++) {
+          moves[currentMove] = learnset.get(level).get(i);
+          currentMove++;
+          currentMove%=4;
+        } 
+      }updateStats();
       currentHP = stats[1];
       if (evolutionLevel!=-1&&level>=evolutionLevel) {
         evolve();
