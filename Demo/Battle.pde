@@ -53,6 +53,7 @@ public class Battle {
   // (the slot they are swapping into their first slot) will BOTH have a pokemon AND the pokemon will >0 hp
   // please make sure this is valid before allowing them to swap to a different pokemon
   public void swapDead(Trainer trainer, int slot) {
+    trainer.swapSlot(0, slot);
     while (slot<5 && trainer.getSlot(slot+1)!=null && trainer.getSlot(slot+1).getCurrentHP()>0) {
       trainer.swapSlot(slot,slot+1);
       slot++;

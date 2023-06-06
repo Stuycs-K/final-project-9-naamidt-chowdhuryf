@@ -334,11 +334,22 @@ void button01() { //top right
     textboxUI();
     text("You switched in " + player.getSlot(0).getNickname() + "!", LEFT_WIDTH + 10, TOP_HEIGHT + 60);
   }
+  else if (state == FAINTED) {
+    battle.swapDead(player, 3);
+    state = TEXTBOX;
+    textboxUI();
+    text("You switched in " + player.getSlot(0).getNickname() + "!", LEFT_WIDTH + 10, TOP_HEIGHT + 60);
+  }
 }
 
 void button10() { //middle left
   if (state == SPOKEMON) {
     battle.turn(1, 1);
+    state = TEXTBOX;
+    textboxUI();
+    text("You switched in " + player.getSlot(0).getNickname() + "!", LEFT_WIDTH + 10, TOP_HEIGHT + 60);
+  } else if (state == FAINTED) {
+    battle.swapDead(player, 1);
     state = TEXTBOX;
     textboxUI();
     text("You switched in " + player.getSlot(0).getNickname() + "!", LEFT_WIDTH + 10, TOP_HEIGHT + 60);
@@ -351,6 +362,11 @@ void button11() { //middle right
     state = TEXTBOX;
     textboxUI();
     text("You switched in " + player.getSlot(0).getNickname() + "!", LEFT_WIDTH + 10, TOP_HEIGHT + 60);
+  } else if (state == FAINTED) {
+    battle.swapDead(player, 4);
+    state = TEXTBOX;
+    textboxUI();
+    text("You switched in " + player.getSlot(0).getNickname() + "!", LEFT_WIDTH + 10, TOP_HEIGHT + 60);
   }
 }
 
@@ -360,12 +376,22 @@ void button20() { //bottom left
     state = TEXTBOX;
     textboxUI();
     text("You switched in " + player.getSlot(0).getNickname() + "!", LEFT_WIDTH + 10, TOP_HEIGHT + 60);
+  } else if (state == FAINTED) {
+    battle.swapDead(player, 2);
+    state = TEXTBOX;
+    textboxUI();
+    text("You switched in " + player.getSlot(0).getNickname() + "!", LEFT_WIDTH + 10, TOP_HEIGHT + 60);
   }
 }
 
 void button21() { //bottom right
   if (state == SPOKEMON) {
     battle.turn(1, 5);
+    state = TEXTBOX;
+    textboxUI();
+    text("You switched in " + player.getSlot(0).getNickname() + "!", LEFT_WIDTH + 10, TOP_HEIGHT + 60);
+  } else if (state == FAINTED) {
+    battle.swapDead(player, 5);
     state = TEXTBOX;
     textboxUI();
     text("You switched in " + player.getSlot(0).getNickname() + "!", LEFT_WIDTH + 10, TOP_HEIGHT + 60);
@@ -572,18 +598,23 @@ void caughtUI() {
 
 void checkBattle(Battle battle) {
   if (battle.battleStatus() == 0) {
-    state = BATTLE;
-    battleUI();
+    if (battle.getPlayerActive().getCurrentHP() == 0) {
+      PokeUI();
+      state = FAINTED;
+    } else {
+      state = BATTLE;
+      battleUI();
+    }
   } else {
     state = WIN;
     fill(255);
     rect(LEFT_WIDTH, TOP_HEIGHT, width - 20, height/2 - 80);
     fill(0);
     if (battle.battleStatus() > 0) {
-      text("YOU WIN!", LEFT_WIDTH, TOP_HEIGHT + 60);
+      text("YOU WIN!", LEFT_WIDTH + 10, TOP_HEIGHT + 60);
     }
     if (battle.battleStatus() < 0) {
-      text("YOU LOSE!", LEFT_WIDTH, TOP_HEIGHT + 60);
+      text("YOU LOSE!", LEFT_WIDTH + 10, TOP_HEIGHT + 60);
     }
     noFill();
   }
