@@ -4,6 +4,10 @@ THIS DOCUMENT IS REQUIRED
 ### Group Name: The Boyds
 Collaborators: Taamim Naamid & Fishan Chowdhury (Bell)
 ## Overview
-It's like Emerald Rogue
+It's like Emerald Rogue but really bad
 ## Instructions
-TBD
+H to heal\
+R to randomize party\
+B to fight a wild pokemon\
+F to fight a trainer (not working)\
+WASD to move\
