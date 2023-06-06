@@ -64,8 +64,8 @@ public class Battle {
   // also please make sure that the thing they are doing is valid before it goes into the methods
   // ALSO, remember to check win/loss/continue states after every turn to see what you want to do to continue
   // ALSO ALSO, make sure to check if the player needs to swap dead pokemon into battle every turn, and just use the swapDead method directly
-  public void turn(int category, int choice) {
-    Turn playerTurn = new Turn(player, npc, category, choice);
+  public void turn(int category, int choice, int choice2) {
+    Turn playerTurn = new Turn(player, npc, category, choice, choice2);
     int npcChoice = (int)(Math.random() * 4);
     while (npcActive.getMoveSlot(npcChoice)==null) {
        npcChoice = (int)(Math.random() * 4);
@@ -80,6 +80,11 @@ public class Battle {
       perform(turn);
     }
   }
+  
+  public void turn(int category, int choice) {
+    turn(category, choice, -1);
+  }
+  
   public void perform(Turn turn) {
     Trainer trainer = turn.getTrainer();
     Trainer otherTrainer = turn.getOtherTrainer();

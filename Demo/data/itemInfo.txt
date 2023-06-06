@@ -1,6 +1,6 @@
 1 Pokeball 1.0 true 100
 2 Great_Ball 1.5 true 100
 3 Ultra_Ball 2.25 true 100
-4 Potion 20 false 100
-5 Super_Potion 50 false 100
-6 Hyper_Potion 120 false 100
+4 Potion -20 false 100
+5 Super_Potion -50 false 100
+6 Hyper_Potion -120 false 100

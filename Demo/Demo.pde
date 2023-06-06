@@ -8,7 +8,9 @@ static final int POTIONS = 6;
 static final int POKEBALLS = 7;
 static final int FAINTED = 8;
 static final int BPOKEMON = 9;
-static final int HPOKEMON = 10;
+static final int HPot = 10;
+static final int Pot = 12;
+static final int SPot = 13;
 static final int SPOKEMON = 11;
 static final int POKEMON = -1;
 
@@ -225,7 +227,8 @@ void buttonTR() {
     //text(battle.getNpcActive().getNickname() + " used " + battle.getNpcActive().getMoves()[battle.getNpcChoice()].getName().toUpperCase() + "!", LEFT_WIDTH, BOT_HEIGHT);
     noFill();
   } else if (state == POTIONS) {
-    
+    PokeUI();
+    state = HPot;
   } else if (state == POKEBALLS) {
     battle.turn(2, 3);
     checkCaught();
@@ -242,7 +245,8 @@ void buttonBL() {
     //text(battle.getNpcActive().getNickname() + " used " + battle.getNpcActive().getMoves()[battle.getNpcChoice()].getName().toUpperCase() + "!", LEFT_WIDTH, BOT_HEIGHT);
     noFill();
   } else if (state == POTIONS) {
-    
+    PokeUI();
+    state = SPot;
   } else if (state == POKEBALLS) {
     battle.turn(2, 2);
     checkCaught();
@@ -292,7 +296,7 @@ void buttonTL() {
     mapUI();
   } else if (state == POTIONS) {
     PokeUI();
-    state = HPOKEMON;
+    state = Pot;
   } else if (state == POKEBALLS) {
     battle.turn(2, 1);
     checkCaught();
@@ -324,7 +328,27 @@ void buttonRight() {
 
 
 void button00() { //for when theres 6 buttons, top left
-
+  if (state == Pot) {
+    battle.turn(2,4,0);
+    state = TEXTBOX;
+    textboxUI();
+    text("You healed " + player.getSlot(0).getNickname() + "!", LEFT_WIDTH + 10, TOP_HEIGHT + 60);
+    updateHealthBar();
+  }
+  else if (state == SPot) {
+    battle.turn(2,5,0);
+    state = TEXTBOX;
+    textboxUI();
+    text("You healed " + player.getSlot(0).getNickname() + "!", LEFT_WIDTH + 10, TOP_HEIGHT + 60);
+    updateHealthBar();
+  }
+  else if (state == HPot) {
+    battle.turn(2,6,0);
+    state = TEXTBOX;
+    textboxUI();
+    text("You healed " + player.getSlot(0).getNickname() + "!", LEFT_WIDTH + 10, TOP_HEIGHT + 60);
+    updateHealthBar();
+  }
 }
 
 void button01() { //top right
@@ -333,12 +357,34 @@ void button01() { //top right
     state = TEXTBOX;
     textboxUI();
     text("You switched in " + player.getSlot(0).getNickname() + "!", LEFT_WIDTH + 10, TOP_HEIGHT + 60);
+    updateHealthBar();
   }
   else if (state == FAINTED) {
     battle.swapDead(player, 3);
     state = TEXTBOX;
     textboxUI();
     text("You switched in " + player.getSlot(0).getNickname() + "!", LEFT_WIDTH + 10, TOP_HEIGHT + 60);
+    updateHealthBar();
+  }
+  else if (state == Pot) {
+    battle.turn(2,4,3);
+    state = TEXTBOX;
+    textboxUI();
+    text("You healed " + player.getSlot(0).getNickname() + "!", LEFT_WIDTH + 10, TOP_HEIGHT + 60);
+    updateHealthBar();
+  }
+  else if (state == SPot) {
+    battle.turn(2,5,3);
+    state = TEXTBOX;
+    textboxUI();
+    text("You healed " + player.getSlot(0).getNickname() + "!", LEFT_WIDTH + 10, TOP_HEIGHT + 60);
+    updateHealthBar();
+  }
+  else if (state == HPot) {
+    battle.turn(2,6,3);
+    state = TEXTBOX;
+    textboxUI();
+    text("You healed " + player.getSlot(0).getNickname() + "!", LEFT_WIDTH + 10, TOP_HEIGHT + 60);
   }
 }
 
@@ -354,6 +400,27 @@ void button10() { //middle left
     textboxUI();
     text("You switched in " + player.getSlot(0).getNickname() + "!", LEFT_WIDTH + 10, TOP_HEIGHT + 60);
   }
+  else if (state == Pot) {
+    battle.turn(2,4,1);
+    state = TEXTBOX;
+    textboxUI();
+    text("You healed " + player.getSlot(0).getNickname() + "!", LEFT_WIDTH + 10, TOP_HEIGHT + 60);
+    updateHealthBar();
+  }
+  else if (state == SPot) {
+    battle.turn(2,5,1);
+    state = TEXTBOX;
+    textboxUI();
+    text("You healed " + player.getSlot(0).getNickname() + "!", LEFT_WIDTH + 10, TOP_HEIGHT + 60);
+    updateHealthBar();
+  }
+  else if (state == HPot) {
+    battle.turn(2,6,1);
+    state = TEXTBOX;
+    textboxUI();
+    text("You healed " + player.getSlot(0).getNickname() + "!", LEFT_WIDTH + 10, TOP_HEIGHT + 60);
+    updateHealthBar();
+  }
 }
 
 void button11() { //middle right
@@ -367,6 +434,27 @@ void button11() { //middle right
     state = TEXTBOX;
     textboxUI();
     text("You switched in " + player.getSlot(0).getNickname() + "!", LEFT_WIDTH + 10, TOP_HEIGHT + 60);
+  }
+  else if (state == Pot) {
+    battle.turn(2,4,4);
+    state = TEXTBOX;
+    textboxUI();
+    text("You healed " + player.getSlot(0).getNickname() + "!", LEFT_WIDTH + 10, TOP_HEIGHT + 60);
+    updateHealthBar();
+  }
+  else if (state == SPot) {
+    battle.turn(2,5,4);
+    state = TEXTBOX;
+    textboxUI();
+    text("You healed " + player.getSlot(0).getNickname() + "!", LEFT_WIDTH + 10, TOP_HEIGHT + 60);
+    updateHealthBar();
+  }
+  else if (state == HPot) {
+    battle.turn(2,6,4);
+    state = TEXTBOX;
+    textboxUI();
+    text("You healed " + player.getSlot(0).getNickname() + "!", LEFT_WIDTH + 10, TOP_HEIGHT + 60);
+    updateHealthBar();
   }
 }
 
@@ -382,6 +470,27 @@ void button20() { //bottom left
     textboxUI();
     text("You switched in " + player.getSlot(0).getNickname() + "!", LEFT_WIDTH + 10, TOP_HEIGHT + 60);
   }
+  else if (state == Pot) {
+    battle.turn(2,4,2);
+    state = TEXTBOX;
+    textboxUI();
+    text("You healed " + player.getSlot(0).getNickname() + "!", LEFT_WIDTH + 10, TOP_HEIGHT + 60);
+    updateHealthBar();
+  }
+  else if (state == SPot) {
+    battle.turn(2,5,2);
+    state = TEXTBOX;
+    textboxUI();
+    text("You healed " + player.getSlot(0).getNickname() + "!", LEFT_WIDTH + 10, TOP_HEIGHT + 60);
+    updateHealthBar();
+  }
+  else if (state == HPot) {
+    battle.turn(2,6,2);
+    state = TEXTBOX;
+    textboxUI();
+    text("You healed " + player.getSlot(0).getNickname() + "!", LEFT_WIDTH + 10, TOP_HEIGHT + 60);
+    updateHealthBar();
+  }
 }
 
 void button21() { //bottom right
@@ -395,6 +504,27 @@ void button21() { //bottom right
     state = TEXTBOX;
     textboxUI();
     text("You switched in " + player.getSlot(0).getNickname() + "!", LEFT_WIDTH + 10, TOP_HEIGHT + 60);
+  }
+  else if (state == Pot) {
+    battle.turn(2,4,5);
+    state = TEXTBOX;
+    textboxUI();
+    text("You healed " + player.getSlot(0).getNickname() + "!", LEFT_WIDTH + 10, TOP_HEIGHT + 60);
+    updateHealthBar();
+  }
+  else if (state == SPot) {
+    battle.turn(2,5,5);
+    state = TEXTBOX;
+    textboxUI();
+    text("You healed " + player.getSlot(0).getNickname() + "!", LEFT_WIDTH + 10, TOP_HEIGHT + 60);
+    updateHealthBar();
+  }
+  else if (state == HPot) {
+    battle.turn(2,6,5);
+    state = TEXTBOX;
+    textboxUI();
+    text("You healed " + player.getSlot(0).getNickname() + "!", LEFT_WIDTH + 10, TOP_HEIGHT + 60);
+    updateHealthBar();
   }
 }
 
