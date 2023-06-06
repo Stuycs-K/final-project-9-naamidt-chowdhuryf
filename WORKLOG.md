@@ -19,7 +19,7 @@ HW - Finished that up along with organization of data, couldn't do too much toda
 
 ### 5/25/23
 
-CW - Worked on debugging, adjustments, and a little bit of Trainer
+CW - Worked on debugging, adjustments, and a little bit of Trainer\
 HW - Massive debugging pain, testing going well and continuing to add Trainer stuff and starting on battling
 
 ### 5/26-29/23
@@ -28,15 +28,23 @@ HW - Worked on battling, encounters, the bag, basic items (healing, not held), a
 
 ### 5/30/23
 
-CW - Updating the csv to make it more practical and talked with Bell about the UI side of things
+CW - Updating the csv to make it more practical and talked with Bell about the UI side of things\
 HW - Looked and after an unreasonable amount of time finally found a good csv folder that has every move and every movepool
 
 ### 5/31/23 - 6/1/23
 
-HW - Absolute overhaul of data, all pokemon data and moves and sprites and everything included
-    (except some sprites, why is the showdown api not updated for key pokemon)
-    Also worked on making things work, like adding functionality to movepool, evs are gainable, so is exp, evolutions work, etc
+HW - Absolute overhaul of data, all pokemon data and moves and sprites and everything included\
+    (except some sprites, why is the showdown api not updated for key pokemon)\
+    Also worked on making things work, like adding functionality to movepool, evs are gainable, so is exp, evolutions work, etc\
     Also lots of debugging for the demo, battles still dont work :(
+
+### 6/2-4/23
+ 
+HW - Discussed with Bell how we want to finalize the project, since the Demo is in a very unfinalized state, and what we should do to get there
+
+### 6/5/23
+
+HW - Complete overhaul of battling since it was broken maybe, bag will also get a redesign soon to align with battle better
 
 ## Fishan Chowdhury (Bell)
 
