@@ -109,7 +109,12 @@ public class Battle {
       trainer.swapSlot(0,turn.getChoice());
       updateActive();
     } if (turn.getCategory()==2) { // using an item
-      // use item, lmao this requires bag to be edited
+      Bag bag = trainer.getBag();
+      if (turn.getChoice2()==-1) { // we are targeting the enemy's active pokemon
+        bag.use(isEncounter,turn.getChoice(),otherTrainer.getSlot(0));
+      } else { // we are using a healing item on our own party
+        bag.use(isEncounter,turn.getChoice(),trainer.getSlot(turn.getChoice2()));
+      }
     }
   }
   
@@ -142,11 +147,19 @@ class Turn implements Comparator<Turn> {
   // choice is meant to represent either the moveslot that is being used (if attacking)
   // the pokemon slot that is being switched into the field (if switching)
   // the id of an item that is being used (if using an item)
-  private int choice;
+  // choice2 is only used for when you are using a healing item, and it indicates which slot of your own pokemon you want to use it on
+  // this is because choice1 already needs to take up the item id for when you sue items
+  private int choice, choice2;
   // Do not use this empty constructor pls ty
   public Turn() {}
-  // CONSTRUCTOR NOTE: if the player is using a non-attacking move, just put null for the move parameter of the constructor
+  // CONSTRUCTOR NOTE: if the player is using an item, use this constructor. Otherwise, use the one below it to specify which slot it will be targeting
+  // don't worry about pokeball vs healing item, my code does that for you so long as you give it valid ids
+  // this -1 in choice2 means we are not selecting our own pokemon, which means we are either attacking the enemy pokemon, switching, or using a pokeball
   public Turn(Trainer trainer, Trainer otherTrainer, int category, int choice) {
+    this(trainer,otherTrainer,category,choice,-1);
+  }
+  public Turn(Trainer trainer, Trainer otherTrainer, int category, int choice, int choice2) {
+    this.choice2 = choice2;
     this.trainer = trainer;
     this.otherTrainer = otherTrainer;
     this.category = category;
@@ -170,6 +183,9 @@ class Turn implements Comparator<Turn> {
   }
   public int getChoice() {
     return choice;
+  }
+  public int getChoice2() {
+    return choice2;
   }
   public int getPriority() {
     return priority;
