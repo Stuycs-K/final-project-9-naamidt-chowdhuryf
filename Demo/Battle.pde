@@ -208,9 +208,9 @@ class Turn implements Comparator<Turn> {
         return 1;
       } return 0;
     }
-    if (turn1.getPokemon().getStats()[6]>turn2.getPokemon().getStats()[6]) {
+    if (turn1.getPokemon().getStats()[5]>turn2.getPokemon().getStats()[5]) {
       return -1;
-    } if (turn1.getPokemon().getStats()[6]<turn2.getPokemon().getStats()[6]) {
+    } if (turn1.getPokemon().getStats()[5]<turn2.getPokemon().getStats()[5]) {
       return 1;
     } return 0;
   }
