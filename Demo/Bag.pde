@@ -4,30 +4,50 @@ import java.lang.*;
 import java.math.*;
 
 class Bag {
-  private int[] pokeballs, healingItems;
-  private String[] pokeballNames, healingItemNames;
+  private HashMap<Integer,Integer> idToAmt;
+  private HashMap<Integer,String> idToName;
+  private HashMap<String,Integer> nameToId;
+  private HashMap<Integer,Double> idToValue;
+  private HashMap<Integer,Boolean> idIsPokeball;
   public Bag() {
-    pokeballs = new int[3];
-    pokeballNames = new String[]{"Pokeball", "Great Ball", "Ultra Ball"};
-    healingItems = new int[4];
-    // might make a seperate array for status ailment stuff
-    healingItemNames = new String[]{"Potion", "Super Potion", "Hyper Potion", "Ultra Potion"};
+    try {
+      BufferedReader itemReader = createReader("itemInfo.txt");
+      String line = null;
+      while ((line=itemReader.readLine())!=null) {
+        String[] data = line.split(" ");
+        int id = Integer.parseInt(data[0]);
+        String name = String.join(" ",data[1].split("_"));
+        Double value = Double.parseDouble(data[2]);
+        Boolean isPokeball = Boolean.parseBoolean(data[3]);
+        int amount = Integer.parseInt(data[4]);
+        idToAmt.put(id,amount);
+        idToName.put(id,name);
+        nameToId.put(name,id);
+        idToValue.put(id,value);
+        idIsPokeball.put(id,isPokeball);
+      }
+    } catch (Exception e) {
+      System.out.println("an item oopsie occurred");
+    }
   }
-  public boolean use(boolean encounter, String name, Pokemon target) {
-    // basically, youre not using pokeballs in anything but encounters
-    for (int i=0;i<pokeballNames.length;i++) {
-      if (name.equals(pokeballNames[i])&&pokeballs[i]>0) {
-        if (encounter) {
-          pokeballs[i]--;
-          return catchAttempt(target, getValue(name));
-        } return false;
-      }
-    } for (int i=0;i<healingItemNames.length;i++) {
-      if (healingItemNames[i].equals(name)&&healingItems[i]>0) {
-        healingItems[i]--;
-        target.changeHP((int)getValue(name));
-      }
-    } return false;
+  // little wrapper method if you want to use item name (WITH SPACES)
+  public boolean use(boolean encounter, String itemName, Pokemon target) {
+    return use(encounter,nameToId.get(itemName),target);
+  }
+  public boolean use(boolean encounter, int itemId, Pokemon target) {
+    if (idIsPokeball.get(itemId)) { //if we are trying to use a pokeball
+      if (idToAmt.get(itemId)<=0 || !encounter) { // if we either dont have any more of the pokeball or its not an encounter (we cant catch it) 
+        return false;
+      } // try to catch it otherwise
+      idToAmt.put(itemId,idToAmt.get(itemId)-1);
+      return catchAttempt(target,idToValue.get(itemId));
+    } else { // if we are not using a pokeball (the only option left rn is healing item)
+      if (idToAmt.get(itemId)<=0 || target.getCurrentHP()==target.getStats()[1]) { // if we don't have any more of that item or the pokemon is already at max hp
+        return false;
+      } idToAmt.put(itemId,idToAmt.get(itemId)-1);
+      target.changeHP(idToValue.get(itemId));
+      return true;
+    }
   }
   public boolean catchAttempt(Pokemon encounter, double mult) {
     double odds = ((3*encounter.getStats()[1]-2*encounter.getCurrentHP())*4096*mult)/(3*encounter.getStats()[0]);
@@ -36,47 +56,22 @@ class Bag {
       return true;
     } return false;  
   }
-  public void setPokeball(String name, int amount) {
-    for (int i=0;i<pokeballNames.length;i++) {
-      if (pokeballNames[i].equals(name)) {
-        pokeballs[i]=amount;
-      }
-    }
+  public void setItemAmount(int itemId, int amount) {
+    idToAmt.put(itemId,amount);
   }
-  public int getPokeball(String name) {
-    for (int i=0;i<pokeballNames.length;i++) {
-      if (pokeballNames[i].equals(name)) {
-        return pokeballs[i];
-      }
-    } return -1;
+  public int getItemAmount(int itemId) {
+    return idToAmt.get(itemId);
   }
-  public void setHealingItem(String name, int amount) {
-    for (int i=0;i<healingItemNames.length;i++) {
-      if (healingItemNames[i].equals(name)) {
-        healingItems[i]=amount;
-      }
-    }
+  public double getItemValue(int itemId) {
+    return idToValue.get(itemId);
   }
-  public int getHealingItem(String name) {
-    for (int i=0;i<healingItemNames.length;i++) {
-      if (healingItemNames[i].equals(name)) {
-        return healingItems[i];
-      }
-    } return -1;
+  public String idToName(int itemId) {
+    return idToName.get(itemId);
   }
-  public double getValue(String name) {
-    double value = 1.0;
-    for (int i=0;i<pokeballNames.length;i++) {
-      if (name.equals(pokeballNames[i])) {
-        return value;
-      } else { 
-        value+=0.5;
-      }
-    } value = 20;
-    for (int i=0;i<healingItemNames.length;i++) {
-      if (healingItemNames[i].equals(name)) {
-        return value;
-      } value*=2.5;
-    } return (double)-1;
+  public int nameToId(String name) {
+    return nameToId.get(name);
+  }
+  public boolean idIsPokeball(int itemId) {
+    return idIsPokeball.get(itemId);
   }
 }

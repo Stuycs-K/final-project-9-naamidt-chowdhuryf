@@ -64,6 +64,9 @@ public class Pokemon {
       stats[i-1] = calculateStats(baseStats[i], ivs[i], evs[i], level, natureBoosts[i]);
     }
   }
+  public int changeHP(double changeVal) {
+    return changeHP((int)changeVal);
+  }
   public int changeHP(int changeVal) {
     int initial = currentHP;
     int maxHP = stats[1];
