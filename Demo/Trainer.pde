@@ -10,7 +10,7 @@ public class Trainer {
   private PImage sprite;
   private Pokemon[] party;
   private int pokeNum;
-   private Bag bag;
+  private Bag bag;
   public Trainer(String name, int[] position, int badges) {
     this.name = name;
     this.position = position;
@@ -38,7 +38,7 @@ public class Trainer {
        return i;
      }
    }
-   return 5;
+   return 6;
   }
   
   public void swapSlot(int slot1, int slot2) {

@@ -19,8 +19,32 @@ HW - Finished that up along with organization of data, couldn't do too much toda
 
 ### 5/25/23
 
-CW - Worked on debugging, adjustments, and a little bit of Trainer
+CW - Worked on debugging, adjustments, and a little bit of Trainer\
 HW - Massive debugging pain, testing going well and continuing to add Trainer stuff and starting on battling
+
+### 5/26-29/23
+
+HW - Worked on battling, encounters, the bag, basic items (healing, not held), and some bug fixing
+
+### 5/30/23
+
+CW - Updating the csv to make it more practical and talked with Bell about the UI side of things\
+HW - Looked and after an unreasonable amount of time finally found a good csv folder that has every move and every movepool
+
+### 5/31/23 - 6/1/23
+
+HW - Absolute overhaul of data, all pokemon data and moves and sprites and everything included\
+    (except some sprites, why is the showdown api not updated for key pokemon)\
+    Also worked on making things work, like adding functionality to movepool, evs are gainable, so is exp, evolutions work, etc\
+    Also lots of debugging for the demo, battles still dont work :(
+
+### 6/2-4/23
+ 
+HW - Discussed with Bell how we want to finalize the project, since the Demo is in a very unfinalized state, and what we should do to get there
+
+### 6/5/23
+
+HW - Complete overhaul of battling since it was broken maybe, bag will also get a redesign soon to align with battle better
 
 ## Fishan Chowdhury (Bell)
 
@@ -33,3 +57,19 @@ HW - Finished Move class, needs testing
 
 CW - Fixed a couple of repo erros and merge conflicts, and then added some more methods for moves
 HW - Started testing with new setup; internet cut out for a while so progress was limited
+
+### 5/25/23
+
+CW - Unsuccesful testing of moves, pokedex, and pokedex followed by debugging, followed by succesful tests
+HW - Untangling merge conflicts, followed by map work; added a mapmaker file but still need actual programming and scrolling function
+
+
+### 5/26/23
+
+CW - Wasn't able to do too much, was busy being yelled at and being clarified on how to do the mapmaker properly
+HW - Made a proper mapmaker that reads files and produces maps based on the code with a UI that for now only quits
+
+### 5/30/23
+
+CW - Fixed flickering effect of map and started work on BattleUI
+HW - Continued work on BattleUI and found an updated csv with pokemon data

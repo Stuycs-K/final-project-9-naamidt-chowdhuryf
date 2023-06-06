@@ -53,6 +53,7 @@ public class Battle {
   // (the slot they are swapping into their first slot) will BOTH have a pokemon AND the pokemon will >0 hp
   // please make sure this is valid before allowing them to swap to a different pokemon
   public void swapDead(Trainer trainer, int slot) {
+    trainer.swapSlot(0, slot);
     while (slot<5 && trainer.getSlot(slot+1)!=null && trainer.getSlot(slot+1).getCurrentHP()>0) {
       trainer.swapSlot(slot,slot+1);
       slot++;
@@ -63,8 +64,8 @@ public class Battle {
   // also please make sure that the thing they are doing is valid before it goes into the methods
   // ALSO, remember to check win/loss/continue states after every turn to see what you want to do to continue
   // ALSO ALSO, make sure to check if the player needs to swap dead pokemon into battle every turn, and just use the swapDead method directly
-  public void turn(int category, int choice) {
-    Turn playerTurn = new Turn(player, npc, category, choice);
+  public void turn(int category, int choice, int choice2) {
+    Turn playerTurn = new Turn(player, npc, category, choice, choice2);
     int npcChoice = (int)(Math.random() * 4);
     while (npcActive.getMoveSlot(npcChoice)==null) {
        npcChoice = (int)(Math.random() * 4);
@@ -79,6 +80,11 @@ public class Battle {
       perform(turn);
     }
   }
+  
+  public void turn(int category, int choice) {
+    turn(category, choice, -1);
+  }
+  
   public void perform(Turn turn) {
     Trainer trainer = turn.getTrainer();
     Trainer otherTrainer = turn.getOtherTrainer();
@@ -111,7 +117,9 @@ public class Battle {
     } if (turn.getCategory()==2) { // using an item
       Bag bag = trainer.getBag();
       if (turn.getChoice2()==-1) { // we are targeting the enemy's active pokemon
-        bag.use(isEncounter,turn.getChoice(),otherTrainer.getSlot(0));
+        if (bag.use(isEncounter,turn.getChoice(),otherTrainer.getSlot(0))) {
+          win();
+        }
       } else { // we are using a healing item on our own party
         bag.use(isEncounter,turn.getChoice(),trainer.getSlot(turn.getChoice2()));
       }
@@ -208,9 +216,9 @@ class Turn implements Comparator<Turn> {
         return 1;
       } return 0;
     }
-    if (turn1.getPokemon().getStats()[6]>turn2.getPokemon().getStats()[6]) {
+    if (turn1.getPokemon().getStats()[5]>turn2.getPokemon().getStats()[5]) {
       return -1;
-    } if (turn1.getPokemon().getStats()[6]<turn2.getPokemon().getStats()[6]) {
+    } if (turn1.getPokemon().getStats()[5]<turn2.getPokemon().getStats()[5]) {
       return 1;
     } return 0;
   }
