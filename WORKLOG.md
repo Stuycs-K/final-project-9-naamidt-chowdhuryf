@@ -46,6 +46,12 @@ HW - Discussed with Bell how we want to finalize the project, since the Demo is 
 
 HW - Complete overhaul of battling since it was broken maybe, bag will also get a redesign soon to align with battle better
 
+### 6/6/23
+
+CW - Updated Bell on what happened in class and coordinated something we needed to add in battles\
+HW - Added the field for Bell in the Battle class as well as allowing learnsets to have multiple moves learned even if they are\
+counted as "the same level"
+
 ## Fishan Chowdhury (Bell)
 
 ### 5/23/23
