@@ -10,6 +10,7 @@ public class Battle {
   private Pokedex dex;
   private boolean isEncounter;
   private int battleStatus;
+  private Move npcRecentMove;
   // battleStatus will return a number based on whether or not the battle is done and if it is won/lost
   // it be 0 if the battle is ongoing, 1 if the player won the battle (it ended), or -1 if the player lost the battle (it ended)
   public Battle(Trainer player, Trainer npc) {
@@ -20,6 +21,7 @@ public class Battle {
     dex = new Pokedex();
     turnOrder = new PriorityQueue<Turn>(2, new Turn());
     battleStatus = 0;
+    npcRecentMove = null;
   }
   // here's a constructor for wild encounters
   public Battle(Trainer player, Pokemon encounter) {
@@ -67,6 +69,7 @@ public class Battle {
   public void turn(int category, int choice, int choice2) {
     Turn playerTurn = new Turn(player, npc, category, choice, choice2);
     int npcChoice = (int)(Math.random() * 4);
+    npcRecentMove = null;
     while (npcActive.getMoveSlot(npcChoice)==null) {
        npcChoice = (int)(Math.random() * 4);
     } Turn npcTurn = new Turn(npc, player, 0, npcChoice);
@@ -92,7 +95,9 @@ public class Battle {
       Pokemon attacker = turn.getPokemon();
       Pokemon defender = turn.getOtherPokemon();
       Move move = attacker.getMoveSlot(turn.getChoice());
-      int damage = dex.damageCalculator(attacker, defender, move);
+      if (trainer==npc) { // if the attacking trainer is the npc, save their move
+        npcRecentMove = move;
+      } int damage = dex.damageCalculator(attacker, defender, move);
       move.changePP(1);
       defender.changeHP(damage);
       // deals standard damage by this point
@@ -144,6 +149,10 @@ public class Battle {
   }
   public int battleStatus() {
     return battleStatus;
+  }
+  // this will return null if the enemy has not recently made a move
+  public Move getEnemyMove() {
+    return npcRecentMove;
   }
 }
 class Turn implements Comparator<Turn> { 

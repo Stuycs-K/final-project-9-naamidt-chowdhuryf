@@ -10,7 +10,7 @@ public class Pokedex {
   HashMap<Integer,Move> movedex;
   HashMap<Integer,Nature> naturedex;
   HashMap<Integer,Integer> baseExp, captureRate, growthRate, primaryType, secondaryType;
-  HashMap<Integer,Move[]> learnset;
+  HashMap<Integer,HashMap<Integer,ArrayList<Move>>> learnset;
   HashMap<Integer,Evolution> evolutionData, evolutions;
   HashMap<String, Integer> speciesToDex;
   HashMap<Integer,HashMap<Integer, Double>> typeChart;
@@ -73,19 +73,41 @@ public class Pokedex {
       } baseExpMaker.close();
       
       // Learnset Intialization
-      learnset = new HashMap<Integer,Move[]>();
+      //learnset = new HashMap<Integer,ArrayList<Move>>();
+      //BufferedReader learnsetMaker = createReader("pokemon_moves.csv");
+      //learnsetMaker.readLine(); // skip line 1
+      //String line = null;
+      //int currentPokemon = 0;
+      //Move[] movepool = new Move[0];
+      //while ((line=learnsetMaker.readLine())!=null) {
+      //  String[] data = line.split(",");
+      //  if (Integer.parseInt(data[0])!=currentPokemon) {
+      //    learnset.put(currentPokemon,movepool);
+      //    movepool = new Move[101]; // 100 levels + 1 for index 0 offset
+      //    currentPokemon = Integer.parseInt(data[0]);
+      //  } movepool[Integer.parseInt(data[3])] = movedex.get(Integer.parseInt(data[1]));
+      //} learnsetMaker.close();
+      
+      learnset = new HashMap<Integer,HashMap<Integer,ArrayList<Move>>>();
       BufferedReader learnsetMaker = createReader("pokemon_moves.csv");
-      learnsetMaker.readLine(); // skip line 1
+      learnsetMaker.readLine(); // line 1 bad
       String line = null;
       int currentPokemon = 0;
-      Move[] movepool = new Move[0];
+      int currentLevel = 0;
+      HashMap<Integer,ArrayList<Move>> levelLearnset = new HashMap<Integer,ArrayList<Move>>();
+      ArrayList<Move> newMoves = new ArrayList<Move>();
       while ((line=learnsetMaker.readLine())!=null) {
         String[] data = line.split(",");
         if (Integer.parseInt(data[0])!=currentPokemon) {
-          learnset.put(currentPokemon,movepool);
-          movepool = new Move[101]; // 100 levels + 1 for index 0 offset
+          currentLevel = 0;
+          learnset.put(currentPokemon,levelLearnset);
+          levelLearnset = new HashMap<Integer,ArrayList<Move>>();
           currentPokemon = Integer.parseInt(data[0]);
-        } movepool[Integer.parseInt(data[3])] = movedex.get(Integer.parseInt(data[1]));
+        } if (Integer.parseInt(data[3])!=currentLevel) {
+          levelLearnset.put(currentLevel,newMoves);
+          newMoves = new ArrayList<Move>();
+          currentLevel = Integer.parseInt(data[3]);
+        } newMoves.add(movedex.get(Integer.parseInt(data[1])));
       } learnsetMaker.close();
       
       // Variety of Initializations
@@ -240,7 +262,7 @@ public class Pokedex {
   }
   public void randomizeParty(Trainer trainer) {
     for (int i=0;i<6;i++) {
-      trainer.setPokemon(i,randomPokemon(50));
+      trainer.setPokemon(i,randomPokemon(1));
     }
   }
   
@@ -261,11 +283,11 @@ public class Pokedex {
   public int getBaseExp(int id) {
     return baseExp.get(id);
   }
-  public Move[] getLearnset(int id) {
+  public HashMap<Integer,ArrayList<Move>> getLearnset(int id) {
     return learnset.get(id);
   }
-  public Move getLevelUpMove(int id, int level) {
-    return learnset.get(id)[level];
+  public ArrayList<Move> getLevelUpMoves(int id, int level) {
+    return learnset.get(id).get(level);
   }
   public Evolution getEvolution(int id) {
     return evolutions.get(id);
