@@ -39,7 +39,7 @@ HW - Absolute overhaul of data, all pokemon data and moves and sprites and every
     Also lots of debugging for the demo, battles still dont work :(
 
 ### 6/2-4/23
- 
+
 HW - Discussed with Bell how we want to finalize the project, since the Demo is in a very unfinalized state, and what we should do to get there
 
 ### 6/5/23
@@ -79,3 +79,11 @@ HW - Made a proper mapmaker that reads files and produces maps based on the code
 
 CW - Fixed flickering effect of map and started work on BattleUI
 HW - Continued work on BattleUI and found an updated csv with pokemon data
+
+### 5/31/23 - 6/1/23
+
+HW - continued working on BattleUI and finished a few buttons, flickering, and started fighting buttons
+
+### 6/2 - 6/4
+
+HW - 
