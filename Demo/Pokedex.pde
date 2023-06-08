@@ -262,7 +262,7 @@ public class Pokedex {
   }
   public void randomizeParty(Trainer trainer) {
     for (int i=0;i<6;i++) {
-      trainer.setPokemon(i,randomPokemon(1));
+      trainer.setPokemon(i,randomPokemon(50));
     }
   }
   
