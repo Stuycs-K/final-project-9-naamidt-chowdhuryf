@@ -11,5 +11,5 @@ public class Event() {
   }
   public int interact() {
     return 1;
-  }
+  } 
 }

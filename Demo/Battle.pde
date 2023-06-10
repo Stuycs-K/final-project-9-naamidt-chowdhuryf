@@ -76,20 +76,26 @@ public class Battle {
     } Turn npcTurn = new Turn(npc, player, 0, npcChoice);
     turnOrder.add(playerTurn);
     turnOrder.add(npcTurn);
-    Turn turn;
-    turn = turnOrder.poll();
-    perform(turn);
-    if (!turnOrder.isEmpty()) {
-      turn = turnOrder.poll();
-      perform(turn);
-    }
   }
-  
+  // returns -1 if there is no turn (a pokemon moved first and KOd the other pokemon, so the turn ends after they switch)
+  // else, returns a perform key code
+  public int stepTurn() {
+    Turn turn = turnOrder.poll();
+    if (turn==null) {
+      return -1;
+    } return perform(turn);
+  }
   public void turn(int category, int choice) {
     turn(category, choice, -1);
   }
   
-  public void perform(Turn turn) {
+  // RETURN KEY
+  // 0 - normal attack/item use, did nothing special
+  // 1 - critical hit
+  // 2 - move failed (missed, but just display it as failed for future purposes)
+  // 3 - capture success
+  public int perform(Turn turn) {
+    int returnVal = 0;
     Trainer trainer = turn.getTrainer();
     Trainer otherTrainer = turn.getOtherTrainer();
     if (turn.getCategory()==0) { // attacking move
@@ -99,7 +105,16 @@ public class Battle {
       if (trainer==npc) { // if the attacking trainer is the npc, save their move
         npcRecentMove = move;
       } int damage = dex.damageCalculator(attacker, defender, move);
+      double critMultiplier = 1;
+       if ((int)(Math.random()*16)==0) {
+         critMultiplier=1.5;
+         returnVal = 1;
+      } damage=(int)(damage*critMultiplier);
       move.changePP(1);
+      int accuracyCheck = (int)(Math.random()*100);
+      if (accuracyCheck>move.getAccuracy()) {
+        return 2;
+      }
       defender.changeHP(damage);
       // deals standard damage by this point
       if (defender.getCurrentHP()<=0) { // if the defending pokemon faints
@@ -125,11 +140,12 @@ public class Battle {
       if (turn.getChoice2()==-1) { // we are targeting the enemy's active pokemon
         if (bag.use(isEncounter,turn.getChoice(),otherTrainer.getSlot(0))) {
           win();
+          return 3;
         }
       } else { // we are using a healing item on our own party
         bag.use(isEncounter,turn.getChoice(),trainer.getSlot(turn.getChoice2()));
       }
-    }
+    } return returnVal;
   }
   
   

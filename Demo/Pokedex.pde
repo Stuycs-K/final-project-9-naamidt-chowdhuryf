@@ -223,9 +223,6 @@ public class Pokedex {
     int attack, defense;
     int attackerDex = attacker.getDexNumber();
     int defenderDex = defender.getDexNumber();
-    if (power==0) {
-      return 0;
-    }
     if (m.getSplit()==2) {
       attack = attacker.getStats()[2];
       defense = defender.getStats()[3];
@@ -236,10 +233,6 @@ public class Pokedex {
       attack = 0;
       defense = 1;
     }
-    double critMultiplier = 1;
-    if ((int)(Math.random()*16)==0) {
-      critMultiplier=1.5;
-    }
     double stab = 1;
     if (primaryType.get(attackerDex).equals(m.getType())||secondaryType.get(attackerDex).equals(m.getType())) {
       stab = 1.5;
@@ -249,9 +242,12 @@ public class Pokedex {
     if (secondaryType.get(defenderDex)!=null) {
       typeAdvantage*=typeChart.get(m.getType()).get(secondaryType.get(defenderDex));
     }
+    if (power==0||typeAdvantage==(double)0) {
+      return 0;
+    }
     double roll = ((int)(Math.random()*16)+85)/100.0;
     int damage = ((2*level/5+2)*power*attack/defense)/50;
-    damage=(int)(damage*critMultiplier*stab*typeAdvantage*roll);
+    damage=(int)(damage*stab*typeAdvantage*roll);
     return Math.max(1, damage);
   }
   public int randomNature() {
