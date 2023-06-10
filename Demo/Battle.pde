@@ -24,10 +24,11 @@ public class Battle {
     npcRecentMove = null;
   }
   // here's a constructor for wild encounters
-  public Battle(Trainer player, Pokemon encounter) {
+  public Battle(Trainer player) {
+    Pokemon encounter = dex.randomPokemon(player);
     isEncounter = true;
     this.player = player;
-    Trainer temp = new Trainer("Wild "+encounter.getNickname(),new int[]{0,0},0);
+    Trainer temp = new Trainer("Wild "+encounter.getNickname(),new int[]{0,0},player.getBadges());
     temp.setPokemon(0,encounter);
     npc = temp;
     updateActive();

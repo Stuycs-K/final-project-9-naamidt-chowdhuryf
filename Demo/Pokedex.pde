@@ -257,13 +257,18 @@ public class Pokedex {
   public int randomNature() {
     return (int)(Math.random()*25)+1;
   }
-  public Pokemon randomPokemon(int level) {
-    int dexNumber = (int)(Math.random()*920)+1;
-    return new Pokemon(level, dexToSpecies.get(dexNumber), dexNumber);
+  public Pokemon randomPokemon(Trainer trainer) {
+    while (true) {
+      int dexNumber = (int)(Math.random()*920)+1;
+      Pokemon pokemon = new Pokemon(level, dexToSpecies.get(dexNumber), dexNumber);
+      if (pokemon.getBst()>60*trainer.getBadges()&&pokemon.getBst()<350+60*trainer.getBadges()) {
+        return pokemon;
+      }
+    }
   }
   public void randomizeParty(Trainer trainer) {
     for (int i=0;i<6;i++) {
-      trainer.setPokemon(i,randomPokemon(50));
+      trainer.setPokemon(i,randomPokemon(trainer));
     }
   }
   

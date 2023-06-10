@@ -4,7 +4,7 @@ import java.lang.*;
 import java.math.*;
 
 public class Pokemon {
-  private int currentHP, level, exp, dexNumber, nature, growthRate, baseExp, captureRate, primaryType, secondaryType, evolutionLevel, availableEvs;
+  private int currentHP, level, exp, dexNumber, nature, growthRate, baseExp, captureRate, primaryType, secondaryType, evolutionLevel, availableEvs, bst;
   private PImage spriteFront, spriteBack;
   private String nickname;
   private Move[] moves;
@@ -55,6 +55,10 @@ public class Pokemon {
     updateStats();
     currentHP = stats[1];
     exp = expChart[level];
+    bst = 0;
+    for (int i=0;i<baseStats;i++) {
+      bst+=baseStats[i];
+    }
   }
   public int calculateStats(int base, int iv, int ev, int level, double nature) {
     int stat;
@@ -215,6 +219,9 @@ public class Pokemon {
          evs[i]+=evYield[i];
        }
     } updateStats();
+  }
+  public int getBst() {
+    return bst;
   }
   public String toString() {
     String ret = "\""+nickname+"\" "+dexNumber+" "+dex.getSpecies(dexNumber)+" Level: "+level+" "+dex.getPrimaryType(dexNumber);
