@@ -26,7 +26,7 @@ public class Pokemon {
     } else {
       evolutionLevel = -1;
     } learnset = dex.getLearnset(dexNumber);
-    for (int i=1;i<=level;i++) {
+    for (int i=0;i<=level;i++) {
       if (learnset.get(i)==null) {
         continue;
       }

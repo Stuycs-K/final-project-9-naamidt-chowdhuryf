@@ -52,6 +52,9 @@ void setup() {
   random.addExp(100);
   player.setPokemon(0, random);
   buttonCount = 4;
+  for (int i=0;i<=100;i++) {
+    System.out.println("Level "+i+": "+dex.getLearnset(1).get(i));
+  }
 
   //String dir = sketchPath();
   //System.out.println(dir);
