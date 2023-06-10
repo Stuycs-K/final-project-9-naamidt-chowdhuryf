@@ -258,8 +258,7 @@ public class Pokedex {
     return (int)(Math.random()*25)+1;
   }
   public Pokemon randomPokemon(int level) {
-    //int dexNumber = (int)(Math.random()*920)+1;
-    int dexNumber = 429;
+    int dexNumber = (int)(Math.random()*920)+1;
     return new Pokemon(level, dexToSpecies.get(dexNumber), dexNumber);
   }
   public void randomizeParty(Trainer trainer) {
