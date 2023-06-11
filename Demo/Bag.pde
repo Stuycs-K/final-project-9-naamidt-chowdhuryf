@@ -56,8 +56,11 @@ class Bag {
     }
   }
   public boolean catchAttempt(Pokemon encounter, double mult) {
-    double odds = ((3*encounter.getStats()[1]-2*encounter.getCurrentHP())*4096*mult)/(3*encounter.getStats()[0]);
-    double roll = Math.random()*4096;
+    int odds = (int)((3*encounter.getStats()[1]-2*encounter.getCurrentHP())*4096*mult*encounter.getCaptureRate())/(3*encounter.getStats()[0]);
+    if (encounter.getStatus()!=0) {
+      odds*=2;
+    }
+    int roll = (int)(Math.random()*255*4096);
     if (roll<odds) {
       return true;
     } return false;  
