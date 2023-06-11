@@ -332,8 +332,12 @@ public class Pokedex {
     }
   }
   public void randomizeParty(Trainer trainer) {
-    for (int i=0;i<6;i++) {
+    int pokemon = Math.min(Math.max(2,trainer.getBadges()+1),6)
+    for (int i=0;i<pokemon;i++) {
       trainer.setPokemon(i,randomPokemon(trainer));
+    }
+    for (int i=pokemon;i<6;i++) {
+      trainer.setPokemon(i,null);
     }
   }
   
