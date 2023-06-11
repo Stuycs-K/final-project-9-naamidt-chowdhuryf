@@ -18,6 +18,8 @@ public class Battle {
     this.player = player;
     this.npc = npc;
     updateActive();
+    playerActive.clearStatBoosts();
+    npcActive.clearStatBoosts();
     dex = new Pokedex();
     turnOrder = new PriorityQueue<Turn>(2, new Turn());
     battleStatus = 0;
@@ -61,6 +63,7 @@ public class Battle {
       trainer.swapSlot(slot,slot+1);
       slot++;
     } updateActive();
+    trainer.getSlot(0).clearStatBoosts();
   }
   // IMPORTANT: see turn constructor to reference what category and choice mean, and what to initialize them as
   // you will be inputting the player's choice here and it will perform with it
@@ -92,13 +95,16 @@ public class Battle {
   // RETURN KEY
   // 0 - normal attack/item use, did nothing special
   // 1 - critical hit
-  // 2 - move failed (missed, but just display it as failed for future purposes)
+  // 2 - move missed
   // 3 - capture success
+  // 4 - paralyzed and couldnt move
+  // 5 - frozen and couldnt move
+  // 6 - asleep and couldnt move
   public int perform(Turn turn) {
     int returnVal = 0;
     Trainer trainer = turn.getTrainer();
     Trainer otherTrainer = turn.getOtherTrainer();
-    if (turn.getCategory()==0) { // attacking move
+    if (turn.getCategory()==0) { // using a pokemons move
       Pokemon attacker = turn.getPokemon();
       Pokemon defender = turn.getOtherPokemon();
       Move move = attacker.getMoveSlot(turn.getChoice());
@@ -130,11 +136,13 @@ public class Battle {
           // if they didnt have a next pokemon to swap into, they wouldve alr lost in the stuff above
           // this means that if the PLAYER loses a pokemon, you need to check in the ui for that and swapDead according to their input
           swapDead(npc,1);
+          npcActive.clearStatBoosts();
         }
       }
     } if (turn.getCategory()==1) { // switching active pokemon
       trainer.swapSlot(0,turn.getChoice());
       updateActive();
+      playerActive.clearStatBoosts();
     } if (turn.getCategory()==2) { // using an item
       Bag bag = trainer.getBag();
       if (turn.getChoice2()==-1) { // we are targeting the enemy's active pokemon
@@ -147,7 +155,19 @@ public class Battle {
       }
     } return returnVal;
   }
-  
+  public void endTurn() { // make sure that you force the player to switch if their pokemon died after burn/poison damage 
+    if (playerActive.getStatus()==1||playerActive.getStatus()==5) {
+      playerActive.changeHP(playerActive.getStats()[1]/8);
+    } if (npcActive.getStatus()==1||npcActive.getStatus()==5) {
+      npcActive.changeHP(npcActive.getSTats()[1]/8);
+    } if (playerActive.getCurrentHP()<=0&&(player.getSlot(1)==null||player.getSlot(1).getCurrentHP()<=0) { //if your pokemon died & you have nothing to switch in
+      lose();
+    } if (npcActive.getCurrentHP()<=0) { // if the npcs pokemon died 
+      if (npc.getSlot(1)==null||npc.getSlot(1).getCurrentHP()<=0) { // if it has nothing to switch in
+        win();
+      } swapDead(npc,1);
+    }
+  }
   
   public Trainer getPlayer() {
     return player;
@@ -242,9 +262,17 @@ class Turn implements Comparator<Turn> {
         return 1;
       } return 0;
     }
-    if (turn1.getPokemon().getStats()[5]>turn2.getPokemon().getStats()[5]) {
+    double speedMult1 = dex.getBoostToVal(turn1.getPokemon.getStatBoosts()[6]);
+    if (turn1.getPokemon().getStatus()==3) { // if they are parad
+      speedMult1 = 0.5;
+    } 
+    double speedMult2 = dex.getBoostToVal(turn2.getPokemon.getStatBoosts()[6]);
+    if (turn2.getPokemon().getStatus()==3) { // if they are parad
+      speedMult2 = 0.5;
+    } 
+    if (turn1.getPokemon().getStats()[5]*speedMult1>turn2.getPokemon().getStats()[5]*speedMult2) {
       return -1;
-    } if (turn1.getPokemon().getStats()[5]<turn2.getPokemon().getStats()[5]) {
+    } if (turn1.getPokemon().getStats()[5]*speedMult1<turn2.getPokemon().getStats()[5]*speedMult2) {
       return 1;
     } return 0;
   }
