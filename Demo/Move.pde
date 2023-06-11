@@ -56,12 +56,12 @@ public class Move {
     }
   }
   public boolean applySecondary(Pokemon user, Pokemon otherPokemon, int damageDealt) { // return true if it worked and false if it didnt
-    Pokemon target;
+    Pokemon target = user;
     if (secondaryTarget == 1) {
       target = user;
     } if (secondaryTarget == 2) {
       target = otherPokemon;
-    if (secondaryType == 1) {
+    } if (secondaryType == 1) {
       return target.setStatus(secondaryEffect);
     } if (secondaryType == 2) {
       return target.setStatBoost(secondaryEffect,secondaryExtra);

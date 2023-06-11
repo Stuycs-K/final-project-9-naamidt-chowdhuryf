@@ -107,6 +107,23 @@ public class Battle {
     if (turn.getCategory()==0) { // using a pokemons move
       Pokemon attacker = turn.getPokemon();
       Pokemon defender = turn.getOtherPokemon();
+      int paraCheck = (int)(Math.random()*4);
+      if (paraCheck==0&&attacker.getStatus()==3) {
+        return 4;
+      }
+      int freezeCheck = (int)(Math.random()*5);
+      if (freezeCheck!=0&&attacker.getStatus()==2) {
+        return 5;
+      } if (attacker.getStatus()==2) {
+        attacker.clearStatus();
+      }
+      int sleepCheck = (int)(Math.random()*10);
+      if (sleepCheck>3&&attacker.getStatus()==4) {
+        return 6;
+      } if (attacker.getStatus()==4) {
+        attacker.clearStatus();
+      }
+      // basically, these are checks for para/sleep/freeze conditions
       Move move = attacker.getMoveSlot(turn.getChoice());
       if (trainer==npc) { // if the attacking trainer is the npc, save their move
         npcRecentMove = move;
@@ -122,6 +139,9 @@ public class Battle {
         return 2;
       }
       defender.changeHP(damage);
+      if (move.getType()==10&&defender.getStatus()==2) { // if the defending pokemon is hit with a fire-type move while frozen, then thaw them out
+        defender.clearStatus();
+      }
       // deals standard damage by this point
       if (defender.getCurrentHP()<=0) { // if the defending pokemon faints
         rewardKill(attacker, defender);
@@ -130,7 +150,7 @@ public class Battle {
             win();
           } else { // if we just got beat up
             lose();
-          } return;
+          }
         } if (otherTrainer == npc) { 
           // if the npc lost a pokemon, just swap it with the next pokemon they have
           // if they didnt have a next pokemon to swap into, they wouldve alr lost in the stuff above
@@ -138,7 +158,7 @@ public class Battle {
           swapDead(npc,1);
           npcActive.clearStatBoosts();
         }
-      }
+      } return returnVal;
     } if (turn.getCategory()==1) { // switching active pokemon
       trainer.swapSlot(0,turn.getChoice());
       updateActive();
@@ -159,8 +179,8 @@ public class Battle {
     if (playerActive.getStatus()==1||playerActive.getStatus()==5) {
       playerActive.changeHP(playerActive.getStats()[1]/8);
     } if (npcActive.getStatus()==1||npcActive.getStatus()==5) {
-      npcActive.changeHP(npcActive.getSTats()[1]/8);
-    } if (playerActive.getCurrentHP()<=0&&(player.getSlot(1)==null||player.getSlot(1).getCurrentHP()<=0) { //if your pokemon died & you have nothing to switch in
+      npcActive.changeHP(npcActive.getStats()[1]/8);
+    } if (playerActive.getCurrentHP()<=0&&(player.getSlot(1)==null||player.getSlot(1).getCurrentHP()<=0)) { //if your pokemon died & you have nothing to switch in
       lose();
     } if (npcActive.getCurrentHP()<=0) { // if the npcs pokemon died 
       if (npc.getSlot(1)==null||npc.getSlot(1).getCurrentHP()<=0) { // if it has nothing to switch in
