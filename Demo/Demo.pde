@@ -31,6 +31,15 @@ static final int RIGHT_WIDTH = 160;
 static final int TOP_HEIGHT = 360;
 static final int BOT_HEIGHT = 480;
 
+static final int PLAYERTEXTBOXHIT = 1000;
+static final int ENEMYTEXTBOXHIT = 1001;
+static final int PLAYERTEXTBOXSUMMARY = 2000;
+static final int EFFECTIVETEXT = 3000;
+static final int ENEMYTEXTBOXSUMMARY = 4000;
+static final int BALLTEXT = 5000;
+static final int POTIONTEXT = 6000;
+
+
 Map map;
 int state;
 Battle battle;
@@ -48,7 +57,7 @@ void setup() {
   mapUI();
   dex = new Pokedex();
   player = new Trainer("Me!", new int[]{0, 0}, 0);
-  Pokemon random = dex.randomPokemon(50);
+  Pokemon random = dex.randomPokemon(player);
   random.addExp(100);
   player.setPokemon(0, random);
   buttonCount = 4;
@@ -92,19 +101,17 @@ void keyPressed() {
       map.move(LEFT);
     }
     if (key == 'b') {
-      Pokemon random = dex.randomPokemon(30);
-      random.addExp(10);
-      battle = new Battle(player, random);
+      battle = new Battle(player);
       state = BATTLE;
     }
     if (key == 't') {
       Trainer enemy = new Trainer("Rival!", new int[]{0, 0}, 0);
-      enemy.setPokemon(0, new Pokemon(40, "Charmander", dex.getDex("Charmander")));
-      enemy.setPokemon(1, new Pokemon(40, "Bulbasaur", dex.getDex("Bulbasaur")));
-      enemy.setPokemon(2, new Pokemon(40, "Squirtle", dex.getDex("Squirtle")));
-      enemy.setPokemon(3, new Pokemon(40, "Marshadow", dex.getDex("Marshadow")));
-      enemy.setPokemon(4, new Pokemon(40, "Marshadow", dex.getDex("Marshadow")));
-      enemy.setPokemon(5, new Pokemon(40, "Marshadow", dex.getDex("Marshadow")));
+      enemy.setPokemon(0, dex.randomPokemon(player));
+      enemy.setPokemon(1, dex.randomPokemon(player));
+      enemy.setPokemon(2, dex.randomPokemon(player));
+      enemy.setPokemon(3, dex.randomPokemon(player));
+      enemy.setPokemon(4, dex.randomPokemon(player));
+      enemy.setPokemon(5, dex.randomPokemon(player));
       battle = new Battle(player, enemy);
       state = BATTLE;
     }
@@ -227,7 +234,7 @@ void buttonBR() {
     updateHealthBar();
     state = TEXTBOX;
     textboxUI();
-    moveText();
+    //<><><>>MOVES
     noFill();
   } else if (state == BAG) {
     state = BATTLE;
@@ -248,7 +255,7 @@ void buttonTR() {
     updateHealthBar();
     state = TEXTBOX;
     textboxUI();
-    moveText();
+    //<><><>
     noFill();
   } else if (state == POTIONS) {
     PokeUI();
@@ -271,7 +278,7 @@ void buttonBL() {
     updateHealthBar();
     state = TEXTBOX;
     textboxUI();
-    moveText();
+    //<><><><><>
     noFill();
   } else if (state == POTIONS) {
     PokeUI();
@@ -324,7 +331,7 @@ void buttonTL() {
     updateHealthBar();
     state = TEXTBOX;
     textboxUI();
-    moveText();
+    //<><><><><>
     noFill();
   } else if (state == WIN) {
     state = MAP;
@@ -380,9 +387,8 @@ void button00() { //for when theres 6 buttons, top left
     updateHealthBar();
   } else if (state == HPot) {
     battle.turn(2, 6, 0);
-    state = TEXTBOX;
-    textboxUI();
-    text("You healed " + player.getSlot(0).getNickname() + "!", LEFT_WIDTH + 10, TOP_HEIGHT + 60);
+    potionTextSummary(HPot, player.getSlot(0));
+    battle.stepTurn();
     updateHealthBar();
   } else if (state == MPot) {
     player.getBag().use(false, 4, player.getSlot(0));
@@ -953,9 +959,99 @@ void checkCaught() {
   }
 }
 
-void moveText() {
-  text(battle.getPlayerActive().getNickname() + " used " + battle.getPlayerActive().getMoves()[3].getName().toUpperCase() + "!", LEFT_WIDTH, TOP_HEIGHT + 60);
-  text(battle.getNpcActive().getNickname() + " used " + battle.getEnemyMove().getName().toUpperCase() + "!", LEFT_WIDTH, BOT_HEIGHT);
+//LOOK AT ME LOOK AT ME LOOK AT ME LOOK AT ME LOOK AT ME LOOK AT ME LOOK AT ME LOOK AT ME LOOK AT ME LOOK AT ME LOOK AT ME LOOK AT ME LOOK AT ME LOOK AT ME LOOK AT ME LOOK AT ME LOOK AT ME LOOK AT ME LOOK AT ME
+
+
+void playerMoveTextHit(int step) {
+  state = PLAYERTEXTBOXHIT;
+  textboxUI();
+  fill(0);
+  if (step == 1) {
+    text("IT WAS A CRITICAL HIT!", 15, 400);
+  } else if (step == 2) {
+    text("IT FAILED!", 15, 400);
+  } else if (step == 3) {
+    text("YOU SUCCESSFULLY CAUGHT " + battle.getNpcActive().getNickname().toUpperCase() + "!", 15, 400);
+  }
+  noFill();
+}
+
+void enemyMoveTextHit(int step) {
+  state = ENEMYTEXTBOXHIT;
+  textboxUI();
+  fill(0);
+  if (step == 1) {
+    text("IT WAS A CRITICAL HIT!", 15, 400);
+  } else if (step == 2) {
+    text("IT FAILED!", 15, 400);
+  }
+  noFill();
+}
+
+void playerMoveTextSummary(int moveSlot) {
+  state = PLAYERTEXTBOXSUMMARY;
+  textboxUI();
+  fill(0);
+  text(battle.getPlayerActive().getNickname() + " USED " + battle.getPlayerActive().getMoves()[moveSlot].getName().toUpperCase() + "!", 15, 400);
+  noFill();
+}
+
+void ballTextSummary(int item) {
+  state = BALLTEXT;
+  textboxUI();
+  String ballType = "";
+  if (item == 1) {
+    ballType = "POKEBALL";
+  }
+  if (item == 2) {
+    ballType = "SUPER BALL"; 
+  }
+  if (item == 3) {
+    ballType = "ULTRA BALL";
+  }
+  fill(0);
+  text("YOU THREW A " + ballType + " AT " + battle.getNpcActive().getNickname().toUpperCase(), 15, 400);
+  noFill();
+}
+
+void potionTextSummary(int item, Pokemon poke) {
+  textboxUI();
+  state = POTIONTEXT;
+  buttonCount = 1;
+  String potionType = "";
+  if (item == HPot) {
+    potionType = "HYPER POTION";
+  }
+  if (item == SPot) {
+    potionType = "SUPER POTION";
+  }
+  if (item == Pot) {
+    potionType = "POTION";
+  }
+  fill(0);
+  text("YOU USED A " + potionType + " ON " + poke.getNickname(), 15, 400);
+  noFill();
+}
+
+
+void enemyMoveTextSummary() {
+  state = ENEMYTEXTBOXSUMMARY;
+  textboxUI();
+  fill(0);
+  text(battle.getNpcActive().getNickname() + " USED " + battle.getEnemyMove().getName().toUpperCase() + "!", 15, 400);
+  noFill();
+}
+
+void effectiveText(int effect) {
+  state = EFFECTIVETEXT;
+  textboxUI();
+  fill(0);
+  if (effect > 1) {
+    text("IT's SUPER EFFECTIVE!", 15, 400);
+  } else if (effect > 0 && effect < 1) {
+    text("IT'S NOT VERY EFFECTIVE...", 15, 400);
+  }
+  noFill();
 }
 
 void pokeSummaryUI() {

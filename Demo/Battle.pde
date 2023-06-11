@@ -25,6 +25,7 @@ public class Battle {
   }
   // here's a constructor for wild encounters
   public Battle(Trainer player) {
+    dex = new Pokedex();
     Pokemon encounter = dex.randomPokemon(player);
     isEncounter = true;
     this.player = player;
@@ -124,7 +125,7 @@ public class Battle {
             win();
           } else { // if we just got beat up
             lose();
-          } return;
+          }
         } if (otherTrainer == npc) { 
           // if the npc lost a pokemon, just swap it with the next pokemon they have
           // if they didnt have a next pokemon to swap into, they wouldve alr lost in the stuff above

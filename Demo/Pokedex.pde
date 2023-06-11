@@ -217,6 +217,17 @@ public class Pokedex {
     }
   }
   
+  public double getAdvantage(Pokemon attacker, Pokemon defender, Move m) {
+    int attackerDex = attacker.getDexNumber();
+    int defenderDex = defender.getDexNumber();
+    double typeAdvantage = 1;
+    typeAdvantage*=typeChart.get(m.getType()).get(primaryType.get(defenderDex));
+    if (secondaryType.get(defenderDex)!=null) {
+      typeAdvantage*=typeChart.get(m.getType()).get(secondaryType.get(defenderDex));
+    }
+    return TypeAdvantage;
+  }
+  
   public int damageCalculator(Pokemon attacker, Pokemon defender, Move m) {
     int level = attacker.getLevel();
     int power = m.getBasePower();
@@ -256,6 +267,7 @@ public class Pokedex {
   public Pokemon randomPokemon(Trainer trainer) {
     while (true) {
       int dexNumber = (int)(Math.random()*920)+1;
+      int level = (int)(Math.random() * 100) + 1;
       Pokemon pokemon = new Pokemon(level, dexToSpecies.get(dexNumber), dexNumber);
       if (pokemon.getBst()>60*trainer.getBadges()&&pokemon.getBst()<350+60*trainer.getBadges()) {
         return pokemon;

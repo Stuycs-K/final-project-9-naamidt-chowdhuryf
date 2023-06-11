@@ -56,7 +56,7 @@ public class Pokemon {
     currentHP = stats[1];
     exp = expChart[level];
     bst = 0;
-    for (int i=0;i<baseStats;i++) {
+    for (int i=0;i<baseStats.length;i++) {
       bst+=baseStats[i];
     }
   }
