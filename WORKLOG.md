@@ -52,6 +52,27 @@ CW - Updated Bell on what happened in class and coordinated something we needed 
 HW - Added the field for Bell in the Battle class as well as allowing learnsets to have multiple moves learned even if they are\
 counted as "the same level"
 
+
+### 6/7/23
+
+CW - Presented Demo and talked about some future plans with Bell
+HW - Drafted implementation for stat stage boosts/status effects on notepad
+
+### 6/8/23
+
+HW - Continued to draft implementation and trying to not do everything manually
+
+### 6/9/23
+
+CW - Realized that it was pointless and thought of how to add everything to the spreadsheed manually and manageably\
+HW - Started adding some things in manually before getting into issues since I forgot some moves could have multiple effects
+
+### 6/10-11/23
+
+HW - Working on actually added stat stage boosts, status effects, better turn-based system, AI, more sprites, spreadsheets, etc
+
+
+
 ## Fishan Chowdhury (Bell)
 
 ### 5/23/23
