@@ -72,14 +72,40 @@ public class Battle {
   // ALSO ALSO, make sure to check if the player needs to swap dead pokemon into battle every turn, and just use the swapDead method directly
   public void turn(int category, int choice, int choice2) {
     Turn playerTurn = new Turn(player, npc, category, choice, choice2);
-    int npcChoice = (int)(Math.random() * 4);
     npcRecentMove = null;
-    while (npcActive.getMoveSlot(npcChoice)==null) {
-       npcChoice = (int)(Math.random() * 4);
-    } Turn npcTurn = new Turn(npc, player, 0, npcChoice);
+    Turn npcTurn = npcAI();
     turnOrder.add(playerTurn);
     turnOrder.add(npcTurn);
   }
+  
+  public Turn npcAI() {
+    // roll damage vals for all pokemon
+    int move0Damage = dex.damageCalculator(npcActive,playerActive,npcActive.getMoveSlot(0));
+    int move1Damage = dex.damageCalculator(npcActive,playerActive,npcActive.getMoveSlot(1));
+    int move2Damage = dex.damageCalculator(npcActive,playerActive,npcActive.getMoveSlot(2));
+    int move3Damage = dex.damageCalculator(npcActive,playerActive,npcActive.getMoveSlot(3));
+    int[] damages = new int[]{move0Damage,move1Damage,move2Damage,move3Damage};
+    ArrayList<Integer> killVals = new ArrayList<Integer>();
+    for (int i=0;i<damages.length;i++) {
+      if (damages[i]>=playerActive.getCurrentHP()) { // if any move kills, add it to a special priority array
+        killVals.add(i);
+      }
+    }
+    if (killVals.size()>0) {
+      // if there is any damage val that kills, randomly pick one of those moves and use it
+      return new Turn(npc,player,0,(int)(Math.random()*killVals.size()));
+    } // if we are here, then no move rolled a kill so we just pick the highest damage move
+    int maxDamage = -2;
+    int maxMove = -1;
+    for (int i=0;i<damages.length;i++) {
+      if (damages[i]>maxDamage) {
+        maxDamage = damages[i];
+        maxMove = i;
+      }
+    } // maxMove now stores the value for the move that rolled the highest damage 
+    return new Turn(npc,player,0,maxMove);
+  }
+  
   // returns -1 if there is no turn (a pokemon moved first and KOd the other pokemon, so the turn ends after they switch)
   // else, returns a perform key code
   public int stepTurn() {
