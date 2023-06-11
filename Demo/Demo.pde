@@ -963,33 +963,55 @@ void checkCaught() {
 
 
 void playerMoveTextHit(int step) {
-  state = PLAYERTEXTBOXHIT;
+  //state = PLAYERTEXTBOXHIT;
   textboxUI();
   fill(0);
   if (step == 1) {
     text("IT WAS A CRITICAL HIT!", 15, 400);
   } else if (step == 2) {
+    text(battle.getPlayerActive().getNickname().toUpperCase() + " MISSED!", 15, 400);
+  } else if (step == 4) {
+    text(battle.getPlayerActive().getNickname().toUpperCase() + " WAS PARALYZED AND COULDN'T MOVE!", 15, 400);
+  } else if (step == 5) {
+    text(battle.getPlayerActive().getNickname().toUpperCase() + " WAS FROZEN AND COULDN'T MOVE!", 15, 400);
+  } else if (step == 6) {
+    text(battle.getPlayerActive().getNickname().toUpperCase() + "  WAS ASLEEP AND COULDN't MOVE!", 15, 400);
+  } else if (step == 7) {
     text("IT FAILED!", 15, 400);
-  } else if (step == 3) {
-    text("YOU SUCCESSFULLY CAUGHT " + battle.getNpcActive().getNickname().toUpperCase() + "!", 15, 400);
+  } else if (step == 8) {
+    text(battle.getPlayerActive().getNickname().toUpperCase() + " FLINCHED AND COULDN'T MOVE!", 15, 400);
+  } else if (step == 9) {
+    text(battle.getPlayerActive().getNickname().toUpperCase() + " HURT ITSELF IN ITS CONFUSION!", 15, 400);
   }
   noFill();
 }
 
 void enemyMoveTextHit(int step) {
-  state = ENEMYTEXTBOXHIT;
+  //state = ENEMYTEXTBOXHIT;
   textboxUI();
   fill(0);
   if (step == 1) {
     text("IT WAS A CRITICAL HIT!", 15, 400);
   } else if (step == 2) {
+    text(battle.getNpcActive().getNickname().toUpperCase() + " MISSED!", 15, 400);
+  } else if (step == 4) {
+    text(battle.getNpcActive().getNickname().toUpperCase() + " WAS PARALYZED AND COULDN'T MOVE!", 15, 400);
+  } else if (step == 5) {
+    text(battle.getNpcActive().getNickname().toUpperCase() + " WAS FROZEN AND COULDN'T MOVE!", 15, 400);
+  } else if (step == 6) {
+    text(battle.getNpcActive().getNickname().toUpperCase() + "  WAS ASLEEP AND COULDN't MOVE!", 15, 400);
+  } else if (step == 7) {
     text("IT FAILED!", 15, 400);
+  } else if (step == 8) {
+    text(battle.getNpcActive().getNickname().toUpperCase() + " FLINCHED AND COULDN'T MOVE!", 15, 400);
+  } else if (step == 9) {
+    text(battle.getNpcActive().getNickname().toUpperCase() + " HURT ITSELF IN ITS CONFUSION!", 15, 400);
   }
   noFill();
 }
 
 void playerMoveTextSummary(int moveSlot) {
-  state = PLAYERTEXTBOXSUMMARY;
+  //state = PLAYERTEXTBOXSUMMARY;
   textboxUI();
   fill(0);
   text(battle.getPlayerActive().getNickname() + " USED " + battle.getPlayerActive().getMoves()[moveSlot].getName().toUpperCase() + "!", 15, 400);
@@ -997,7 +1019,7 @@ void playerMoveTextSummary(int moveSlot) {
 }
 
 void ballTextSummary(int item) {
-  state = BALLTEXT;
+  //state = BALLTEXT;
   textboxUI();
   String ballType = "";
   if (item == 1) {
@@ -1016,7 +1038,7 @@ void ballTextSummary(int item) {
 
 void potionTextSummary(int item, Pokemon poke) {
   textboxUI();
-  state = POTIONTEXT;
+  //state = POTIONTEXT;
   buttonCount = 1;
   String potionType = "";
   if (item == HPot) {
@@ -1035,7 +1057,7 @@ void potionTextSummary(int item, Pokemon poke) {
 
 
 void enemyMoveTextSummary() {
-  state = ENEMYTEXTBOXSUMMARY;
+  //state = ENEMYTEXTBOXSUMMARY;
   textboxUI();
   fill(0);
   text(battle.getNpcActive().getNickname() + " USED " + battle.getEnemyMove().getName().toUpperCase() + "!", 15, 400);
@@ -1043,13 +1065,14 @@ void enemyMoveTextSummary() {
 }
 
 void effectiveText(int effect) {
-  state = EFFECTIVETEXT;
-  textboxUI();
+  //state = EFFECTIVETEXT;
   fill(0);
   if (effect > 1) {
     text("IT's SUPER EFFECTIVE!", 15, 400);
   } else if (effect > 0 && effect < 1) {
     text("IT'S NOT VERY EFFECTIVE...", 15, 400);
+  } ele if (effect == 0) {
+    text("IT HAD NO EFFECT...", 15, 400);
   }
   noFill();
 }
