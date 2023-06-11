@@ -311,6 +311,7 @@ public class Pokedex {
   public Pokemon randomPokemon(Trainer trainer) {
     while (true) {
       int dexNumber = (int)(Math.random()*920)+1;
+      int level = 10+(int)(Math.random()*trainer.getBadges())*7;
       Pokemon pokemon = new Pokemon(level, dexToSpecies.get(dexNumber), dexNumber);
       if (pokemon.getBst()>60*trainer.getBadges()&&pokemon.getBst()<350+60*trainer.getBadges()) {
         return pokemon;
@@ -318,7 +319,7 @@ public class Pokedex {
     }
   }
   public void randomizeParty(Trainer trainer) {
-    int pokemon = Math.min(Math.max(2,trainer.getBadges()+1),6)
+    int pokemon = Math.min(Math.max(2,trainer.getBadges()+1),6);
     for (int i=0;i<pokemon;i++) {
       trainer.setPokemon(i,randomPokemon(trainer));
     }
