@@ -73,14 +73,115 @@ public class Battle {
   // ALSO ALSO, make sure to check if the player needs to swap dead pokemon into battle every turn, and just use the swapDead method directly
   public void turn(int category, int choice, int choice2) {
     Turn playerTurn = new Turn(player, npc, category, choice, choice2);
-    int npcChoice = (int)(Math.random() * 4);
     npcRecentMove = null;
-    while (npcActive.getMoveSlot(npcChoice)==null) {
-       npcChoice = (int)(Math.random() * 4);
-    } Turn npcTurn = new Turn(npc, player, 0, npcChoice);
+    Turn npcTurn = npcAI();
     turnOrder.add(playerTurn);
     turnOrder.add(npcTurn);
   }
+  
+  public int npcSwitchAI() {
+    // lets say our npc's pokemon dies, and it has something to switch into
+    // this will find the most suitable slot it will want to switch into
+    ArrayList<Pokemon> possible = new ArrayList<Pokemon>();
+    for (int i=0;i<6;i++) { // add all pokemon that are alive
+      if (npc.getSlot(i).getCurrentHP()>0) {
+        possible.add(npc.getSlot(i));
+      }
+    }
+    boolean[] moveTypeAdvantage = new boolean[possible.size()];
+    int pokemonWithMoveAdvantage = 0;
+    for (int i=0;i<possible.size();i++) {
+      for (int j=0;j<4;j++) {
+        if (possible.get(i).getMoveSlot(j)!=null) {
+          Move move = possible.get(i).getMoveSlot(j);
+          double moveAdvantage = dex.getTypeAdvantage(move.getType(),playerActive.getPrimaryType());
+          if (playerActive.getSecondaryType()!=0) {
+            moveAdvantage *= dex.getTypeAdvantage(move.getType(),playerActive.getSecondaryType());
+          }
+          if (moveAdvantage>(double)1) {
+            moveTypeAdvantage[i]=true;
+            pokemonWithMoveAdvantage++;
+            break;
+          }
+        }
+      }
+    } // now youve listed out all the pokemon that have a super effective move on the player
+    if (pokemonWithMoveAdvantage==1) { // if theres only one, return that one
+      for (int i=0;i<moveTypeAdvantage.length;i++) {
+        if (moveTypeAdvantage[i]) {
+          return i;
+        }
+      }
+    } if (pokemonWithMoveAdvantage>1) { // if there are multiple options
+      for (int i=0;i<moveTypeAdvantage.length;i++) { // return the first pokemon that is weakest to your types AND has a super effective move
+        double moveAdvantage1 = dex.getTypeAdvantage(playerActive.getPrimaryType(),possible.get(i).getPrimaryType());
+        if (possible.get(i).getSecondaryType()!=0) {
+          moveAdvantage1 *= dex.getTypeAdvantage(playerActive.getPrimaryType(),possible.get(i).getSecondaryType());
+        } double moveAdvantage2 = (double)1;
+        if (playerActive.getSecondaryType()!=0) {
+          moveAdvantage2 = dex.getTypeAdvantage(playerActive.getSecondaryType(),possible.get(i).getPrimaryType());
+          if (possible.get(i).getSecondaryType()!=0) {
+            moveAdvantage2 *= dex.getTypeAdvantage(playerActive.getSecondaryType(),possible.get(i).getSecondaryType());
+          } 
+        }
+        if (moveTypeAdvantage[i]&&(moveAdvantage1>(double)1||moveAdvantage2>(double)1)) {
+          return i;
+        } 
+      } //if no pokemon have both, randomly pick a pokemon that just has a super effective move
+      while (true) {
+        int random = (int)(Math.random()*possible.size());
+        if (moveTypeAdvantage[random]) {
+          return random;
+        }
+      }
+    } else { // no pokemon have a super effective move
+      for (int i=0;i<moveTypeAdvantage.length;i++) { // return the first pokemon that is weakest to your types
+        double moveAdvantage1 = dex.getTypeAdvantage(playerActive.getPrimaryType(),possible.get(i).getPrimaryType());
+        if (possible.get(i).getSecondaryType()!=0) {
+          moveAdvantage1 *= dex.getTypeAdvantage(playerActive.getPrimaryType(),possible.get(i).getSecondaryType());
+        } double moveAdvantage2 = (double)1;
+        if (playerActive.getSecondaryType()!=0) {
+          moveAdvantage2 = dex.getTypeAdvantage(playerActive.getSecondaryType(),possible.get(i).getPrimaryType());
+          if (possible.get(i).getSecondaryType()!=0) {
+            moveAdvantage2 *= dex.getTypeAdvantage(playerActive.getSecondaryType(),possible.get(i).getSecondaryType());
+          } 
+        }
+        if (moveAdvantage1>(double)1||moveAdvantage2>(double)1) {
+          return i;
+        } 
+      } //if no pokemon is weak to your types, just randomly pick a pokemon atp
+      return (int)(Math.random()*possible.size());
+    }
+  }
+  
+  public Turn npcAI() {
+    // roll damage vals for all pokemon
+    int move0Damage = dex.damageCalculator(npcActive,playerActive,npcActive.getMoveSlot(0));
+    int move1Damage = dex.damageCalculator(npcActive,playerActive,npcActive.getMoveSlot(1));
+    int move2Damage = dex.damageCalculator(npcActive,playerActive,npcActive.getMoveSlot(2));
+    int move3Damage = dex.damageCalculator(npcActive,playerActive,npcActive.getMoveSlot(3));
+    int[] damages = new int[]{move0Damage,move1Damage,move2Damage,move3Damage};
+    ArrayList<Integer> killVals = new ArrayList<Integer>();
+    for (int i=0;i<damages.length;i++) {
+      if (damages[i]>=playerActive.getCurrentHP()) { // if any move kills, add it to a special priority array
+        killVals.add(i);
+      }
+    }
+    if (killVals.size()>0) {
+      // if there is any damage val that kills, randomly pick one of those moves and use it
+      return new Turn(npc,player,0,(int)(Math.random()*killVals.size()));
+    } // if we are here, then no move rolled a kill so we just pick the highest damage move
+    int maxDamage = -2;
+    int maxMove = -1;
+    for (int i=0;i<damages.length;i++) {
+      if (damages[i]>maxDamage) {
+        maxDamage = damages[i];
+        maxMove = i;
+      }
+    } // maxMove now stores the value for the move that rolled the highest damage 
+    return new Turn(npc,player,0,maxMove);
+  }
+  
   // returns -1 if there is no turn (a pokemon moved first and KOd the other pokemon, so the turn ends after they switch)
   // else, returns a perform key code
   public int stepTurn() {
@@ -136,6 +237,26 @@ public class Battle {
       int confusionCheck = (int)(Math.random()*3);
       if (confusionCheck==0&&attacker.getConfusedStatus()) {
         attacker.changeHP(dex.confusionDamageCalculator(attacker));
+        
+        // death check for confusion if you die like an idiot
+        if (attacker.getCurrentHP()<=0) { // if the attacking pokemon faints
+        turnOrder.clear();
+        rewardKill(defender, attacker);
+        if (trainer.getSlot(1)==null || trainer.getSlot(1).getCurrentHP()<=0) { // if the  trainer doesnt have any more usable pokemon
+          if (trainer == player) { // if we are the trainer that just killed themselves
+            lose();
+          } else { // if they just died
+            win();
+          }
+        } if (trainer == npc) { 
+          // if the npc lost a pokemon, just swap it with the next pokemon they have
+          // if they didnt have a next pokemon to swap into, they wouldve alr lost in the stuff above
+          // this means that if the PLAYER loses a pokemon, you need to check in the ui for that and swapDead according to their input
+          swapDead(npc,npcSwitchAI());
+          npcActive.clearStatBoosts();
+        }
+      }
+        
         return 9;
       } confusionCheck = (int)(Math.random()*4);
       if (confusionCheck==0) { // 25% chance ot be free from confusion
@@ -164,6 +285,7 @@ public class Battle {
       }
       // deals standard damage by this point
       if (defender.getCurrentHP()<=0) { // if the defending pokemon faints
+        turnOrder.clear();
         rewardKill(attacker, defender);
         if (otherTrainer.getSlot(1)==null || otherTrainer.getSlot(1).getCurrentHP()<=0) { // if the other trainer doesnt have any more usable pokemon
           if (trainer == player) { // if we are the trainer that just attacked and beat the other trainer\
@@ -175,7 +297,7 @@ public class Battle {
           // if the npc lost a pokemon, just swap it with the next pokemon they have
           // if they didnt have a next pokemon to swap into, they wouldve alr lost in the stuff above
           // this means that if the PLAYER loses a pokemon, you need to check in the ui for that and swapDead according to their input
-          swapDead(npc,1);
+          swapDead(npc,npcSwitchAI());
           npcActive.clearStatBoosts();
         }
       } return returnVal;
@@ -205,7 +327,7 @@ public class Battle {
     } if (npcActive.getCurrentHP()<=0) { // if the npcs pokemon died 
       if (npc.getSlot(1)==null||npc.getSlot(1).getCurrentHP()<=0) { // if it has nothing to switch in
         win();
-      } swapDead(npc,1);
+      } swapDead(npc,npcSwitchAI());
     }
   }
   
@@ -230,6 +352,9 @@ public class Battle {
   // this will return null if the enemy has not recently made a move
   public Move getEnemyMove() {
     return npcRecentMove;
+  }
+  public Turn getNextTurn() {
+    return turnOrder.peek();
   }
 }
 class Turn implements Comparator<Turn> { 

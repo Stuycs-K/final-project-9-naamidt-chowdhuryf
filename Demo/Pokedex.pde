@@ -281,6 +281,9 @@ public class Pokedex {
     } return (int)(damage/typeAdvantage);
   }
   public int damageCalculator(Pokemon attacker, Pokemon defender, Move m) {
+    if (m==null) {
+      return -1;
+    }
     int level = attacker.getLevel();
     int power = m.getBasePower();
     int attack, defense;
@@ -302,7 +305,7 @@ public class Pokedex {
     }
     double typeAdvantage = 1;
     typeAdvantage*=typeChart.get(m.getType()).get(primaryType.get(defenderDex));
-    if (secondaryType.get(defenderDex)!=null) {
+    if (secondaryType.get(defenderDex)!=0) {
       typeAdvantage*=typeChart.get(m.getType()).get(secondaryType.get(defenderDex));
     }
     if (power==0||typeAdvantage==(double)0) {
