@@ -237,7 +237,7 @@ id,identifier,type_id,power,pp,accuracy,priority,damage_class_id,secondary_effec
 236,moonlight,18,0,5,100,0,1,100,3,1,50,0
 237,hidden-power,1,60,15,100,0,3,0,0,0,0,0
 238,cross-chop,2,100,5,80,0,2,0,0,0,0,0
-239,twister,16,40,20,100,0,3,2-,4,2,11,0
+239,twister,16,40,20,100,0,3,20,4,2,11,0
 240,rain-dance,11,0,5,100,0,1,0,0,0,0,0
 241,sunny-day,10,0,5,100,0,1,0,0,0,0,0
 242,crunch,17,80,15,100,0,2,0,0,0,0,0
