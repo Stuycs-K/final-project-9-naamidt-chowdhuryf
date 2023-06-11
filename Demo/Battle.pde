@@ -230,6 +230,9 @@ public class Battle {
   public Move getEnemyMove() {
     return npcRecentMove;
   }
+  public Turn getNextTurn() {
+    return turnOrder.peek();
+  }
 }
 class Turn implements Comparator<Turn> { 
   private int priority, category;
