@@ -12,6 +12,7 @@ public class Pokemon {
   private int[] stats, evs, ivs, expChart, baseStats, evYield, statBoosts;
   private Pokedex dex;
   private int currentMove = 0;
+  private boolean isConfused, isFlinched;
   public Pokemon(int level, String nickname, int dexNumber) {
     this.level = level;
     this.nickname = nickname;
@@ -23,6 +24,8 @@ public class Pokemon {
     ivs = new int[7];
     evs = new int[7];
     statBoosts = new int[7];
+    isConfused = false;
+    isFlinched = false;
     if (dex.getEvolution(dexNumber)!=null&&dex.getEvolution(dexNumber).getLevelReq()!=null) {
       evolutionLevel = dex.getEvolution(dexNumber).getLevelReq();
     } else {
@@ -58,7 +61,7 @@ public class Pokemon {
     currentHP = stats[1];
     exp = expChart[level];
     bst = 0;
-    for (int i=0;i<baseStats;i++) {
+    for (int i=0;i<baseStats.length;i++) {
       bst+=baseStats[i];
     }
   }
@@ -252,6 +255,22 @@ public class Pokemon {
   }
   public void clearStatus() {
     status = 0;
+  }
+  public boolean getConfusedStatus() {
+    return isConfused;
+  }
+  public boolean setConfusedStatus(boolean newStatus) {
+    boolean returnVal = isConfused == newStatus;
+    isConfused = newStatus;
+    return returnVal;
+  }
+  public boolean getFlinchedStatus() {
+    return isFlinched;
+  }
+  public boolean setFlinchedStatus(boolean newStatus) {
+    boolean returnVal = isFlinched == newStatus;
+    isFlinched = newStatus;
+    return returnVal;
   }
   public String toString() {
     String ret = "\""+nickname+"\" "+dexNumber+" "+dex.getSpecies(dexNumber)+" Level: "+level+" "+dex.getPrimaryType(dexNumber);

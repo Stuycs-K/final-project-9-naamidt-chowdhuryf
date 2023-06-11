@@ -100,6 +100,9 @@ public class Battle {
   // 4 - paralyzed and couldnt move
   // 5 - frozen and couldnt move
   // 6 - asleep and couldnt move
+  // 7 - move failed (you tried to use a status move on a pokemon & it didnt work
+  // 8 - flinched
+  // 9 - hit themself in confusion
   public int perform(Turn turn) {
     int returnVal = 0;
     Trainer trainer = turn.getTrainer();
@@ -107,6 +110,10 @@ public class Battle {
     if (turn.getCategory()==0) { // using a pokemons move
       Pokemon attacker = turn.getPokemon();
       Pokemon defender = turn.getOtherPokemon();
+      if (attacker.getFlinchedStatus()) {
+        attacker.setFlinchedStatus(false);
+        return 8;
+      }
       int paraCheck = (int)(Math.random()*4);
       if (paraCheck==0&&attacker.getStatus()==3) {
         return 4;
@@ -123,8 +130,16 @@ public class Battle {
       } if (attacker.getStatus()==4) {
         attacker.clearStatus();
       }
-      // basically, these are checks for para/sleep/freeze conditions
-      Move move = attacker.getMoveSlot(turn.getChoice());
+      // basically, these are checks for para/sleep/freeze conditions & then confusion last
+      
+      int confusionCheck = (int)(Math.random()*3);
+      if (confusionCheck==0&&attacker.getConfusedStatus()) {
+        attacker.changeHP(dex.confusionDamageCalculator(attacker));
+        return 9;
+      } confusionCheck = (int)(Math.random()*4);
+      if (confusionCheck==0) { // 25% chance ot be free from confusion
+        attacker.setConfusedStatus(false);
+      } Move move = attacker.getMoveSlot(turn.getChoice());
       if (trainer==npc) { // if the attacking trainer is the npc, save their move
         npcRecentMove = move;
       } int damage = dex.damageCalculator(attacker, defender, move);
@@ -139,6 +154,10 @@ public class Battle {
         return 2;
       }
       defender.changeHP(damage);
+      boolean secondary = move.applySecondary(attacker,defender,damage);
+      if (!secondary&&move.getBasePower()==0) { // if this move only had a secondary (i.e. a status move) and failed
+        return 7;
+      }
       if (move.getType()==10&&defender.getStatus()==2) { // if the defending pokemon is hit with a fire-type move while frozen, then thaw them out
         defender.clearStatus();
       }

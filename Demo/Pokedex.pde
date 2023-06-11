@@ -232,7 +232,16 @@ public class Pokedex {
       System.out.println("Oh no, an error");
     }
   }
-  
+  public int confusionDamageCalculator(Pokemon user) {
+    int damage = damageCalculator(user,user,movedex.get(145));
+    double typeAdvantage = 1;
+    Move m = movedex.get(145);
+    int defenderDex = user.getDexNumber();
+    typeAdvantage*=typeChart.get(m.getType()).get(primaryType.get(defenderDex));
+    if (secondaryType.get(defenderDex)!=null) {
+      typeAdvantage*=typeChart.get(m.getType()).get(secondaryType.get(defenderDex));
+    } return (int)(damage/typeAdvantage);
+  }
   public int damageCalculator(Pokemon attacker, Pokemon defender, Move m) {
     int level = attacker.getLevel();
     int power = m.getBasePower();

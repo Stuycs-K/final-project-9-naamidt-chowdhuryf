@@ -8,6 +8,7 @@ import java.math.*;
 //    1 = status-inflicting (burn, freeze, etc)
 //    2 = stat-boosting (+def, +atk, etc)
 //    3 = recoil OR siphon (- or + values)
+//    4 = mental infliction (confusion, flinch)
 // for secondaryTarget:
 //    1 = targetting itself (swords dance +2 on itself
 //    2 = targetting the enemy slot
@@ -22,6 +23,8 @@ import java.math.*;
 //    8 = spatk
 //    9 = spdef
 //    10 = spe (speed)
+//    11 = flinch
+//    12 = confusion
 //    any other number is just a recoil value
 // for secondaryExtra:
 //   this is just showing the # of stage changes if there is a stat stage change (+ and - vals)
@@ -56,7 +59,10 @@ public class Move {
     }
   }
   public boolean applySecondary(Pokemon user, Pokemon otherPokemon, int damageDealt) { // return true if it worked and false if it didnt
-    Pokemon target = user;
+    int secondaryCheck = (int)(Math.random()*100);
+    if (secondaryCheck>secondaryChance) {
+      return false;
+    } Pokemon target = user;
     if (secondaryTarget == 1) {
       target = user;
     } if (secondaryTarget == 2) {
@@ -70,6 +76,12 @@ public class Move {
         user.changeHP(user.getStats()[1]/(secondaryEffect/100.0));
       } else {
         user.changeHP(damageDealt*secondaryEffect/100.0);
+      }
+    } if (secondaryType == 4) {
+      if (secondaryEffect == 11) {
+        return target.setFlinchedStatus(true);
+      } if (secondaryEffect == 12) {
+        return target.setConfusedStatus(true);
       }
     } return true;
   }
