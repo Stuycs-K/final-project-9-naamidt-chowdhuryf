@@ -3,10 +3,33 @@ import java.io.*;
 import java.lang.*;
 import java.math.*;
 
+// EFFECTS KEY:
+// for secondaryType:
+//    0 = status-inflicting (burn, freeze, etc)
+//    1 = stat-boosting (+def, +atk, etc)
+//    recoil = recoil OR siphon (- or + values)
+// for secondaryTarget:
+//    0 = targetting the enemy slot
+//    1 = targetting itself (swords dance +2 on itself
+// for secondaryEffect:
+//    0 = burn
+//    1 = freeze
+//    2 = paralyze
+//    3 = sleep
+//    4 = poison
+//    5 = atk
+//    6 = def
+//    7 = spatk
+//    8 = spdef
+//    9 = spe (speed)
+//    anu other number is just a recoil value
+// for secondaryExtra:
+//   this is just showing the # of stage changes if there is a stat stage change (+ and - vals)
+
 public class Move {
-  private int power, accuracy, pp, maxPP, id, type, priority, split;
+  private int power, accuracy, pp, maxPP, id, type, priority, split, secondaryChance, secondaryType, secondaryTarget, secondaryEffect, secondaryExtra;
   private String name;
-  //private Pokedex dex;
+  private boolean hasSecondary;
 
   public Move(String[] data) {
     //dex = new Pokedex();
@@ -19,6 +42,16 @@ public class Move {
     accuracy = Integer.parseInt(data[5]);
     priority = Integer.parseInt(data[6]);
     split = Integer.parseInt(data[7]);
+    secondaryChance = Integer.parseInt(data[8]);
+    if (secondaryChance==0) {
+      hasSecondary = false;
+      secondaryType = -1;
+      secondaryTarget = -1;
+      secondaryEffect = -1;
+      secondaryExtra = -1; // this is actually a real value for secondaryExtra but were just initializing stuff
+    } else {
+      
+    }
   }
   public int getID() {
     return id;
@@ -50,6 +83,24 @@ public class Move {
   }
   public int getSplit() {
     return split;
+  }
+  public boolean hasSecondary() {
+    return hasSecondary;
+  }
+  public int secondaryChance() {
+    return secondaryChance;
+  }
+  public int secondaryType() {
+    return secondaryType;
+  }
+  public int secondaryTarget() {
+    return secondaryTarget;
+  }
+  public int secondaryEffect() {
+    return secondaryEffect;
+  }
+  public int secondaryExtra() {
+    return secondaryExtra;
   }
   public String toString() {
     return "ID: "+id+" "+name+" "+type+" "+"Power: "+power+" PP: "+pp+"/"+maxPP+" Accuracy: "+accuracy+" Priority: "+priority+" Split: "+split;
