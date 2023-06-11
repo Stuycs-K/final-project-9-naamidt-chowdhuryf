@@ -106,12 +106,7 @@ void keyPressed() {
     }
     if (key == 't') {
       Trainer enemy = new Trainer("Rival!", new int[]{0, 0}, 0);
-      enemy.setPokemon(0, dex.randomPokemon(player));
-      enemy.setPokemon(1, dex.randomPokemon(player));
-      enemy.setPokemon(2, dex.randomPokemon(player));
-      enemy.setPokemon(3, dex.randomPokemon(player));
-      enemy.setPokemon(4, dex.randomPokemon(player));
-      enemy.setPokemon(5, dex.randomPokemon(player));
+      dex.randomizeParty(enemy);
       battle = new Battle(player, enemy);
       state = BATTLE;
     }
@@ -695,7 +690,7 @@ void updateHealthBar() {
 void updateEXP() {
   Pokemon fren = battle.getPlayerActive();
   Pokemon enemy = battle.getNpcActive();
-  fill(0);
+  fill(0);  
   rect(width/2, 3*height/8+50, width/2, height/12-30, 10); // black exp br underlay
   double expPercentPlayer = (fren.getExp()-fren.getTotalLevelExp())/(fren.getNextLevelExp()-fren.getTotalLevelExp()*1.0); // blue exp bar overlay
   fill(0, 0, 255);
