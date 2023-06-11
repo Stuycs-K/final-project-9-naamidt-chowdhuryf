@@ -1071,7 +1071,7 @@ void effectiveText(int effect) {
     text("IT's SUPER EFFECTIVE!", 15, 400);
   } else if (effect > 0 && effect < 1) {
     text("IT'S NOT VERY EFFECTIVE...", 15, 400);
-  } ele if (effect == 0) {
+  } else if (effect == 0) {
     text("IT HAD NO EFFECT...", 15, 400);
   }
   noFill();
