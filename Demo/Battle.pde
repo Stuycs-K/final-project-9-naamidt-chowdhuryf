@@ -10,7 +10,7 @@ public class Battle {
   private Pokedex dex;
   private boolean isEncounter;
   private int battleStatus;
-  private Move npcRecentMove;
+  private Move npcRecentMove, playerRecentMove;
   // battleStatus will return a number based on whether or not the battle is done and if it is won/lost
   // it be 0 if the battle is ongoing, 1 if the player won the battle (it ended), or -1 if the player lost the battle (it ended)
   public Battle(Trainer player, Trainer npc) {
@@ -24,6 +24,7 @@ public class Battle {
     turnOrder = new PriorityQueue<Turn>(2, new Turn());
     battleStatus = 0;
     npcRecentMove = null;
+    playerRecentMove = null;
   }
   // here's a constructor for wild encounters
   public Battle(Trainer player) {
@@ -77,14 +78,53 @@ public class Battle {
     Turn npcTurn = npcAI();
     turnOrder.add(playerTurn);
     turnOrder.add(npcTurn);
+    if (category==0) {
+      playerRecentMove = playerActive.getMoveSlot(choice);
+    }
+  }
+  
+  public int npcShouldSwitchAI() {
+    int playerSpeed = (int)(playerActive.getStats()[6]*dex.getBoostToVal(playerActive.getStatBoosts()[6]));
+    if (playerActive.getStatus()==3) {
+      playerSpeed/=2;
+    }
+    int npcSpeed = (int)(npcActive.getStats()[6]*dex.getBoostToVal(npcActive.getStatBoosts()[6]));
+    if (npcActive.getStatus()==3) {
+      npcSpeed/=2;
+    }
+    if (playerSpeed>npcSpeed) { // if the enemy outspeeds, start the process
+      for (int i=0;i<6;i++) {
+        if (npc.getSlot(i)!=null) { //if there is a pokemon in this slot
+          double moveAdvantage = dex.getTypeAdvantage(playerRecentMove.getType(),npc.getSlot(i).getPrimaryType());
+          if (npc.getSlot(i).getSecondaryType()!=0) {
+            moveAdvantage *= dex.getTypeAdvantage(playerRecentMove.getType(),npc.getSlot(i).getSecondaryType());
+          }
+          if (moveAdvantage<=(double)1) { // if we have a pokemon that resists the type of the player's recently used move
+            for (int j=0;j<4;j++) { 
+              Move move = npc.getSlot(i).getMoveSlot(j);
+              if (move==null) {
+                continue;
+              }
+              double moveAdvantage2 = dex.getTypeAdvantage(move.getType(),playerActive.getPrimaryType());
+              if (playerActive.getSecondaryType()!=0) {
+                moveAdvantage2 *= dex.getTypeAdvantage(move.getType(),playerActive.getSecondaryType());
+              }
+              if (moveAdvantage2>(double)1) { // if this pokemon, that resists the recently used move by the player, has a super effective move on the player
+                return i;
+              }
+            }
+          }
+        }
+      }
+    } return 0;
   }
   
   public int npcSwitchAI() {
     // lets say our npc's pokemon dies, and it has something to switch into
     // this will find the most suitable slot it will want to switch into
     ArrayList<Pokemon> possible = new ArrayList<Pokemon>();
-    for (int i=0;i<6;i++) { // add all pokemon that are alive
-      if (npc.getSlot(i).getCurrentHP()>0) {
+    for (int i=1;i<6;i++) { // add all pokemon that are alive
+      if (npc.getSlot(i)!=null&&npc.getSlot(i).getCurrentHP()>0) {
         possible.add(npc.getSlot(i));
       }
     }
@@ -109,7 +149,7 @@ public class Battle {
     if (pokemonWithMoveAdvantage==1) { // if theres only one, return that one
       for (int i=0;i<moveTypeAdvantage.length;i++) {
         if (moveTypeAdvantage[i]) {
-          return i;
+          return i+1;
         }
       }
     } if (pokemonWithMoveAdvantage>1) { // if there are multiple options
@@ -125,37 +165,39 @@ public class Battle {
           } 
         }
         if (moveTypeAdvantage[i]&&(moveAdvantage1>(double)1||moveAdvantage2>(double)1)) {
-          return i;
+          return i+1;
         } 
       } //if no pokemon have both, randomly pick a pokemon that just has a super effective move
       while (true) {
         int random = (int)(Math.random()*possible.size());
         if (moveTypeAdvantage[random]) {
-          return random;
+          return random+1;
         }
       }
-    } else { // no pokemon have a super effective move
-      for (int i=0;i<moveTypeAdvantage.length;i++) { // return the first pokemon that is weakest to your types
-        double moveAdvantage1 = dex.getTypeAdvantage(playerActive.getPrimaryType(),possible.get(i).getPrimaryType());
-        if (possible.get(i).getSecondaryType()!=0) {
-          moveAdvantage1 *= dex.getTypeAdvantage(playerActive.getPrimaryType(),possible.get(i).getSecondaryType());
-        } double moveAdvantage2 = (double)1;
-        if (playerActive.getSecondaryType()!=0) {
-          moveAdvantage2 = dex.getTypeAdvantage(playerActive.getSecondaryType(),possible.get(i).getPrimaryType());
-          if (possible.get(i).getSecondaryType()!=0) {
-            moveAdvantage2 *= dex.getTypeAdvantage(playerActive.getSecondaryType(),possible.get(i).getSecondaryType());
-          } 
+    } else { // no pokemon have a super effective move, so lets enter phase 2 :D
+      int type1 = npcActive.getPrimaryType();
+      int type2 = -1;
+      if (npcActive.getSecondaryType()!=0) {
+        type2 = npcActive.getSecondaryType();
+      }
+      for (int i=0;i<possible.size();i++) { // return the first pokemon that has a move that is the same as the type of the pokemon that just fainted
+        for (int j=0;j<4;j++) {
+          Move move = possible.get(i).getMoveSlot(j);
+          if (move!=null&&(move.getType()==type1||move.getType()==type2)) {
+            return i;
+          }
         }
-        if (moveAdvantage1>(double)1||moveAdvantage2>(double)1) {
-          return i;
-        } 
-      } //if no pokemon is weak to your types, just randomly pick a pokemon atp
+      } //if no pokemon is applicable, just send out a random pokemon
       return (int)(Math.random()*possible.size());
     }
   }
   
   public Turn npcAI() {
     // roll damage vals for all pokemon
+    int switchCheck = npcShouldSwitchAI();
+    if (switchCheck!=0) {
+      return new Turn(npc,player,1,switchCheck);
+    }
     int move0Damage = dex.damageCalculator(npcActive,playerActive,npcActive.getMoveSlot(0));
     int move1Damage = dex.damageCalculator(npcActive,playerActive,npcActive.getMoveSlot(1));
     int move2Damage = dex.damageCalculator(npcActive,playerActive,npcActive.getMoveSlot(2));
