@@ -28,6 +28,7 @@ public class Battle {
   }
   // here's a constructor for wild encounters
   public Battle(Trainer player) {
+    dex = new Pokedex();
     Pokemon encounter = dex.randomPokemon(player);
     isEncounter = true;
     this.player = player;
@@ -468,11 +469,11 @@ class Turn implements Comparator<Turn> {
         return 1;
       } return 0;
     }
-    double speedMult1 = dex.getBoostToVal(turn1.getPokemon.getStatBoosts()[6]);
+    double speedMult1 = dex.getBoostToVal(turn1.getPokemon().getStatBoosts()[6]);
     if (turn1.getPokemon().getStatus()==3) { // if they are parad
       speedMult1 = 0.5;
     } 
-    double speedMult2 = dex.getBoostToVal(turn2.getPokemon.getStatBoosts()[6]);
+    double speedMult2 = dex.getBoostToVal(turn2.getPokemon().getStatBoosts()[6]);
     if (turn2.getPokemon().getStatus()==3) { // if they are parad
       speedMult2 = 0.5;
     } 
