@@ -47,7 +47,11 @@ public class Map {
     catch (IOException e) {
     }
   }
-
+  
+  public void resetToStart() {
+    
+  }
+  
   void grid() {
     for (int x = 0; x < gridWidth/TILE_SIZE; x++ ) {
       for (int y = 0; y < gridHeight/TILE_SIZE; y++) {

@@ -40,6 +40,18 @@ public class Battle {
     turnOrder = new PriorityQueue<Turn>(2, new Turn());
     battleStatus = 0;
   }
+  public Battle(Trainer player, Pokemon encounter) {
+    dex = new Pokedex();
+    isEncounter = true;
+    this.player = player;
+    Trainer temp = new Trainer("Wild "+encounter.getNickname(),new int[]{0,0},player.getBadges());
+    temp.setPokemon(0,encounter);
+    npc = temp;
+    updateActive();
+    dex = new Pokedex();
+    turnOrder = new PriorityQueue<Turn>(2, new Turn());
+    battleStatus = 0;
+  }
   public void updateActive() {
     playerActive = player.getSlot(0);
     npcActive = npc.getSlot(0);
