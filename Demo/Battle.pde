@@ -87,7 +87,7 @@ public class Battle {
   }
   
   public int npcShouldSwitchAI() {
-    int playerSpeed = (int)(playerActive.getStats()[5]*dex.getBoostToVal(playerActive.getStatBoosts()[5]));
+    int playerSpeed = (int)(playerActive.getStats()[6]*dex.getBoostToVal(playerActive.getStatBoosts()[6]));
     if (playerActive.getStatus()==3) {
       playerSpeed/=2;
     }
@@ -316,7 +316,9 @@ public class Battle {
       double critMultiplier = 1;
        if ((int)(Math.random()*16)==0) {
          critMultiplier=1.5;
-         returnVal = 1;
+         if (damage!=0) {
+           returnVal = 1;
+         }
       } damage=(int)(damage*critMultiplier);
       move.changePP(1);
       int accuracyCheck = (int)(Math.random()*100);
@@ -372,11 +374,15 @@ public class Battle {
       npcActive.changeHP(npcActive.getStats()[1]/8);
     } if (playerActive.getCurrentHP()<=0&&(player.getSlot(1)==null||player.getSlot(1).getCurrentHP()<=0)) { //if your pokemon died & you have nothing to switch in
       lose();
+      return;
     } if (npcActive.getCurrentHP()<=0) { // if the npcs pokemon died 
       if (npc.getSlot(1)==null||npc.getSlot(1).getCurrentHP()<=0) { // if it has nothing to switch in
         win();
+        return;
       } swapDead(npc,npcSwitchAI());
     }
+    npcActive.setFlinchedStatus(false);
+    playerActive.setFlinchedStatus(false);
   }
   
   public void drawStatusEffects() {
