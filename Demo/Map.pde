@@ -55,6 +55,10 @@ public class Map {
     PCoords[1] = startCoords[1] / TILE_SIZE;
   }
   
+  public Tile[][] getTileGrid() {
+    return tileValues;
+  }
+  
   void grid() {
     for (int x = 0; x < gridWidth/TILE_SIZE; x++ ) {
       for (int y = 0; y < gridHeight/TILE_SIZE; y++) {

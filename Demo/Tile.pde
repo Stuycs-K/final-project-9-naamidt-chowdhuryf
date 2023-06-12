@@ -14,6 +14,7 @@ public class Tile{
   boolean swimmable;
   int[] pStatus;
   int[] coords;
+  Event event;
   
   public Tile(int type, int x, int y) {
     coords = new int[2];
@@ -55,6 +56,19 @@ public class Tile{
   void place() {
     image(sprite, coords[0], coords[1]);
   }
+  
+  public void interact() {
+    sprite = loadImage("water.PNG");
+    alsosprite = loadImage("water.PNG");
+    walkable = true;
+    swimmable = true;
+  }
+  
+  //public int interact(int direction) {
+  //  if (direction==3) {
+  //    return 
+  //  }
+  //}
   
   void place(int direction) {
     if (direction == UP) {

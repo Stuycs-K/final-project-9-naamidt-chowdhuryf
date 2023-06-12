@@ -18,8 +18,17 @@ public class Trainer {
     party = new Pokemon[6];
     bag = new Bag();
   }
+  public int[] getPosition() {
+    return position;
+  }
+  public void setPosition(int[] newPosition) {
+    position = newPosition;
+  }
   public int getBadges() {
     return badges;
+  }
+  public void setBadges(int newBadges) {
+    badges = newBadges;
   }
   public Bag getBag() {
     return bag;

@@ -106,7 +106,7 @@ public class Event {
   }
   
   void healerInteract() {
-     for (int i = 0; i < player.checkParty(); i++) {
+    for (int i = 0; i < player.checkParty(); i++) {
       player.getSlot(i).setCurrentHP(player.getSlot(i).getStats()[1]);
       player.getSlot(i).clearStatus();
       player.getSlot(i).setFlinchedStatus(false);

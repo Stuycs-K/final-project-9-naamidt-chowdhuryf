@@ -45,7 +45,7 @@ Battle battle;
 int countdown;
 Trainer player, chad;
 Pokedex dex;
-int buttonCount;
+int buttonCount, direction, encountersLeft, trainersLeft, elite4progress;
 Turn turn;
 void setup() {
   countdown = 0;
@@ -56,10 +56,12 @@ void setup() {
   map = new Map("testmap.txt");
   mapUI();
   dex = new Pokedex();
-  player = new Trainer("Me!", new int[]{0, 0}, 2);
+  player = new Trainer("Me!", new int[]{7,4}, 0);
   Pokemon random = dex.randomPokemon(player);
   random.addExp(100);
   player.setPokemon(0, random);
+  encountersLeft = 10;
+  trainersLeft = 5;
   /////////// TESTING ///////////////////////
   // bulbasaur
   Pokemon bulbasaur = new Pokemon(35,"Bulbasaur",1);
@@ -77,9 +79,9 @@ void setup() {
   walrein.setMoveSlot(2,dex.getMove(14));
   walrein.setMoveSlot(3,dex.getMove(103));
   walrein.setMoveSlot(3,dex.getMove(97));
-  player.setPokemon(1,bulbasaur);
-  player.setPokemon(0,walrein);
-  System.out.println(walrein.getStats()[1]);
+  //player.setPokemon(1,bulbasaur);
+  //player.setPokemon(0,walrein);
+  //System.out.println(walrein.getStats()[1]);
   ////////////////////////////////////////
   buttonCount = 4;
   turn = new Turn();
@@ -137,33 +139,89 @@ void setup() {
 
 void keyPressed() {
   if (state == MAP || state == POKEMON) {
+    int[] position = player.getPosition();
     if (key == 'w') {
-      map.move(UP);
+      if (map.getTileGrid()[position[0]-1][position[1]].checkWalkable()) {
+        int[] newPosition = player.getPosition();
+        newPosition[0]--;
+        player.setPosition(newPosition);
+        map.move(UP);
+      }
+      direction = 0;
     }
     if (key == 'd') {
-      map.move(RIGHT);
+      if (map.getTileGrid()[position[0]][position[1]+1].checkWalkable()) {
+        int[] newPosition = player.getPosition();
+        newPosition[1]++;
+        player.setPosition(newPosition);
+        map.move(RIGHT);
+        direction = 3;
+      }
     }
     if (key == 's') {
-      map.move(DOWN);
+      if (map.getTileGrid()[position[0]-1][position[1]].checkWalkable()) {
+        int[] newPosition = player.getPosition();
+        newPosition[0]++;
+        player.setPosition(newPosition);
+        map.move(DOWN);
+      }
+      direction = 2;
     }
     if (key == 'a') {
-      map.move(LEFT);
+      if (map.getTileGrid()[position[0]][position[1]-1].checkWalkable()) {
+        int[] newPosition = player.getPosition();
+        newPosition[1]--;
+        player.setPosition(newPosition);
+        map.move(LEFT);
+      }
+      direction = 1;
     }
     if (key == 'b') {
-      battle = new Battle(player);
-      // TESTING PURPOSES //
-      battle.getPlayerActive().setStatus(5);
-      //////////////////////
-      state = BATTLE;
+      if (encountersLeft>0) {
+        battle = new Battle(player);
+        state = BATTLE;
+        encountersLeft--;
+      }
     }
     if (key == 't') {
-      Trainer enemy = new Trainer("Rival!", new int[]{0, 0}, 0);
-      dex.randomizeParty(enemy);
-      battle = new Battle(player, enemy);
-      state = BATTLE;
+      if (trainersLeft>0) {
+        Trainer enemy = new Trainer("Rival!", new int[]{0, 0}, player.getBadges());
+        dex.randomizeParty(enemy);
+        battle = new Battle(player, enemy);
+        state = BATTLE;
+        trainersLeft--;
+      } else {
+        if (elite4progress==3) {
+          Trainer enemy = new Trainer("Champion!", new int[]{0, 0}, player.getBadges()+2);
+          dex.randomizeParty(enemy);
+          battle = new Battle(player, enemy);
+          state = BATTLE;
+          if (player.getSlot(0).getCurrentHP()>0) {
+            System.out.println("yay win");
+          } else {
+            System.out.println("noo loss");
+          }
+        } else {
+          Trainer enemy = new Trainer("Leader!", new int[]{0, 0}, player.getBadges()+1);
+          dex.randomizeParty(enemy);
+          battle = new Battle(player, enemy);
+          state = BATTLE;
+          if (player.getBadges()==8) {
+            elite4progress++;
+          } else {
+            player.setBadges(player.getBadges()+1);
+          } encountersLeft = 10;
+          trainersLeft = 5;
+        }
+      }
     }
     if (key == 'h') {
-      player.getSlot(0).setCurrentHP(player.getSlot(0).getStats()[1]);
+      for (int i = 0; i < player.checkParty(); i++) {
+        player.getSlot(i).setCurrentHP(player.getSlot(i).getStats()[1]);
+        player.getSlot(i).clearStatus();
+        player.getSlot(i).setFlinchedStatus(false);
+        player.getSlot(i).setConfusedStatus(false);
+      }
     }
     if (key == 'r') {
       dex.randomizeParty(player);
@@ -174,6 +232,9 @@ void keyPressed() {
     if (state == POKEMON) {
       PokeUI();
     }
+    //if (key == 'f') {
+    //  map.getTileGrid()[position[0]][position[1]].interact(direction);
+    //}
   }
   if (state > MAP) {
     if (key == 'm') {
@@ -318,11 +379,11 @@ void buttonTR() {
 void buttonBL() {
   if (state == MOVES) {
     battle.turn(0, 1);
-    afterTurn(battle.getNextTurn());
+    afterTurn(battle.getNextTurn()); //<>//
     noFill();
   } else if (state == POTIONS) {
     PokeUI();
-    state = SPot;
+    state = SPot; //<>//
   } else if (state == MPOTIONS) {
     PokeUI();
     state = MSPot;
