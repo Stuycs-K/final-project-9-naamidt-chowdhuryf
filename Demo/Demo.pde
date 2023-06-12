@@ -60,6 +60,25 @@ void setup() {
   Pokemon random = dex.randomPokemon(player);
   random.addExp(100);
   player.setPokemon(0, random);
+  /////////// TESTING ///////////////////////
+  // bulbasaur
+  Pokemon bulbasaur = new Pokemon(35,"existant?",1);
+  bulbasaur.addEvs(new int[]{0,0,0,0,252,0,252});
+  bulbasaur.setMoveSlot(0,dex.getMove(202));
+  bulbasaur.setMoveSlot(1,dex.getMove(38));
+  bulbasaur.setMoveSlot(2,dex.getMove(261));
+  bulbasaur.setMoveSlot(3,dex.getMove(105));
+  bulbasaur.setMoveSlot(3,dex.getMove(153)); // art is an explosion
+  //walrein
+  Pokemon walrein = new Pokemon(30,"works",365);
+  walrein.addEvs(new int[]{0,252,0,0,0,0,252});
+  walrein.setMoveSlot(0,dex.getMove(252));
+  walrein.setMoveSlot(1,dex.getMove(109));
+  walrein.setMoveSlot(2,dex.getMove(14));
+  walrein.setMoveSlot(3,dex.getMove(103));
+  player.setPokemon(0,bulbasaur);
+  player.setPokemon(1,walrein);
+  ////////////////////////////////////////
   buttonCount = 4;
   turn = new Turn();
 
@@ -360,11 +379,11 @@ void bigButton() { //when its just checking for a mouse press to go past a text 
   }
   else if (state == BALLTEXT) {
     textboxUI();
-    fill(0);
+    fill(0); //<>//
     text(battle.getNpcActive().getNickname().toUpperCase() + " BROKE FREE!", 15, 400);
     noFill();
     state = AFTERTURN2;
-  }
+  } //<>//
   else if (state == BALLTEXTFINAL) {
     textboxUI();
     fill(0);
