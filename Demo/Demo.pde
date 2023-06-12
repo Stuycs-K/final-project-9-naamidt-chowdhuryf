@@ -501,6 +501,10 @@ void bigButton() { //when its just checking for a mouse press to go past a text 
     state = AFTERTURN2;
   }
   else if (state == EFFECTIVETEXTFINAL) {
+    if (turn==null) {
+      state = TEXTBOX;
+      return;
+    }
     effectiveText(dex.getAdvantage(turn.getOtherPokemon(), turn.getPokemon().getMoves()[turn.getChoice()]));
     state = TEXTBOX;
   } //<>//
@@ -1147,6 +1151,9 @@ void afterTurn(Turn first) {
   buttonCount = 1;
   textboxUI();
   fill(0);
+  if (first==null) {
+    return;
+  }
   if (first.getCategory() == 0) {
     text(first.getPokemon().getNickname().toUpperCase() + " TRIED TO USE " + first.getPokemon().getMoves()[first.getChoice()].getName().toUpperCase() + "!", 15, 400);
   }
@@ -1167,6 +1174,9 @@ void afterTurn(Turn first) {
 int stepUp(Turn second, int step) {
   int val = 0; //nothing special needs to be shown
   fill(0);
+  if (second==null) {
+    return -1;
+  }
   if (second.getCategory() == 0) {
     moveTextHit(second, step);
     if (battle.battleStatus() != 0) {
