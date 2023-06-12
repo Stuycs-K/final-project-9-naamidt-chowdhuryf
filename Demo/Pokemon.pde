@@ -212,7 +212,7 @@ public class Pokemon {
   }
   public int getNextLevelExp() {
     if (level==100) {
-      return expChart[level];
+      return Integer.MAX_VALUE;
     } return expChart[level+1];
   }
   public int getTotalLevelExp() {
