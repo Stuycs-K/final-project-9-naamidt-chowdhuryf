@@ -412,6 +412,9 @@ public class Pokedex {
   public String getStatusIcon(String status) {
     return statusIcons.get(status);
   }
+  public String getStatusIcon(int id) {
+    return statusIcons.get(idToStatus.get(id));
+  }
   public String getIdToStatus(int id) {
     return idToStatus.get(id);
   }

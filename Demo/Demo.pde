@@ -60,9 +60,6 @@ void setup() {
   random.addExp(100);
   player.setPokemon(0, random);
   buttonCount = 4;
-  for (int i=0;i<=100;i++) {
-    System.out.println("Level "+i+": "+dex.getLearnset(1).get(i));
-  }
 
   //String dir = sketchPath();
   //System.out.println(dir);
@@ -101,6 +98,9 @@ void keyPressed() {
     }
     if (key == 'b') {
       battle = new Battle(player);
+      // TESTING PURPOSES //
+      battle.getNpcActive().setStatus(1);
+      //////////////////////
       state = BATTLE;
     }
     if (key == 't') {
@@ -335,7 +335,7 @@ void bigButton() { //when its just checking for a mouse press to go past a text 
     mapUI();
   }
   else if (state == AFTERTURN) {
-    Turn turn = battle.getNextTUrn();
+    Turn turn = battle.getNextTurn();
     
   }
 }
@@ -544,7 +544,7 @@ void button21() { //bottom right
     afterTurn(battle.getNextTurn());
   } else if (state == HPot) {
     battle.turn(2, 6, 5);
-    safterTurn(battle.getNextTurn());
+    afterTurn(battle.getNextTurn());
   } else if (state == MPot) {
     player.getBag().use(false, 4, player.getSlot(5));
     state = MAP;
@@ -575,6 +575,7 @@ void battleUI() {
   battleButtons();
   updateEXP();
   updateHealthBar();
+  battle.drawStatusEffects();
 }
 
 void updateHealthBar() {
@@ -1024,7 +1025,7 @@ int stepUp(Turn first, int step) {
     if (first.getChoice() < 4) {
       val = checkCaught(step);
     }
-    state = BALLFAILTEXT;
+    state = BALLTEXT;
   }
   return val;
 }
@@ -1043,7 +1044,7 @@ int stepUp2(Turn second, int step) {
     if (second.getChoice() < 4) {
       val = checkCaught(step);
     } else {
-      state = BALLFAILTEXT2;
+      state = BALLTEXT2;
     }
   }
   return val;
