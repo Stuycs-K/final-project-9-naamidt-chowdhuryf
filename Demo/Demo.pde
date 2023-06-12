@@ -381,9 +381,11 @@ void bigButton() { //when its just checking for a mouse press to go past a text 
     effectiveText(dex.getAdvantage(turn.getOtherPokemon(), turn.getPokemon().getMoves()[turn.getChoice()]));
     state = TEXTBOX;
   }
-  else if (state == AFTERTURN2) {
+  else if (state == AFTERTURN2) { //<>//
+    System.out.println("WHITE BOX PAIN");
     turn = battle.getNextTurn();
-    int step = battle.stepTurn();
+    System.out.println(turn);
+    int step = battle.stepTurn(); //<>//
     int val = stepUp(turn, step);
     afterTurn(turn);
     updateHealthBar();
