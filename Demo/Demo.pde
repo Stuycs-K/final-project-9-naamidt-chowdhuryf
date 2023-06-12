@@ -381,11 +381,9 @@ void bigButton() { //when its just checking for a mouse press to go past a text 
     state = TEXTBOX;
   } //<>//
   else if (state == AFTERTURN2) { //<>//
-    System.out.println("WHITE BOX PAIN");
     turn = battle.getNextTurn();
-    System.out.println(turn); //<>//
     int step = battle.stepTurn(); //<>//
-    int val = stepUp(turn, step);
+    int val = stepUp(turn, step); //<>//
     afterTurn(turn);
     updateHealthBar();
     updateEXP();
