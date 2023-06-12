@@ -56,7 +56,7 @@ void setup() {
   map = new Map("testmap.txt");
   mapUI();
   dex = new Pokedex();
-  player = new Trainer("Me!", new int[]{0, 0}, 10);
+  player = new Trainer("Me!", new int[]{0, 0}, 2);
   Pokemon random = dex.randomPokemon(player);
   random.addExp(100);
   player.setPokemon(0, random);
@@ -71,11 +71,12 @@ void setup() {
   bulbasaur.setMoveSlot(3,dex.getMove(153)); // art is an explosion
   //walrein
   Pokemon walrein = new Pokemon(30,"works",365);
-  walrein.addEvs(new int[]{0,252,0,0,0,0,252});
+  walrein.addEvs(new int[]{0,252,0,0,0,0,0});
   walrein.setMoveSlot(0,dex.getMove(252));
   walrein.setMoveSlot(1,dex.getMove(109));
   walrein.setMoveSlot(2,dex.getMove(14));
   walrein.setMoveSlot(3,dex.getMove(103));
+  walrein.setMoveSlot(3,dex.getMove(97));
   player.setPokemon(0,bulbasaur);
   player.setPokemon(1,walrein);
   ////////////////////////////////////////
@@ -378,12 +379,12 @@ void bigButton() { //when its just checking for a mouse press to go past a text 
     }
   }
   else if (state == BALLTEXT) {
-    textboxUI();
-    fill(0); //<>//
+    textboxUI(); //<>//
+    fill(0);
     text(battle.getNpcActive().getNickname().toUpperCase() + " BROKE FREE!", 15, 400);
     noFill();
-    state = AFTERTURN2;
-  } //<>//
+    state = AFTERTURN2; //<>//
+  }
   else if (state == BALLTEXTFINAL) {
     textboxUI();
     fill(0);
