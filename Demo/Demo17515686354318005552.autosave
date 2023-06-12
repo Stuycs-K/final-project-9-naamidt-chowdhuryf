@@ -33,8 +33,8 @@ static final int BOT_HEIGHT = 480;
 
 static final int EFFECTIVETEXT = 3000;
 static final int BALLTEXT = 5000;
-static final int EFFECTIVETEXTFINAL = -3000;
-static final int BALLTEXTFINAL = -5000;
+static final int EFFECTIVETEXT2 = 3001;
+static final int BALLTEXT2 = 5001;
 static final int POTIONTEXT = 6000;
 static final int AFTERTURN = 1010;
 static final int AFTERTURN2 = 101;
@@ -46,7 +46,6 @@ int countdown;
 Trainer player;
 Pokedex dex;
 int buttonCount;
-Turn turn;
 void setup() {
   countdown = 0;
   imageMode(CENTER);
@@ -61,7 +60,9 @@ void setup() {
   random.addExp(100);
   player.setPokemon(0, random);
   buttonCount = 4;
-  turn = new Turn();
+  for (int i=0;i<=100;i++) {
+    System.out.println("Level "+i+": "+dex.getLearnset(1).get(i));
+  }
 
   //String dir = sketchPath();
   //System.out.println(dir);
@@ -136,6 +137,8 @@ void draw() {
   if (countdown > 0) {
     countdown--;
   }
+  fill(0);
+  text(mouseX + " " + mouseY, 0, 0);
 }
 
 void mouseClicked() {
@@ -332,69 +335,10 @@ void bigButton() { //when its just checking for a mouse press to go past a text 
     mapUI();
   }
   else if (state == AFTERTURN) {
-    turn = battle.getNextTurn();
+    Turn turn = battle.getNextTurn();
     int step = battle.stepTurn();
-    int val = stepUp(turn, step);
-    updateHealthBar();
-    updateEXP();
-    if (val == 0) {
-      state = AFTERTURN2;
-    }
-    else if (val < 0) {
-      if (val == -1) {
-        state = EFFECTIVETEXTFINAL;
-      } else {
-        state = BALLTEXTFINAL;
-      }
-    }
-    else if (val > 0) {
-      if (val == 1) {
-        state = EFFECTIVETEXT;
-      } else {
-        state = BALLTEXT;
-      }
-    }
-  }
-  else if (state == BALLTEXT) {
-    textboxUI();
-    text(battle.getNpcActive().getNickname().toUpperCase() + " BROKE FREE!", 15, 400);
-    state = AFTERTURN2;
-  }
-  else if (state == BALLTEXTFINAL) {
-    textboxUI();
-    text("YOU SUCCESFULLY CAPTURED " + battle.getNpcActive().getNickname().toUpperCase() + "!", 15, 400);
-    state = TEXTBOX;
-  }
-  else if (state == EFFECTIVETEXT) {
-    textboxUI();
-    effectiveText(dex.getAdvantage(turn.getOtherPokemon(), turn.getPokemon().getMoves()[turn.getChoice()]));
-    state = AFTERTURN2;
-  }
-  else if (state == EFFECTIVETEXTFINAL) {
-    textboxUI();
-    effectiveText(dex.getAdvantage(turn.getOtherPokemon(), turn.getPokemon().getMoves()[turn.getChoice()]));
-    state = TEXTBOX;
-  }
-  else if (state == AFTERTURN2) {
-    turn = battle.getNextTurn();
-    int step = battle.stepTurn();
-    int val = stepUp(turn, step);
-    updateHealthBar();
-    updateEXP();
-    if (val < 0) {
-      if (val == -1) {
-        state = EFFECTIVETEXTFINAL;
-      } else {
-        state = BALLTEXTFINAL;
-      }
-    }
-    else if (val > 0) {
-      if (val == 1) {
-        state = EFFECTIVETEXTFINAL;
-      } else {
-        state = BALLTEXTFINAL;
-      }
-    }
+    if (stepUp(turn, step)
+    
   }
 }
 
@@ -919,6 +863,25 @@ void bagUI() {
   text("POKEBALLS", RIGHT_WIDTH + 35, TOP_HEIGHT + 120);
 }
 
+int checkCaught(int step) {
+  int val = 0;
+  if (step == 3) {
+    state = WIN;
+    caughtUI();
+    textboxUI();
+    text("You succesfully caught " + battle.getNpcActive().getNickname() + "!", 15, 400);
+    val = 1;
+    if (player.checkParty() != 6) {
+      player.setPokemon(player.checkParty(), battle.getNpcActive());
+    }
+  } else {
+    state = TEXTBOX;
+    textboxUI();
+    text(battle.getNpcActive().getNickname() + " broke free!", 15, 400);
+  }
+  return val;
+}
+
 //LOOK AT ME LOOK AT ME LOOK AT ME LOOK AT ME LOOK AT ME LOOK AT ME LOOK AT ME LOOK AT ME LOOK AT ME LOOK AT ME LOOK AT ME LOOK AT ME LOOK AT ME LOOK AT ME LOOK AT ME LOOK AT ME LOOK AT ME LOOK AT ME LOOK AT ME
 
 
@@ -962,7 +925,7 @@ void potionTextSummary(Turn turn) {
   noFill();
 }
 
-void effectiveText(double effect) {
+void effectiveText(int effect) {
   fill(0);
   if (effect > 1) {
     text("IT's SUPER EFFECTIVE!", 15, 400);
@@ -1013,7 +976,7 @@ void afterTurn(Turn first) {
   textboxUI();
   fill(0);
   if (first.getCategory() == 0) {
-    text(first.getPokemon().getNickname().toUpperCase() + " TRIED TO USE " + first.getPokemon().getMoves()[first.getChoice()].getName().toUpperCase() + "!", 15, 400);
+    text(first.getPokemon().getNickname().toUpperCase() + " TRIED TO USE " + first.getPokemon().getMoves()[first.getChoice()] + "!", 15, 400);
   }
   else if (first.getCategory() == 1) {
     text(first.getTrainer().getName() + " SWITCHED OUT " + first.getPokemon().getNickname() + " FOR " + first.getTrainer().getSlot(first.getChoice()).getNickname() + "!", 15, 400);
@@ -1049,25 +1012,40 @@ void afterTurn2(Turn second) {
   noFill();
 }
 
-int stepUp(Turn second, int step) {
-  int val = 0; //nothing special needs to be shown
+int stepUp(Turn first, int step) {
+  int val = 0;
+  fill(0);
+  if (first.getCategory() == 0) {
+    moveTextHit(first, step);
+    if (battle.battleStatus() != 0) {
+      val = 1;
+    }
+    state = EFFECTIVETEXT;
+  }
+  else if (first.getCategory() == 2) {
+    if (first.getChoice() < 4) {
+      val = checkCaught(step);
+    }
+    state = BALLTEXT;
+  }
+  return val;
+}
+
+int stepUp2(Turn second, int step) {
+  int val = 0;
   fill(0);
   if (second.getCategory() == 0) {
     moveTextHit(second, step);
     if (battle.battleStatus() != 0) {
-      val = -1; //battle is over, need to show effective
-    } else {
-      val = 1; //battle is not over, need to show effective
+      val = 1;
     }
+    state = EFFECTIVETEXT2;
   }
   else if (second.getCategory() == 2) {
     if (second.getChoice() < 4) {
-      if (step == 3) {
-        val = -2; //battle is over, poke caught
-      }
-      else {
-        val = 2; //battle is not over, poke free
-      }
+      val = checkCaught(step);
+    } else {
+      state = BALLTEXT2;
     }
   }
   return val;
