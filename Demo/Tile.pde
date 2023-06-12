@@ -10,7 +10,6 @@ static final int RUN = 2;
 public class Tile{
   PImage sprite;
   PImage alsosprite;
-  //Event event;
   boolean walkable;
   boolean swimmable;
   int[] pStatus;
@@ -42,7 +41,7 @@ public class Tile{
     if (type == EVENT) {
       sprite = loadImage("path.PNG");
       alsosprite = loadImage("path.PNG");
-      walkable = true;
+      walkable = false;
       swimmable = false;
     }
     if (type == WATER) {
