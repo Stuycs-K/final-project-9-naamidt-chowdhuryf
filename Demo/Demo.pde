@@ -62,7 +62,7 @@ void setup() {
   player.setPokemon(0, random);
   /////////// TESTING ///////////////////////
   // bulbasaur
-  Pokemon bulbasaur = new Pokemon(35,"existant?",1);
+  Pokemon bulbasaur = new Pokemon(35,"Bulbasaur",1);
   bulbasaur.addEvs(new int[]{0,0,0,0,252,0,252});
   bulbasaur.setMoveSlot(0,dex.getMove(202));
   bulbasaur.setMoveSlot(1,dex.getMove(38));
