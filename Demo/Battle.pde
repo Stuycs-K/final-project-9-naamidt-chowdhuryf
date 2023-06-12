@@ -54,6 +54,9 @@ public class Battle {
     murderer.addEvs(victim.getEvYield());
     int expYield = victim.getBaseExp()*victim.getLevel()/5;
     expYield*=(int)(Math.sqrt(Math.pow((2*victim.getLevel()+10)/(victim.getLevel()+murderer.getLevel()+10), 5)))+1;
+    if (!isEncounter) {
+      expYield*=3;
+    }
     murderer.addExp(expYield);
   }
   // NOTE: this method assumes that you are giving it valid arguments, which means the slot that the trainer is swapping into
