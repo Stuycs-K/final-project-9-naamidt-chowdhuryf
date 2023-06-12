@@ -316,7 +316,9 @@ public class Battle {
       double critMultiplier = 1;
        if ((int)(Math.random()*16)==0) {
          critMultiplier=1.5;
-         returnVal = 1;
+         if (damage!=0) {
+           returnVal = 1;
+         }
       } damage=(int)(damage*critMultiplier);
       move.changePP(1);
       int accuracyCheck = (int)(Math.random()*100);
