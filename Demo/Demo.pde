@@ -361,21 +361,23 @@ void bigButton() { //when its just checking for a mouse press to go past a text 
   }
   else if (state == BALLTEXT) {
     textboxUI();
+    fill(0);
     text(battle.getNpcActive().getNickname().toUpperCase() + " BROKE FREE!", 15, 400);
+    noFill();
     state = AFTERTURN2;
   }
   else if (state == BALLTEXTFINAL) {
     textboxUI();
+    fill(0);
     text("YOU SUCCESFULLY CAPTURED " + battle.getNpcActive().getNickname().toUpperCase() + "!", 15, 400);
+    noFill();
     state = TEXTBOX;
   }
   else if (state == EFFECTIVETEXT) {
-    textboxUI();
     effectiveText(dex.getAdvantage(turn.getOtherPokemon(), turn.getPokemon().getMoves()[turn.getChoice()]));
     state = AFTERTURN2;
   }
   else if (state == EFFECTIVETEXTFINAL) {
-    textboxUI();
     effectiveText(dex.getAdvantage(turn.getOtherPokemon(), turn.getPokemon().getMoves()[turn.getChoice()]));
     state = TEXTBOX;
   }
@@ -383,6 +385,7 @@ void bigButton() { //when its just checking for a mouse press to go past a text 
     turn = battle.getNextTurn();
     int step = battle.stepTurn();
     int val = stepUp(turn, step);
+    afterTurn(turn);
     updateHealthBar();
     updateEXP();
     if (val < 0) {
@@ -970,10 +973,13 @@ void potionTextSummary(Turn turn) {
 void effectiveText(double effect) {
   fill(0);
   if (effect > 1) {
+    textboxUI();
     text("IT's SUPER EFFECTIVE!", 15, 400);
   } else if (effect > 0 && effect < 1) {
+    textboxUI();
     text("IT'S NOT VERY EFFECTIVE...", 15, 400);
   } else if (effect == 0) {
+    textboxUI();
     text("IT HAD NO EFFECT...", 15, 400);
   }
   noFill();
@@ -1031,26 +1037,6 @@ void afterTurn(Turn first) {
     }
   }
   state = AFTERTURN;
-  noFill();
-}
-
-void afterTurn2(Turn second) {
-  textboxUI();
-  fill(0);
-  if (second.getCategory() == 0) {
-    text(second.getPokemon().getNickname().toUpperCase() + " TRIED TO USE " + second.getPokemon().getMoves()[second.getChoice()] + "!", 15, 400);
-  }
-  else if (second.getCategory() == 1) {
-    text(second.getTrainer().getName() + " SWITCHED OUT " + second.getPokemon().getNickname() + " FOR " + second.getTrainer().getSlot(second.getChoice()).getNickname() + "!", 15, 400);
-  }
-  else if (second.getCategory() == 2) {
-    if (second.getChoice2() > -1) {
-      potionTextSummary(second);
-    } else {
-      ballTextSummary(second);
-    }
-  }
-  state = AFTERTURN2;
   noFill();
 }
 
