@@ -187,7 +187,6 @@ void keyPressed() {
   if (key == 'p') {
     for (int i=0;i<6;i++) { // swap all your pokemon with chad;
       Pokemon middleman = chad.getSlot(i);
-      System.out.println(middleman.getNickname());
       chad.setPokemon(i,player.getSlot(i));
       player.setPokemon(i,middleman);
     }
@@ -379,12 +378,12 @@ void buttonTL() {
   } else if (state == MPOTIONS) {
     PokeUI();
     state = MPot;
-  } else if (state == POKEBALLS) { //<>//
-    battle.turn(2, 1);
+  } else if (state == POKEBALLS) {
+    battle.turn(2, 1); //<>//
     afterTurn(battle.getNextTurn());
   }
-} //<>//
-
+}
+ //<>//
 void bigButton() { //when its just checking for a mouse press to go past a text segment
   if (state == TEXTBOX) {
     checkBattle(battle);
