@@ -374,10 +374,13 @@ public class Battle {
   }
   
   public void drawStatusEffects() {
-    PImage npcStatus = loadImage(dex.getStatusIcon(npcActive.getStatus()));
-    image(npcStatus,120,45);
-    PImage playerStatus = loadImage(dex.getStatusIcon(playerActive.getStatus()));
-    image(playerStatus,275,240);
+    if (npcActive.getStatus()!=0) {
+      PImage npcStatus = loadImage(dex.getStatusIcon(npcActive.getStatus()));
+      image(npcStatus,120,45);
+    } if (playerActive.getStatus()!=0) {
+      PImage playerStatus = loadImage(dex.getStatusIcon(playerActive.getStatus()));
+      image(playerStatus,275,240);
+    }
   }
   
   public Trainer getPlayer() {
