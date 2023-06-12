@@ -9,6 +9,7 @@ int gridHeight;
 int [][]mapValues; 
 Tile [][]tileValues;
 int[] PCoords;
+int PDirection;
 BufferedReader reader;
 String line;
 int[] tiles;
@@ -18,6 +19,7 @@ public class Map {
   public Map(String input) {
     try {
       reader = createReader(input);
+      PDirection = 0;
       line = reader.readLine();
       int[]  dimensions = int(split(line, " "));
       gridWidth = dimensions[1];
@@ -90,6 +92,7 @@ public class Map {
     if (direction == UP) {
       if (tileValues[PCoords[0] - 1][PCoords[1]].checkWalkable()) {
         PCoords[0]--;
+        PDirection = 2;
       } else {
         disable = true;
       }
@@ -97,6 +100,7 @@ public class Map {
     if (direction == DOWN) {
       if (tileValues[PCoords[0] + 1][PCoords[1]].checkWalkable()) {
         PCoords[0]++;
+        PDirection = 0;
       } else {
         disable = true;
       }
@@ -104,6 +108,7 @@ public class Map {
     if (direction == RIGHT) {
       if (tileValues[PCoords[0]][PCoords[1] + 1].checkWalkable()) {
         PCoords[1]++;
+        PDirection = 3;
       } else {
         disable = true;
       }
@@ -111,6 +116,7 @@ public class Map {
     if (direction == LEFT) {
       if (tileValues[PCoords[0]][PCoords[1] - 1].checkWalkable()) {
         PCoords[1]--;
+        PDirection = 1;
       } else {
         disable = true;
       }
