@@ -270,8 +270,12 @@ public class Battle {
     Trainer trainer = turn.getTrainer();
     Trainer otherTrainer = turn.getOtherTrainer();
     if (turn.getCategory()==0) { // using a pokemons move
-      Pokemon attacker = turn.getPokemon();
-      Pokemon defender = turn.getOtherPokemon();
+      Pokemon attacker = playerActive;
+      Pokemon defender = npcActive;
+      if (trainer==npc) {
+        attacker = npcActive;
+        defender = playerActive;
+      }
       if (attacker.getFlinchedStatus()) {
         attacker.setFlinchedStatus(false);
         return 8;
