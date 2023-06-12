@@ -25,4 +25,6 @@ R to randomize party\
 P to set your party to a very strong one... and P again to switch it back\
 B to fight a wild pokemon, you get 10 encounters before you must go fight trainers / the gym leader\
 T to fight a trainer, you get 5 trainer battles before the gym battle\
+',' to decrease the number of badges you have and '.' to increase them\
+(badges are at a minimum of 0 and a maximum of 8);
 WASD to move on the map if you feel like it

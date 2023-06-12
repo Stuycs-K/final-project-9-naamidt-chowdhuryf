@@ -139,6 +139,12 @@ void setup() {
 
 void keyPressed() {
   if (state == MAP || state == POKEMON) {
+    if (key == ',') {
+      player.setBadges(Math.max(0,player.getBadges()-1));
+    }
+    if (key == '.') {
+      player.setBadges(Math.min(8,player.getBadges()+1));
+    }
     int[] position = player.getPosition();
     if (key == 'w') {
       if (map.getTileGrid()[position[0]-1][position[1]].checkWalkable()) {
@@ -373,17 +379,17 @@ void buttonTR() {
     afterTurn(battle.getNextTurn());
   } else if (state == MAP) {
     state = MPOTIONS;
-    potionsUI();
+    potionsUI(); //<>//
   }
 }
 void buttonBL() {
-  if (state == MOVES) {
+  if (state == MOVES) { //<>//
     battle.turn(0, 1);
-    afterTurn(battle.getNextTurn()); //<>//
+    afterTurn(battle.getNextTurn());
     noFill();
   } else if (state == POTIONS) {
     PokeUI();
-    state = SPot; //<>//
+    state = SPot;
   } else if (state == MPOTIONS) {
     PokeUI();
     state = MSPot;
