@@ -49,7 +49,8 @@ public class Map {
   }
   
   public void resetToStart() {
-    
+    PCoords[0] = startCoords[0] / TILE_SIZE;
+    PCoords[1] = startCoords[1] / TILE_SIZE;
   }
   
   void grid() {
