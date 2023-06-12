@@ -77,8 +77,9 @@ void setup() {
   walrein.setMoveSlot(2,dex.getMove(14));
   walrein.setMoveSlot(3,dex.getMove(103));
   walrein.setMoveSlot(3,dex.getMove(97));
-  player.setPokemon(0,bulbasaur);
-  player.setPokemon(1,walrein);
+  player.setPokemon(1,bulbasaur);
+  player.setPokemon(0,walrein);
+  System.out.println(walrein.getStats()[1]);
   ////////////////////////////////////////
   buttonCount = 4;
   turn = new Turn();
@@ -378,11 +379,11 @@ void bigButton() { //when its just checking for a mouse press to go past a text 
       }
     }
   }
-  else if (state == BALLTEXT) {
+  else if (state == BALLTEXT) { //<>//
     textboxUI(); //<>//
     fill(0);
     text(battle.getNpcActive().getNickname().toUpperCase() + " BROKE FREE!", 15, 400);
-    noFill();
+    noFill(); //<>//
     state = AFTERTURN2; //<>//
   }
   else if (state == BALLTEXTFINAL) {
