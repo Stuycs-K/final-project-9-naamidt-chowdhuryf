@@ -17,10 +17,10 @@ Take your shot to try and be the very best, like no one ever was
 
 ## Instructions
 WASD to move\
-B U T T O N H E R E to interact\
+F to interact\
 Use mouse to click on-screen buttons\
 In case we don't finish / buggy mess\
 H to heal\
 R to randomize party\
 B to fight a wild pokemon\
-F to fight a trainer
+T to fight a trainer
