@@ -34,7 +34,7 @@ static final int BOT_HEIGHT = 480;
 static final int EFFECTIVETEXT = 3000;
 static final int BALLTEXT = 5000;
 static final int EFFECTIVETEXT2 = 3001;
-static final int BALLTEXT2 = 5001
+static final int BALLTEXT2 = 5001;
 static final int POTIONTEXT = 6000;
 static final int AFTERTURN = 1010;
 static final int AFTERTURN2 = 101;
@@ -335,7 +335,7 @@ void bigButton() { //when its just checking for a mouse press to go past a text 
     mapUI();
   }
   else if (state == AFTERTURN) {
-    Turn turn = battle.getNextTUrn();
+    Turn turn = battle.getNextTurn();
     
   }
 }
@@ -544,7 +544,7 @@ void button21() { //bottom right
     afterTurn(battle.getNextTurn());
   } else if (state == HPot) {
     battle.turn(2, 6, 5);
-    safterTurn(battle.getNextTurn());
+    afterTurn(battle.getNextTurn());
   } else if (state == MPot) {
     player.getBag().use(false, 4, player.getSlot(5));
     state = MAP;
@@ -1024,7 +1024,7 @@ int stepUp(Turn first, int step) {
     if (first.getChoice() < 4) {
       val = checkCaught(step);
     }
-    state = BALLFAILTEXT;
+    state = BALLTEXT;
   }
   return val;
 }
@@ -1043,7 +1043,7 @@ int stepUp2(Turn second, int step) {
     if (second.getChoice() < 4) {
       val = checkCaught(step);
     } else {
-      state = BALLFAILTEXT2;
+      state = BALLTEXT2;
     }
   }
   return val;
