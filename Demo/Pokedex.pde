@@ -231,8 +231,8 @@ public class Pokedex {
       idToStatus = new HashMap<Integer,String>();
       statusToId = new HashMap<String,Integer>();
       for (int i=0;i<statuses.length;i++) {
-        idToStatus.put(i,statuses[i]);
-        statusToId.put(statuses[i],i);
+        idToStatus.put(i+1,statuses[i]);
+        statusToId.put(statuses[i],i+1);
       }
       
       // stat change boost vals

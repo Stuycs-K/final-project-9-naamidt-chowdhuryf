@@ -374,14 +374,10 @@ public class Battle {
   }
   
   public void drawStatusEffects() {
-    if (playerActive.getStatus()!=0) {
-      System.out.println("THE PLAYER IS STATUSEDSEDED");
-    } if (npcActive.getStatus()!=0) {
-      System.out.println("THE ENEMY IS STATUSIZED");
-      PImage npcStatus = loadImage(dex.getStatusIcon(npcActive.getStatus()));
-      image(npcStatus,50,50);
-      
-    }
+    PImage npcStatus = loadImage(dex.getStatusIcon(npcActive.getStatus()));
+    image(npcStatus,120,45);
+    PImage playerStatus = loadImage(dex.getStatusIcon(playerActive.getStatus()));
+    image(playerStatus,275,240);
   }
   
   public Trainer getPlayer() {

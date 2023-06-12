@@ -99,6 +99,7 @@ void keyPressed() {
     if (key == 'b') {
       battle = new Battle(player);
       // TESTING PURPOSES //
+      battle.getPlayerActive().setStatus(5);
       battle.getNpcActive().setStatus(1);
       //////////////////////
       state = BATTLE;
