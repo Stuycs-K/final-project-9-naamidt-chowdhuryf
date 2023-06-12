@@ -61,10 +61,7 @@ void setup() {
   random.addExp(100);
   player.setPokemon(0, random);
   buttonCount = 4;
-<<<<<<< HEAD
-=======
   turn = new Turn();
->>>>>>> phase3Bell
 
   //String dir = sketchPath();
   //System.out.println(dir);
