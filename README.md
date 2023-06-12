@@ -9,6 +9,7 @@ Basically, this is a Pokemon Roguelike where you can fight trainers and catch po
 If you've ever realized it, Pokemon without fetch quests is basically a boss rush, which is what this game intends to be\
 You can interact with encounter areas 10 times to try and build a good team before the gym battle\
 Who knows, maybe you'll find yourself standing in front of a stronger pokemon\
+But remember, you only have a limited number of pokeballs\
 Keep in mind that you will find even stronger pokemon as you make your way up the ladder of gym leaders\
 You can also fight 5 enemy trainers leading up to each gym leader\
 After each battle, you may press H to heal your team to full\

@@ -67,10 +67,12 @@ HW - Continued to draft implementation and trying to not do everything manually
 CW - Realized that it was pointless and thought of how to add everything to the spreadsheed manually and manageably\
 HW - Started adding some things in manually before getting into issues since I forgot some moves could have multiple effects
 
-### 6/10-11/23
+### 6/10-12/23
 
 HW - Working on actually added stat stage boosts, status effects, better turn-based system, AI, more sprites, spreadsheets\
-making diagrams for how the game will actually work, designing and coding the pokemon to demonstrate features in cheats
+making diagrams for how the game will actually work, designing and coding the pokemon to demonstrate features in cheats,\
+helped Bell with some UI stuff that needed to be fixed and copium rushed the final project since I designed neither the Map\
+nor the UI so I didn't know how to implement the Events class properly
 
 
 ## Fishan Chowdhury (Bell)
