@@ -6,7 +6,7 @@ import java.math.*;
 public class Event {
   private int[] coords;
   private PImage sprite;
-  private int type;
+  private int type, amt;
   private Trainer player;
   private Pokedex dex;
   // 0 == encounter, 1 == trainer, 2 == healer, 3 == item guy, 4 == statue, 5 == gym
@@ -14,21 +14,27 @@ public class Event {
     this.type = type;
     if (type == 0) {
       sprite = loadImage("rock.png");
+      amt = 5;
     }
     if (type == 1) {
       sprite = loadImage("npcLeft.png");
+      amt = 3;
     }
     if (type == 2) {
       sprite = loadImage("nurseLeft.png");
+      amt = 1;
     }
     if (type == 3) {
       sprite = loadImage("shopLeft.png");
+      amt = 1;
     }
     if (type == 4) {
       sprite = loadImage("statue.png");
+      amt = 1;
     }
     if (type == 5) {
       sprite = loadImage("leaderLeft.png");
+      amt = 1;
     }
     coords = new int[2];
     coords[0] = locat[0];
@@ -86,13 +92,16 @@ public class Event {
   
   
   Battle encounterInteract() {
+    amt--;
+    checkAmt();
     return new Battle(player);
   }
   
   Battle trainerInteract() {
     Trainer enemy = new Trainer("Rival!", new int[]{0, 0}, 0);
     dex.randomizeParty(enemy);
-    setCoords(-100, -100);
+    amt--;
+    checkAmt();
     return new Battle(player, enemy);
   }
   
@@ -103,7 +112,8 @@ public class Event {
       player.getSlot(i).setFlinchedStatus(false);
       player.getSlot(i).setConfusedStatus(false);
     }
-    setCoords(-100, -100);
+    amt--;
+    checkAmt();
   }
   
   void shopInteract() {
@@ -117,18 +127,40 @@ public class Event {
       int amtOfBall = (int)(Math.random() * 10) + 1;
       player.getBag().setItemAmount(typeOfBall, player.getBag().getItemAmount(typeOfBall) + amtOfBall);
     }
-    setCoords(-100, -100);
+    amt--;
+    checkAmt();
   }
   
-  Battle statueEncounter() {
-    Trainer standee = new Trainer("Standee", new int{0,0}, player.getBadges() + 2);
+  Battle statueInteract() {
+    Trainer standee = new Trainer("Standee", new int[]{0,0}, player.getBadges() + 2);
     Pokemon foe = dex.randomPokemon(standee);
+    amt--;
+    checkAmt();
     return new Battle(player, foe);
   }
   
-  Battle gymEncounter() {
-    Trainer gymLeader = new Trainer("Leader", new int{0,0}, player.getBadges() + 1);
+  Battle gymInteract() {
+    Trainer gymLeader = new Trainer("Leader", new int[]{0,0}, player.getBadges() + 1);
     dex.randomizeParty(gymLeader);
+    amt--;
+    checkAmt();
     return new Battle(player, gymLeader);
+  }
+  
+  Battle champInteract() {
+    Trainer champion = new Trainer("champ", new int[]{0,0}, player.getBadges() + 2);
+    dex.randomizeParty(champion);
+    return new Battle(player, champion);
+  }
+  
+  Event randomize() {
+    int newType = (int)(Math.random() * 4) + 1;
+    return new Event(newType, coords, player);
+  }
+  
+  void checkAmt() {
+    if (amt < 1) {
+      setCoords(-100,-100);
+    }
   }
 }
