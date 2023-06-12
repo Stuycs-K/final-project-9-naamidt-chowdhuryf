@@ -139,6 +139,12 @@ void setup() {
 
 void keyPressed() {
   if (state == MAP || state == POKEMON) {
+    if (key == ',') {
+      player.setBadges(Math.max(0,player.getBadges()-1));
+    }
+    if (key == '.') {
+      player.setBadges(Math.min(8,player.getBadges()+1));
+    }
     int[] position = player.getPosition();
     if (key == 'w') {
       if (map.getTileGrid()[position[0]-1][position[1]].checkWalkable()) {
@@ -373,17 +379,17 @@ void buttonTR() {
     afterTurn(battle.getNextTurn());
   } else if (state == MAP) {
     state = MPOTIONS;
-    potionsUI();
+    potionsUI(); //<>//
   }
 }
 void buttonBL() {
-  if (state == MOVES) {
+  if (state == MOVES) { //<>//
     battle.turn(0, 1);
-    afterTurn(battle.getNextTurn()); //<>//
+    afterTurn(battle.getNextTurn());
     noFill();
   } else if (state == POTIONS) {
     PokeUI();
-    state = SPot; //<>//
+    state = SPot;
   } else if (state == MPOTIONS) {
     PokeUI();
     state = MSPot;
@@ -501,6 +507,10 @@ void bigButton() { //when its just checking for a mouse press to go past a text 
     state = AFTERTURN2;
   }
   else if (state == EFFECTIVETEXTFINAL) {
+    if (turn==null) {
+      state = TEXTBOX;
+      return;
+    }
     effectiveText(dex.getAdvantage(turn.getOtherPokemon(), turn.getPokemon().getMoves()[turn.getChoice()]));
     state = TEXTBOX;
   } //<>//
@@ -1147,6 +1157,9 @@ void afterTurn(Turn first) {
   buttonCount = 1;
   textboxUI();
   fill(0);
+  if (first==null) {
+    return;
+  }
   if (first.getCategory() == 0) {
     text(first.getPokemon().getNickname().toUpperCase() + " TRIED TO USE " + first.getPokemon().getMoves()[first.getChoice()].getName().toUpperCase() + "!", 15, 400);
   }
@@ -1167,6 +1180,9 @@ void afterTurn(Turn first) {
 int stepUp(Turn second, int step) {
   int val = 0; //nothing special needs to be shown
   fill(0);
+  if (second==null) {
+    return -1;
+  }
   if (second.getCategory() == 0) {
     moveTextHit(second, step);
     if (battle.battleStatus() != 0) {

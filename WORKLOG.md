@@ -39,12 +39,41 @@ HW - Absolute overhaul of data, all pokemon data and moves and sprites and every
     Also lots of debugging for the demo, battles still dont work :(
 
 ### 6/2-4/23
- 
+
 HW - Discussed with Bell how we want to finalize the project, since the Demo is in a very unfinalized state, and what we should do to get there
 
 ### 6/5/23
 
 HW - Complete overhaul of battling since it was broken maybe, bag will also get a redesign soon to align with battle better
+
+### 6/6/23
+
+CW - Updated Bell on what happened in class and coordinated something we needed to add in battles\
+HW - Added the field for Bell in the Battle class as well as allowing learnsets to have multiple moves learned even if they are\
+counted as "the same level"
+
+
+### 6/7/23
+
+CW - Presented Demo and talked about some future plans with Bell
+HW - Drafted implementation for stat stage boosts/status effects on notepad
+
+### 6/8/23
+
+HW - Continued to draft implementation and trying to not do everything manually
+
+### 6/9/23
+
+CW - Realized that it was pointless and thought of how to add everything to the spreadsheed manually and manageably\
+HW - Started adding some things in manually before getting into issues since I forgot some moves could have multiple effects
+
+### 6/10-12/23
+
+HW - Working on actually added stat stage boosts, status effects, better turn-based system, AI, more sprites, spreadsheets\
+making diagrams for how the game will actually work, designing and coding the pokemon to demonstrate features in cheats,\
+helped Bell with some UI stuff that needed to be fixed and copium rushed the final project since I designed neither the Map\
+nor the UI so I didn't know how to implement the Events class properly
+
 
 ## Fishan Chowdhury (Bell)
 
@@ -73,3 +102,11 @@ HW - Made a proper mapmaker that reads files and produces maps based on the code
 
 CW - Fixed flickering effect of map and started work on BattleUI
 HW - Continued work on BattleUI and found an updated csv with pokemon data
+
+### 5/31/23 - 6/1/23
+
+HW - continued working on BattleUI and finished a few buttons, flickering, and started fighting buttons
+
+### 6/2 - 6/4
+
+HW - 
