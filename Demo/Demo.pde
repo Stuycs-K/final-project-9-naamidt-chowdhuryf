@@ -43,7 +43,7 @@ Map map;
 int state;
 Battle battle;
 int countdown;
-Trainer player;
+Trainer player, chad;
 Pokedex dex;
 int buttonCount;
 Turn turn;
@@ -84,25 +84,55 @@ void setup() {
   buttonCount = 4;
   turn = new Turn();
 
-  //String dir = sketchPath();
-  //System.out.println(dir);
-  //dir = dir.substring(0,dir.length()-4);
-  //char what = dir.charAt(dir.length()-1);
-  //dir+="Demo";
-  ////dir+="front";
-  //dir+=what;
-  //dir+="data";
-  //dir+=what;
-  //dir+="front";
-  //dir+=what;
-  //dir+="800.gif";
-  //System.out.println(dir);
-  //PImage marshadow = loadImage(dir);
-  // tl;dr, get the filepath, go to data, then go into the folder, then take sprite
-  //Pokedex dex = new Pokedex();
-  //Pokemon randy = dex.randomPokemon(12);
-  //image(randy.getFrontSprite(),110,110);
-  //image(marshadow,100,100);
+  chad = new Trainer("Chad",new int[]{0,0},100);
+  // marshadow
+  Pokemon marshadow = new Pokemon(100,"no yoinkage",802);
+  marshadow.addEvs(new int[]{0,0,252,0,0,0,252});
+  marshadow.setMoveSlot(0,dex.getMove(712));
+  marshadow.setMoveSlot(1,dex.getMove(370));
+  marshadow.setMoveSlot(2,dex.getMove(409));
+  marshadow.setMoveSlot(3,dex.getMove(8));
+  // metagross
+  Pokemon metagross = new Pokemon(100,"bell had no say",376);
+  metagross.addEvs(new int[]{0,0,252,0,0,0,252});
+  metagross.setMoveSlot(0,dex.getMove(309));
+  metagross.setMoveSlot(1,dex.getMove(89));
+  metagross.setMoveSlot(2,dex.getMove(428));
+  metagross.setMoveSlot(3,dex.getMove(153));
+  // rayquaza
+  Pokemon rayquaza = new Pokemon(100,"inevitable",384);
+  rayquaza.addEvs(new int[]{0,0,0,0,252,0,252});
+  rayquaza.setMoveSlot(0,dex.getMove(434));
+  rayquaza.setMoveSlot(1,dex.getMove(63));
+  rayquaza.setMoveSlot(2,dex.getMove(53));
+  rayquaza.setMoveSlot(3,dex.getMove(85));
+  // regieleki
+  Pokemon regieleki = new Pokemon(100,"zoom zoom",894);
+  regieleki.addEvs(new int[]{0,252,0,0,252,0,0});
+  regieleki.setMoveSlot(0,dex.getMove(85));
+  regieleki.setMoveSlot(1,dex.getMove(58));
+  regieleki.setMoveSlot(2,dex.getMove(802));
+  regieleki.setMoveSlot(3,dex.getMove(417));
+  // regigigas
+  Pokemon regigigas = new Pokemon(100,"no slow anymo",486);
+  regigigas.addEvs(new int[]{0,0,252,0,0,0,252});
+  regigigas.setMoveSlot(0,dex.getMove(416));
+  regigigas.setMoveSlot(1,dex.getMove(153));
+  regigigas.setMoveSlot(2,dex.getMove(893));
+  regigigas.setMoveSlot(3,dex.getMove(413));
+  // xerneas
+  Pokemon xerneas = new Pokemon(100,"geomancy nerf",716);
+  xerneas.addEvs(new int[]{0,0,0,0,252,0,252});
+  xerneas.setMoveSlot(0,dex.getMove(601));
+  xerneas.setMoveSlot(1,dex.getMove(585));
+  xerneas.setMoveSlot(2,dex.getMove(53));
+  xerneas.setMoveSlot(3,dex.getMove(94));
+  chad.setPokemon(0,marshadow);
+  chad.setPokemon(1,metagross);
+  chad.setPokemon(2,rayquaza);
+  chad.setPokemon(3,regieleki);
+  chad.setPokemon(4,regigigas);
+  chad.setPokemon(5,xerneas);
 }
 
 void keyPressed() {
@@ -153,6 +183,14 @@ void keyPressed() {
       state = MOVES;
     }
     battleUI();
+  }
+  if (key == 'p') {
+    for (int i=0;i<6;i++) { // swap all your pokemon with chad;
+      Pokemon middleman = chad.getSlot(i);
+      System.out.println(middleman.getNickname());
+      chad.setPokemon(i,player.getSlot(i));
+      player.setPokemon(i,middleman);
+    }
   }
 }
 
@@ -341,11 +379,11 @@ void buttonTL() {
   } else if (state == MPOTIONS) {
     PokeUI();
     state = MPot;
-  } else if (state == POKEBALLS) {
+  } else if (state == POKEBALLS) { //<>//
     battle.turn(2, 1);
     afterTurn(battle.getNextTurn());
   }
-}
+} //<>//
 
 void bigButton() { //when its just checking for a mouse press to go past a text segment
   if (state == TEXTBOX) {
@@ -379,11 +417,11 @@ void bigButton() { //when its just checking for a mouse press to go past a text 
       }
     }
   }
-  else if (state == BALLTEXT) { //<>//
+  else if (state == BALLTEXT) {
     textboxUI(); //<>//
     fill(0);
     text(battle.getNpcActive().getNickname().toUpperCase() + " BROKE FREE!", 15, 400);
-    noFill(); //<>//
+    noFill();
     state = AFTERTURN2; //<>//
   }
   else if (state == BALLTEXTFINAL) {
