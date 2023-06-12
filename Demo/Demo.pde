@@ -335,7 +335,7 @@ void bigButton() { //when its just checking for a mouse press to go past a text 
     mapUI();
   }
   else if (state == AFTERTURN) {
-    Turn turn = battle.getNextTurn();
+    Turn turn = battle.getNextTUrn();
     
   }
 }
@@ -544,7 +544,7 @@ void button21() { //bottom right
     afterTurn(battle.getNextTurn());
   } else if (state == HPot) {
     battle.turn(2, 6, 5);
-    afterTurn(battle.getNextTurn());
+    safterTurn(battle.getNextTurn());
   } else if (state == MPot) {
     player.getBag().use(false, 4, player.getSlot(5));
     state = MAP;
@@ -1024,7 +1024,7 @@ int stepUp(Turn first, int step) {
     if (first.getChoice() < 4) {
       val = checkCaught(step);
     }
-    state = BALLTEXT;
+    state = BALLFAILTEXT;
   }
   return val;
 }
@@ -1043,7 +1043,7 @@ int stepUp2(Turn second, int step) {
     if (second.getChoice() < 4) {
       val = checkCaught(step);
     } else {
-      state = BALLTEXT2;
+      state = BALLFAILTEXT2;
     }
   }
   return val;
