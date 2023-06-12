@@ -69,8 +69,8 @@ HW - Started adding some things in manually before getting into issues since I f
 
 ### 6/10-11/23
 
-HW - Working on actually added stat stage boosts, status effects, better turn-based system, AI, more sprites, spreadsheets, etc
-
+HW - Working on actually added stat stage boosts, status effects, better turn-based system, AI, more sprites, spreadsheets\
+making diagrams for how the game will actually work, designing and coding the pokemon to demonstrate features in cheats
 
 
 ## Fishan Chowdhury (Bell)
