@@ -102,7 +102,6 @@ void keyPressed() {
       battle = new Battle(player);
       // TESTING PURPOSES //
       battle.getPlayerActive().setStatus(5);
-      battle.getNpcActive().setStatus(1);
       //////////////////////
       state = BATTLE;
     }
@@ -380,11 +379,11 @@ void bigButton() { //when its just checking for a mouse press to go past a text 
   else if (state == EFFECTIVETEXTFINAL) {
     effectiveText(dex.getAdvantage(turn.getOtherPokemon(), turn.getPokemon().getMoves()[turn.getChoice()]));
     state = TEXTBOX;
-  }
+  } //<>//
   else if (state == AFTERTURN2) { //<>//
     System.out.println("WHITE BOX PAIN");
     turn = battle.getNextTurn();
-    System.out.println(turn);
+    System.out.println(turn); //<>//
     int step = battle.stepTurn(); //<>//
     int val = stepUp(turn, step);
     afterTurn(turn);

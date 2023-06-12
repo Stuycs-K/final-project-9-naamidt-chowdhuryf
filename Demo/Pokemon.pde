@@ -56,7 +56,7 @@ public class Pokemon {
       ivs[i] = (int)(Math.random()*32);
       evs[i] = 0;
     }
-    stats = new int[6];
+    stats = new int[7];
     updateStats();
     currentHP = stats[1];
     exp = expChart[level];
@@ -73,8 +73,8 @@ public class Pokemon {
   public void updateStats() {
     Nature innate = dex.getNature(nature);
     double[] natureBoosts = innate.getBoosts();
-    for (int i=1; i<=stats.length; i++) {
-      stats[i-1] = calculateStats(baseStats[i], ivs[i], evs[i], level, natureBoosts[i]);
+    for (int i=1; i<stats.length; i++) {
+      stats[i] = calculateStats(baseStats[i], ivs[i], evs[i], level, natureBoosts[i]);
     }
   }
   public int changeHP(double changeVal) {
