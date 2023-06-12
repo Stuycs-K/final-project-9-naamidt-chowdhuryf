@@ -1023,9 +1023,9 @@ void pokeSummaryUI() {
   PImage big = player.getSlot(pokeSlot).getFrontSprite();
   big.resize(100,0);
   image(big,60,500);
-  String types = dex.typeToWord(dex.getPrimaryType(dex.getDex(player.getSlot(pokeSlot).getNickname()))).toUpperCase() + " ";
-  if (dex.typeToWord(dex.getSecondaryType(dex.getDex(player.getSlot(pokeSlot).getNickname()))) != null) {
-    types += dex.typeToWord(dex.getSecondaryType(dex.getDex(player.getSlot(pokeSlot).getNickname()))).toUpperCase();
+  String types = dex.typeToWord(dex.getPrimaryType(player.getSlot(pokeSlot).getDexNumber())).toUpperCase() + " ";
+  if (dex.typeToWord(dex.getSecondaryType(player.getSlot(pokeSlot).getDexNumber())) != null) {
+    types += dex.typeToWord(dex.getSecondaryType(player.getSlot(pokeSlot).getDexNumber())).toUpperCase();
   }
   text(types, 70 , 389);
   for (int i = 0; i < 4; i++) {
