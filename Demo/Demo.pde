@@ -31,14 +31,13 @@ static final int RIGHT_WIDTH = 160;
 static final int TOP_HEIGHT = 360;
 static final int BOT_HEIGHT = 480;
 
-static final int PLAYERTEXTBOXHIT = 1000;
-static final int ENEMYTEXTBOXHIT = 1001;
-static final int PLAYERTEXTBOXSUMMARY = 2000;
 static final int EFFECTIVETEXT = 3000;
-static final int ENEMYTEXTBOXSUMMARY = 4000;
 static final int BALLTEXT = 5000;
+static final int EFFECTIVETEXT2 = 3001;
+static final int BALLTEXT2 = 5001
 static final int POTIONTEXT = 6000;
-
+static final int AFTERTURN = 1010;
+static final int AFTERTURN2 = 101;
 
 Map map;
 int state;
@@ -225,11 +224,7 @@ void buttonBR() {
     buttonBack();
   } else if (state == MOVES) {
     battle.turn(0, 3);
-    updateEXP();
-    updateHealthBar();
-    state = TEXTBOX;
-    textboxUI();
-    //<><><>>MOVES
+    afterTurn(battle.getNextTurn());
     noFill();
   } else if (state == BAG) {
     state = BATTLE;
@@ -246,11 +241,7 @@ void buttonTR() {
     state = BAG;
   } else if (state == MOVES) {
     battle.turn(0, 2);
-    updateEXP();
-    updateHealthBar();
-    state = TEXTBOX;
-    textboxUI();
-    //<><><>
+    afterTurn(battle.getNextTurn());
     noFill();
   } else if (state == POTIONS) {
     PokeUI();
@@ -260,7 +251,7 @@ void buttonTR() {
     state = MHPot;
   } else if (state == POKEBALLS) {
     battle.turn(2, 3);
-    checkCaught();
+    afterTurn(battle.getNextTurn());
   } else if (state == MAP) {
     state = MPOTIONS;
     potionsUI();
@@ -269,11 +260,7 @@ void buttonTR() {
 void buttonBL() {
   if (state == MOVES) {
     battle.turn(0, 1);
-    updateEXP();
-    updateHealthBar();
-    state = TEXTBOX;
-    textboxUI();
-    //<><><><><>
+    afterTurn(battle.getNextTurn());
     noFill();
   } else if (state == POTIONS) {
     PokeUI();
@@ -283,7 +270,7 @@ void buttonBL() {
     state = MSPot;
   } else if (state == POKEBALLS) {
     battle.turn(2, 2);
-    checkCaught();
+    afterTurn(battle.getNextTurn());
   } else if (state == BATTLE) {
     PokeUI();
     state = SPOKEMON;
@@ -322,11 +309,7 @@ void buttonTL() {
     text("BACK", width/2 - 13, height/2 + 10);
   } else if (state == MOVES) {
     battle.turn(0, 0);
-    updateEXP();
-    updateHealthBar();
-    state = TEXTBOX;
-    textboxUI();
-    //<><><><><>
+    afterTurn(battle.getNextTurn());
     noFill();
   } else if (state == WIN) {
     state = MAP;
@@ -339,16 +322,21 @@ void buttonTL() {
     state = MPot;
   } else if (state == POKEBALLS) {
     battle.turn(2, 1);
-    checkCaught();
+    afterTurn(battle.getNextTurn());
   }
 }
 
 void bigButton() { //when its just checking for a mouse press to go past a text segment
   if (state == TEXTBOX) {
     checkBattle(battle);
-  } else if (state == WIN) {
+  }
+  else if (state == WIN) {
     state = MAP;
     mapUI();
+  }
+  else if (state == AFTERTURN) {
+    Turn turn = battle.getNextTUrn();
+    
   }
 }
 
@@ -370,21 +358,13 @@ void buttonRight() {
 void button00() { //for when theres 6 buttons, top left
   if (state == Pot) {
     battle.turn(2, 4, 0);
-    state = TEXTBOX;
-    textboxUI();
-    text("You healed " + player.getSlot(0).getNickname() + "!", LEFT_WIDTH + 10, TOP_HEIGHT + 60);
-    updateHealthBar();
+    afterTurn(battle.getNextTurn());
   } else if (state == SPot) {
     battle.turn(2, 5, 0);
-    state = TEXTBOX;
-    textboxUI();
-    text("You healed " + player.getSlot(0).getNickname() + "!", LEFT_WIDTH + 10, TOP_HEIGHT + 60);
-    updateHealthBar();
+    afterTurn(battle.getNextTurn());
   } else if (state == HPot) {
     battle.turn(2, 6, 0);
-    potionTextSummary(HPot, player.getSlot(0));
-    battle.stepTurn();
-    updateHealthBar();
+    afterTurn(battle.getNextTurn());
   } else if (state == MPot) {
     player.getBag().use(false, 4, player.getSlot(0));
     state = MAP;
@@ -407,33 +387,19 @@ void button00() { //for when theres 6 buttons, top left
 void button01() { //top right
   if (state == SPOKEMON) {
     battle.turn(1, 3);
-    state = TEXTBOX;
-    textboxUI();
-    text("You switched in " + player.getSlot(0).getNickname() + "!", LEFT_WIDTH + 10, TOP_HEIGHT + 60);
-    updateHealthBar();
+    afterTurn(battle.getNextTurn());
   } else if (state == FAINTED) {
     battle.swapDead(player, 3);
-    state = TEXTBOX;
-    textboxUI();
-    text("You switched in " + player.getSlot(0).getNickname() + "!", LEFT_WIDTH + 10, TOP_HEIGHT + 60);
-    updateHealthBar();
+    afterTurn(battle.getNextTurn());
   } else if (state == Pot) {
     battle.turn(2, 4, 3);
-    state = TEXTBOX;
-    textboxUI();
-    text("You healed " + player.getSlot(0).getNickname() + "!", LEFT_WIDTH + 10, TOP_HEIGHT + 60);
-    updateHealthBar();
+    afterTurn(battle.getNextTurn());
   } else if (state == SPot) {
     battle.turn(2, 5, 3);
-    state = TEXTBOX;
-    textboxUI();
-    text("You healed " + player.getSlot(0).getNickname() + "!", LEFT_WIDTH + 10, TOP_HEIGHT + 60);
-    updateHealthBar();
+    afterTurn(battle.getNextTurn());
   } else if (state == HPot) {
     battle.turn(2, 6, 3);
-    state = TEXTBOX;
-    textboxUI();
-    text("You healed " + player.getSlot(0).getNickname() + "!", LEFT_WIDTH + 10, TOP_HEIGHT + 60);
+    afterTurn(battle.getNextTurn());
   } else if (state == MPot) {
     player.getBag().use(false, 4, player.getSlot(3));
     state = MAP;
@@ -455,9 +421,7 @@ void button01() { //top right
 void button10() { //middle left
   if (state == SPOKEMON) {
     battle.turn(1, 1);
-    state = TEXTBOX;
-    textboxUI();
-    text("You switched in " + player.getSlot(0).getNickname() + "!", LEFT_WIDTH + 10, TOP_HEIGHT + 60);
+    afterTurn(battle.getNextTurn());
   } else if (state == FAINTED) {
     battle.swapDead(player, 1);
     state = TEXTBOX;
@@ -465,22 +429,13 @@ void button10() { //middle left
     text("You switched in " + player.getSlot(0).getNickname() + "!", LEFT_WIDTH + 10, TOP_HEIGHT + 60);
   } else if (state == Pot) {
     battle.turn(2, 4, 1);
-    state = TEXTBOX;
-    textboxUI();
-    text("You healed " + player.getSlot(0).getNickname() + "!", LEFT_WIDTH + 10, TOP_HEIGHT + 60);
-    updateHealthBar();
+    afterTurn(battle.getNextTurn());
   } else if (state == SPot) {
     battle.turn(2, 5, 1);
-    state = TEXTBOX;
-    textboxUI();
-    text("You healed " + player.getSlot(0).getNickname() + "!", LEFT_WIDTH + 10, TOP_HEIGHT + 60);
-    updateHealthBar();
+    afterTurn(battle.getNextTurn());
   } else if (state == HPot) {
     battle.turn(2, 6, 1);
-    state = TEXTBOX;
-    textboxUI();
-    text("You healed " + player.getSlot(0).getNickname() + "!", LEFT_WIDTH + 10, TOP_HEIGHT + 60);
-    updateHealthBar();
+    afterTurn(battle.getNextTurn());
   } else if (state == MPot) {
     player.getBag().use(false, 4, player.getSlot(1));
     state = MAP;
@@ -502,9 +457,7 @@ void button10() { //middle left
 void button11() { //middle right
   if (state == SPOKEMON) {
     battle.turn(1, 4);
-    state = TEXTBOX;
-    textboxUI();
-    text("You switched in " + player.getSlot(0).getNickname() + "!", LEFT_WIDTH + 10, TOP_HEIGHT + 60);
+    afterTurn(battle.getNextTurn());
   } else if (state == FAINTED) {
     battle.swapDead(player, 4);
     state = TEXTBOX;
@@ -512,22 +465,14 @@ void button11() { //middle right
     text("You switched in " + player.getSlot(0).getNickname() + "!", LEFT_WIDTH + 10, TOP_HEIGHT + 60);
   } else if (state == Pot) {
     battle.turn(2, 4, 4);
-    state = TEXTBOX;
-    textboxUI();
-    text("You healed " + player.getSlot(0).getNickname() + "!", LEFT_WIDTH + 10, TOP_HEIGHT + 60);
+    afterTurn(battle.getNextTurn());
     updateHealthBar();
   } else if (state == SPot) {
     battle.turn(2, 5, 4);
-    state = TEXTBOX;
-    textboxUI();
-    text("You healed " + player.getSlot(0).getNickname() + "!", LEFT_WIDTH + 10, TOP_HEIGHT + 60);
-    updateHealthBar();
+    afterTurn(battle.getNextTurn());
   } else if (state == HPot) {
     battle.turn(2, 6, 4);
-    state = TEXTBOX;
-    textboxUI();
-    text("You healed " + player.getSlot(0).getNickname() + "!", LEFT_WIDTH + 10, TOP_HEIGHT + 60);
-    updateHealthBar();
+    afterTurn(battle.getNextTurn());
   } else if (state == MPot) {
     player.getBag().use(false, 4, player.getSlot(4));
     state = MAP;
@@ -549,9 +494,7 @@ void button11() { //middle right
 void button20() { //bottom left
   if (state == SPOKEMON) {
     battle.turn(1, 2);
-    state = TEXTBOX;
-    textboxUI();
-    text("You switched in " + player.getSlot(0).getNickname() + "!", LEFT_WIDTH + 10, TOP_HEIGHT + 60);
+    afterTurn(battle.getNextTurn());
   } else if (state == FAINTED) {
     battle.swapDead(player, 2);
     state = TEXTBOX;
@@ -559,22 +502,13 @@ void button20() { //bottom left
     text("You switched in " + player.getSlot(0).getNickname() + "!", LEFT_WIDTH + 10, TOP_HEIGHT + 60);
   } else if (state == Pot) {
     battle.turn(2, 4, 2);
-    state = TEXTBOX;
-    textboxUI();
-    text("You healed " + player.getSlot(0).getNickname() + "!", LEFT_WIDTH + 10, TOP_HEIGHT + 60);
-    updateHealthBar();
+    afterTurn(battle.getNextTurn());
   } else if (state == SPot) {
     battle.turn(2, 5, 2);
-    state = TEXTBOX;
-    textboxUI();
-    text("You healed " + player.getSlot(0).getNickname() + "!", LEFT_WIDTH + 10, TOP_HEIGHT + 60);
-    updateHealthBar();
+    afterTurn(battle.getNextTurn());
   } else if (state == HPot) {
     battle.turn(2, 6, 2);
-    state = TEXTBOX;
-    textboxUI();
-    text("You healed " + player.getSlot(0).getNickname() + "!", LEFT_WIDTH + 10, TOP_HEIGHT + 60);
-    updateHealthBar();
+    afterTurn(battle.getNextTurn());
   } else if (state == MPot) {
     player.getBag().use(false, 4, player.getSlot(2));
     state = MAP;
@@ -596,9 +530,7 @@ void button20() { //bottom left
 void button21() { //bottom right
   if (state == SPOKEMON) {
     battle.turn(1, 5);
-    state = TEXTBOX;
-    textboxUI();
-    text("You switched in " + player.getSlot(0).getNickname() + "!", LEFT_WIDTH + 10, TOP_HEIGHT + 60);
+    afterTurn(battle.getNextTurn());
   } else if (state == FAINTED) {
     battle.swapDead(player, 5);
     state = TEXTBOX;
@@ -606,22 +538,13 @@ void button21() { //bottom right
     text("You switched in " + player.getSlot(0).getNickname() + "!", LEFT_WIDTH + 10, TOP_HEIGHT + 60);
   } else if (state == Pot) {
     battle.turn(2, 4, 5);
-    state = TEXTBOX;
-    textboxUI();
-    text("You healed " + player.getSlot(0).getNickname() + "!", LEFT_WIDTH + 10, TOP_HEIGHT + 60);
-    updateHealthBar();
+    afterTurn(battle.getNextTurn());
   } else if (state == SPot) {
     battle.turn(2, 5, 5);
-    state = TEXTBOX;
-    textboxUI();
-    text("You healed " + player.getSlot(0).getNickname() + "!", LEFT_WIDTH + 10, TOP_HEIGHT + 60);
-    updateHealthBar();
+    afterTurn(battle.getNextTurn());
   } else if (state == HPot) {
     battle.turn(2, 6, 5);
-    state = TEXTBOX;
-    textboxUI();
-    text("You healed " + player.getSlot(0).getNickname() + "!", LEFT_WIDTH + 10, TOP_HEIGHT + 60);
-    updateHealthBar();
+    safterTurn(battle.getNextTurn());
   } else if (state == MPot) {
     player.getBag().use(false, 4, player.getSlot(5));
     state = MAP;
@@ -938,129 +861,69 @@ void bagUI() {
   text("POKEBALLS", RIGHT_WIDTH + 35, TOP_HEIGHT + 120);
 }
 
-void checkCaught() {
-  if (battle.battleStatus() == 1) {
+int checkCaught(int step) {
+  int val = 0;
+  if (step == 3) {
     state = WIN;
     caughtUI();
     textboxUI();
-    text("You succesfully caught " + battle.getNpcActive().getNickname() + "!", LEFT_WIDTH + 10, TOP_HEIGHT + 60);
+    text("You succesfully caught " + battle.getNpcActive().getNickname() + "!", 15, 400);
+    val = 1;
     if (player.checkParty() != 6) {
       player.setPokemon(player.checkParty(), battle.getNpcActive());
     }
   } else {
     state = TEXTBOX;
     textboxUI();
-    text(battle.getNpcActive().getNickname() + " broke free!", LEFT_WIDTH + 10, TOP_HEIGHT + 60);
+    text(battle.getNpcActive().getNickname() + " broke free!", 15, 400);
   }
+  return val;
 }
 
 //LOOK AT ME LOOK AT ME LOOK AT ME LOOK AT ME LOOK AT ME LOOK AT ME LOOK AT ME LOOK AT ME LOOK AT ME LOOK AT ME LOOK AT ME LOOK AT ME LOOK AT ME LOOK AT ME LOOK AT ME LOOK AT ME LOOK AT ME LOOK AT ME LOOK AT ME
 
 
-void playerMoveTextHit(int step) {
-  //state = PLAYERTEXTBOXHIT;
-  textboxUI();
+void moveTextHit(Turn first, int step) {
   fill(0);
+  String name = first.getPokemon().getNickname().toUpperCase();
+  if (step != 0) {
+    textboxUI();
+  }
   if (step == 1) {
     text("IT WAS A CRITICAL HIT!", 15, 400);
   } else if (step == 2) {
-    text(battle.getPlayerActive().getNickname().toUpperCase() + " MISSED!", 15, 400);
+    text(name + " MISSED!", 15, 400);
   } else if (step == 4) {
-    text(battle.getPlayerActive().getNickname().toUpperCase() + " WAS PARALYZED AND COULDN'T MOVE!", 15, 400);
+    text(name + " WAS PARALYZED AND COULDN'T MOVE!", 15, 400);
   } else if (step == 5) {
-    text(battle.getPlayerActive().getNickname().toUpperCase() + " WAS FROZEN AND COULDN'T MOVE!", 15, 400);
+    text(name + " WAS FROZEN AND COULDN'T MOVE!", 15, 400);
   } else if (step == 6) {
-    text(battle.getPlayerActive().getNickname().toUpperCase() + "  WAS ASLEEP AND COULDN't MOVE!", 15, 400);
+    text(name + "  WAS ASLEEP AND COULDN't MOVE!", 15, 400);
   } else if (step == 7) {
     text("IT FAILED!", 15, 400);
   } else if (step == 8) {
-    text(battle.getPlayerActive().getNickname().toUpperCase() + " FLINCHED AND COULDN'T MOVE!", 15, 400);
+    text(name + " FLINCHED AND COULDN'T MOVE!", 15, 400);
   } else if (step == 9) {
-    text(battle.getPlayerActive().getNickname().toUpperCase() + " HURT ITSELF IN ITS CONFUSION!", 15, 400);
+    text(name + " HURT ITSELF IN ITS CONFUSION!", 15, 400);
   }
   noFill();
 }
 
-void enemyMoveTextHit(int step) {
-  //state = ENEMYTEXTBOXHIT;
-  textboxUI();
-  fill(0);
-  if (step == 1) {
-    text("IT WAS A CRITICAL HIT!", 15, 400);
-  } else if (step == 2) {
-    text(battle.getNpcActive().getNickname().toUpperCase() + " MISSED!", 15, 400);
-  } else if (step == 4) {
-    text(battle.getNpcActive().getNickname().toUpperCase() + " WAS PARALYZED AND COULDN'T MOVE!", 15, 400);
-  } else if (step == 5) {
-    text(battle.getNpcActive().getNickname().toUpperCase() + " WAS FROZEN AND COULDN'T MOVE!", 15, 400);
-  } else if (step == 6) {
-    text(battle.getNpcActive().getNickname().toUpperCase() + "  WAS ASLEEP AND COULDN't MOVE!", 15, 400);
-  } else if (step == 7) {
-    text("IT FAILED!", 15, 400);
-  } else if (step == 8) {
-    text(battle.getNpcActive().getNickname().toUpperCase() + " FLINCHED AND COULDN'T MOVE!", 15, 400);
-  } else if (step == 9) {
-    text(battle.getNpcActive().getNickname().toUpperCase() + " HURT ITSELF IN ITS CONFUSION!", 15, 400);
-  }
-  noFill();
-}
-
-void playerMoveTextSummary(int moveSlot) {
-  //state = PLAYERTEXTBOXSUMMARY;
-  textboxUI();
-  fill(0);
-  text(battle.getPlayerActive().getNickname() + " USED " + battle.getPlayerActive().getMoves()[moveSlot].getName().toUpperCase() + "!", 15, 400);
-  noFill();
-}
-
-void ballTextSummary(int item) {
-  //state = BALLTEXT;
-  textboxUI();
-  String ballType = "";
-  if (item == 1) {
-    ballType = "POKEBALL";
-  }
-  if (item == 2) {
-    ballType = "SUPER BALL"; 
-  }
-  if (item == 3) {
-    ballType = "ULTRA BALL";
-  }
+void ballTextSummary(Turn turn) {
+  String ballType = player.getBag().idToName(turn.getChoice());
   fill(0);
   text("YOU THREW A " + ballType + " AT " + battle.getNpcActive().getNickname().toUpperCase(), 15, 400);
   noFill();
 }
 
-void potionTextSummary(int item, Pokemon poke) {
-  textboxUI();
-  //state = POTIONTEXT;
-  buttonCount = 1;
-  String potionType = "";
-  if (item == HPot) {
-    potionType = "HYPER POTION";
-  }
-  if (item == SPot) {
-    potionType = "SUPER POTION";
-  }
-  if (item == Pot) {
-    potionType = "POTION";
-  }
+void potionTextSummary(Turn turn) {
+  String potionType = player.getBag().idToName(turn.getChoice());
   fill(0);
-  text("YOU USED A " + potionType + " ON " + poke.getNickname(), 15, 400);
-  noFill();
-}
-
-
-void enemyMoveTextSummary() {
-  //state = ENEMYTEXTBOXSUMMARY;
-  textboxUI();
-  fill(0);
-  text(battle.getNpcActive().getNickname() + " USED " + battle.getEnemyMove().getName().toUpperCase() + "!", 15, 400);
+  text("YOU USED A " + potionType + " ON " + turn.getTrainer().getSlot(turn.getChoice2()).getNickname() + "!", 15, 400);
   noFill();
 }
 
 void effectiveText(int effect) {
-  //state = EFFECTIVETEXT;
   fill(0);
   if (effect > 1) {
     text("IT's SUPER EFFECTIVE!", 15, 400);
@@ -1104,4 +967,84 @@ void pokeSummaryUI() {
   rect(25, 580, 100 * player.getSlot(pokeSlot).getCurrentHP()/1.0/player.getSlot(pokeSlot).getStats()[1], 20, 10); // hp green overlay
   fill(0);
   text(player.getSlot(pokeSlot).getCurrentHP()+"/"+player.getSlot(pokeSlot).getStats()[1], 60, 595);
+}
+
+void afterTurn(Turn first) {
+  buttonCount = 1;
+  textboxUI();
+  fill(0);
+  if (first.getCategory() == 0) {
+    text(first.getPokemon().getNickname().toUpperCase() + " TRIED TO USE " + first.getPokemon().getMoves()[first.getChoice()] + "!", 15, 400);
+  }
+  else if (first.getCategory() == 1) {
+    text(first.getTrainer().getName() + " SWITCHED OUT " + first.getPokemon().getNickname() + " FOR " + first.getTrainer().getSlot(first.getChoice()).getNickname() + "!", 15, 400);
+  }
+  else if (first.getCategory() == 2) {
+    if (first.getChoice2() > -1) {
+      potionTextSummary(first);
+    } else {
+      ballTextSummary(first);
+    }
+  }
+  state = AFTERTURN;
+  noFill();
+}
+
+void afterTurn2(Turn second) {
+  textboxUI();
+  fill(0);
+  if (second.getCategory() == 0) {
+    text(second.getPokemon().getNickname().toUpperCase() + " TRIED TO USE " + second.getPokemon().getMoves()[second.getChoice()] + "!", 15, 400);
+  }
+  else if (second.getCategory() == 1) {
+    text(second.getTrainer().getName() + " SWITCHED OUT " + second.getPokemon().getNickname() + " FOR " + second.getTrainer().getSlot(second.getChoice()).getNickname() + "!", 15, 400);
+  }
+  else if (second.getCategory() == 2) {
+    if (second.getChoice2() > -1) {
+      potionTextSummary(second);
+    } else {
+      ballTextSummary(second);
+    }
+  }
+  state = AFTERTURN2;
+  noFill();
+}
+
+int stepUp(Turn first, int step) {
+  int val = 0;
+  fill(0);
+  if (first.getCategory() == 0) {
+    moveTextHit(first, step);
+    if (battle.battleStatus() != 0) {
+      val = 1;
+    }
+    state = EFFECTIVETEXT;
+  }
+  else if (first.getCategory() == 2) {
+    if (first.getChoice() < 4) {
+      val = checkCaught(step);
+    }
+    state = BALLFAILTEXT;
+  }
+  return val;
+}
+
+int stepUp2(Turn second, int step) {
+  int val = 0;
+  fill(0);
+  if (second.getCategory() == 0) {
+    moveTextHit(second, step);
+    if (battle.battleStatus() != 0) {
+      val = 1;
+    }
+    state = EFFECTIVETEXT2;
+  }
+  else if (second.getCategory() == 2) {
+    if (second.getChoice() < 4) {
+      val = checkCaught(step);
+    } else {
+      state = BALLFAILTEXT2;
+    }
+  }
+  return val;
 }
