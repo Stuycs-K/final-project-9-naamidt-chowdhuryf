@@ -3,7 +3,6 @@ THIS DOCUMENT IS REQUIRED
 ## Group Info
 Collaborators: Taamim Naamid & Fishan Chowdhury (Bell)
 ### Group Name: The Boyds
-Collaborators: Taamim Naamid & Fishan Chowdhury (Bell)
 ## Overview
 It's like Emerald Rogue, hopefully\
 Basically, this is a Pokemon Roguelike where you can fight trainers and catch pokemon\
