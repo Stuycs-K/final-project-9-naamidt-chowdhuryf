@@ -56,7 +56,7 @@ void setup() {
   map = new Map("testmap.txt");
   mapUI();
   dex = new Pokedex();
-  player = new Trainer("Me!", new int[]{0, 0}, 0);
+  player = new Trainer("Me!", new int[]{0, 0}, 10);
   Pokemon random = dex.randomPokemon(player);
   random.addExp(100);
   player.setPokemon(0, random);
