@@ -56,7 +56,7 @@ class Bag {
     }
   }
   public boolean catchAttempt(Pokemon encounter, double mult) {
-    int odds = (int)((3*encounter.getStats()[1]-2*encounter.getCurrentHP())*4096*mult*encounter.getCaptureRate())/(3*encounter.getStats()[0]);
+    int odds = (int)((3*encounter.getStats()[1]-2*encounter.getCurrentHP())*4096*mult*encounter.getCaptureRate())/(3*encounter.getStats()[1]);
     if (encounter.getStatus()!=0) {
       odds*=2;
     }

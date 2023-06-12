@@ -73,7 +73,7 @@ public class Move {
       return target.setStatBoost(secondaryEffect-4,secondaryExtra);
     } if (secondaryType == 3) {
       if (damageDealt == 0) {
-        user.changeHP(user.getStats()[1]/(secondaryEffect/100.0));
+        user.changeHP(-1*user.getStats()[1]/(secondaryEffect/100.0));
       } else {
         user.changeHP(damageDealt*secondaryEffect/100.0);
       }
