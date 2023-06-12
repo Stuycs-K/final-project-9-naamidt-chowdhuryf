@@ -84,11 +84,11 @@ public class Battle {
   }
   
   public int npcShouldSwitchAI() {
-    int playerSpeed = (int)(playerActive.getStats()[5]*dex.getBoostToVal(playerActive.getStatBoosts()[5]));
+    int playerSpeed = (int)(playerActive.getStats()[6]*dex.getBoostToVal(playerActive.getStatBoosts()[6]));
     if (playerActive.getStatus()==3) {
       playerSpeed/=2;
     }
-    int npcSpeed = (int)(npcActive.getStats()[5]*dex.getBoostToVal(npcActive.getStatBoosts()[5]));
+    int npcSpeed = (int)(npcActive.getStats()[6]*dex.getBoostToVal(npcActive.getStatBoosts()[6]));
     if (npcActive.getStatus()==3) {
       npcSpeed/=2;
     }
@@ -373,6 +373,16 @@ public class Battle {
       if (npc.getSlot(1)==null||npc.getSlot(1).getCurrentHP()<=0) { // if it has nothing to switch in
         win();
       } swapDead(npc,npcSwitchAI());
+    }
+  }
+  
+  public void drawStatusEffects() {
+    if (npcActive.getStatus()!=0) {
+      PImage npcStatus = loadImage(dex.getStatusIcon(npcActive.getStatus()));
+      image(npcStatus,120,45);
+    } if (playerActive.getStatus()!=0) {
+      PImage playerStatus = loadImage(dex.getStatusIcon(playerActive.getStatus()));
+      image(playerStatus,275,240);
     }
   }
   
