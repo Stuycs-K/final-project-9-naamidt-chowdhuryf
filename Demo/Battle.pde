@@ -109,7 +109,7 @@ public class Battle {
     }
     if (playerSpeed>npcSpeed) { // if the enemy outspeeds, start the process
       for (int i=0;i<6;i++) {
-        if (npc.getSlot(i)!=null) { //if there is a pokemon in this slot
+        if (npc.getSlot(i)!=null&&npc.getSlot(i).getCurrentHP()>0) { //if there is a pokemon in this slot
           if (playerRecentMove==null) {
             break;
           }
