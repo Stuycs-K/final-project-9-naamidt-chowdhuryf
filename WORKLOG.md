@@ -110,3 +110,24 @@ HW - continued working on BattleUI and finished a few buttons, flickering, and s
 ### 6/2 - 6/4
 
 HW - 
+
+## Dev Log:
+
+
+### Working Features
+Walking around (There are walls where there looks like there’s a path for separate reasons)\
+Battling, for the most part\
+The implemented game mechanics (evs, ivs, “abilities”, stab, damage calcs, stat calcs, catching calcs, basically any calc that exists in our game is implemented the same as it actually is in pokemon, Emerald AI, learnsets, growth curve, leveling up, evolving, priority moves, natures, pokeballs, potions, recoil/siphon, flinch, confusion, status effects, sprites, typing/typechart, stat stage boosts, ev yields and exp yields)\
+Pokemon Scaling by gym badge so that you get weaker pokemon early game but stranger pokemon late game (this also applies for enemy trainers, but may be scaled off your gym badges +1 or +2)\
+Has mostly all pokemon and moves\
+Doesnt include some s/v pokemon because pokeAPI’s showdown sprites just didn’t have them and it wasn’t worth looking for 80ish sprites\
+A lot of moves are not implemented properly but if they have a base power then at least that will work, also moves only have 1 secondary effect\
+### Buggy/Broken Features
+The map & event spaces that were intended to hold encounters/trainers/etc\
+UI that doesn’t properly handle the battles class returning null occasionally\
+Learnsets for specific pokemon occasionally return null and crash the program\
+The entire Emerald AI could be completely bugged and be a fluke that it was working while testing\
+When evolving/knocking out an enemy pokemon, two sprites will stack over one another. This doesn’t really do anything but is kind of annoying to look at\
+### Useful Resources
+Processing documentation
+
